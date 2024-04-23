@@ -1,0 +1,80 @@
+---
+# this ensures Jekyll reads the file to be transformed into CSS later
+# only Main files contain this front matter, not partials.
+---
+html { background: whitesmoke; }
+body { font-family: Helvetica; margin: 0; padding: 0; }
+
+header, main, footer {
+  width: calc(12 * 72px + 11 * 24px);
+
+  margin: auto;
+  padding: 10px;
+
+  background: whitesmoke;
+}
+
+a.logo { font-size: 24pt; text-decoration: none; color: black; }
+a.logo:hover { font-size: 24pt; text-decoration: underline; }
+nav { display: inline-block; }
+
+main {
+  /* display: grid;
+  grid-template-columns: repeat(12, [col-start] 72px);
+  grid-gap: 24px; */
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav a, .hero a {
+  display: inline-block;
+  position: relative;
+  color: #0087ca;
+  text-decoration: none;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+nav a::after, .hero a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #a4cde2;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+nav a:hover::after, .hero a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.hero {
+  border-radius: 15px;
+  background: #0087ca; /* url("//via.placeholder.com/1600x800/0087ca.png") center; */
+  background-size: cover;
+  color: white;
+  padding: 5rem;
+  font-family: sans-serif;
+  text-align: center;
+  font-size: 1.5em;
+  text-shadow: black 0 0 15px;
+}
+
+.hero a {
+  color: white;
+}
+
+.debug { border: 1px solid red; }
+
+@import "syntax-highlighting";

@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {%- seo -%}
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+    {%- feed_meta -%}
+  </head>
+  {% if site.lang != "fr" %}{% assign lang_prefix = "/" | append: site.lang %}{% else %}{% assign lang_prefix = "" %}{%endif%}
+  <body>
+    <header>
+      <a class="logo" href="{{site.baseurl_root}}{{lang_prefix | default: "/"}}">ILYBA</a>
+
+      <nav class="menu">
+        {% assign pages = site.pages | where_exp: 'page', 'page.category == "main"' | sort: "order" %}
+        {% for page in pages %}
+          <a href="{{site.baseurl_root}}{{lang_prefix}}{{page.url}}">{% t page.title %}</a>
+        {% endfor %}
+      </nav>
+    </header>
+
+    <main>
+      {{ content }}
+    </main>
+
+    <footer>
+      <p>&copy; ILYBA</p>
+      <nav>
+        {% if site.lang == "fr" %}
+          Français |
+          {% capture link1 %}{{ site.baseurl_root }}/en{{ page.url}}{% endcapture %}
+          <a href="{{ link1 }}" >English</a> |
+          {% capture link2 %}{{ site.baseurl_root }}/ja{{ page.url}}{% endcapture %}
+          <a href="{{ link2 }}" >日本語</a>
+        {% elsif site.lang == "en" %}
+          {% capture link1 %}{{ site.baseurl_root }}{{ page.url}}{% endcapture %}
+          <a href="{{ link1 }}" >Français</a> |
+          English |
+          {% capture link2 %}{{ site.baseurl_root }}/ja{{ page.url}}{% endcapture %}
+          <a href="{{ link2 }}" >日本語</a>
+        {% elsif site.lang == "ja" %}
+          {% capture link1 %}{{ site.baseurl_root }}{{ page.url}}{% endcapture %}
+          <a href="{{ link1 }}" >Français</a> |
+          {% capture link2 %}{{ site.baseurl_root }}/en{{ page.url}}{% endcapture %}
+          <a href="{{ link2 }}" >English</a> |
+          日本語
+        {% endif %}
+      </nav>
+    </footer>
+  </body>
+</html>
