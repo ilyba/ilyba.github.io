@@ -38,7 +38,11 @@ ul.articles > li > span.date { display: inline-block; width: 8em; }
 
 ul.articles > li > a { display: inline-block; width: calc(var(--site-width) - 12em); }
 
-@media (max-width: 480px) { :root { --site-width: calc(4 * 72px + 3 * 24px); } .hero h2 { font-size: 1.2em; } .hero a { font-size: 0.8em; } }
+@media (max-width: 780px) { :root { --site-width: calc(8 * 72px + 7 * 8px); } }
+
+@media (max-width: 640px) { :root { --site-width: calc(6 * 68px + 5 * 8px); } }
+
+@media (max-width: 480px) { :root { --site-width: calc(4 * 72px + 3 * 12px); } header { flex-wrap: wrap; } header .logo { display: inline-block; width: var(--site-width); text-align: center; } .hero h2 { font-size: 1.2em; } .hero a { font-size: 0.8em; } ul.articles > li > span.date { width: 12em; } ul.articles > li > a { display: inline-block; width: calc(var(--site-width) - 3em); } }
 
 .debug { border: 1px solid red; }
 
