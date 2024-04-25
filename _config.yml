@@ -27,7 +27,7 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: ilyba_fr
 github_username:  ilyba
 
-port: 5000
+port: 4999
 host: localhost
 
 # Build settings
