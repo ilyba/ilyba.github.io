@@ -5,8 +5,12 @@
 html { background: whitesmoke; }
 body { font-family: Helvetica; margin: 0; padding: 0; }
 
+:root {
+  --line-width: calc(8 * 72px + 7 * 24px);
+}
+
 header, main, footer {
-  width: calc(12 * 72px + 11 * 24px);
+  width: var(--line-width);
 
   margin: auto;
   padding: 10px;
@@ -24,6 +28,12 @@ main {
   grid-gap: 24px; */
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
+}
+
+article, article > header {
+  flex-wrap: wrap;
+  padding: 0;
+  margin: auto;
 }
 
 header {
@@ -64,16 +74,23 @@ nav a:hover::after, .hero a:hover::after {
   background: #0087ca; /* url("//via.placeholder.com/1600x800/0087ca.png") center; */
   background-size: cover;
   color: white;
-  padding: 5rem;
+  padding: 2rem;
   font-family: sans-serif;
   text-align: center;
   font-size: 1.5em;
   text-shadow: black 0 0 15px;
 }
 
+.hero h1 { margin-block-end: 0.20rem; }
+.hero h2 { margin-block-start: 0.20rem; font-size: 1.5em; text-shadow: black 0 0 5px; font-weight: 100; }
+
 .hero a {
   color: white;
 }
+
+ul.articles > li > * { vertical-align: text-top; }
+ul.articles > li > span.date { display: inline-block; width: 8em; }
+ul.articles > li > a { display: inline-block; width: calc(var(--line-width) - 12em); }
 
 .debug { border: 1px solid red; }
 

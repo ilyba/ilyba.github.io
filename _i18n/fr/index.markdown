@@ -9,10 +9,10 @@
 # Derniers articles
 
 {% if site.lang != "fr" %}{% assign lang_prefix = "/" | append: site.lang %}{% else %}{% assign lang_prefix = "" %}{%endif%}
-<ul>
-  {% for post in site.posts %}
+<ul class="articles">
+  {% for post in site.posts limit:5 %}
     <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
+      <span class="date">{{ post.date | date: "%-d %B %Y" }}</span><a href="{{ post.url }}">{{ post.title }}</a>
     </li>
   {% endfor %}
 </ul>
