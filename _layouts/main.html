@@ -11,7 +11,7 @@
   {% if site.lang != "fr" %}{% assign lang_prefix = "/" | append: site.lang %}{% else %}{% assign lang_prefix = "" %}{%endif%}
   <body>
     <header>
-      <a class="logo" href="{{site.baseurl_root}}{{lang_prefix | default: "/"}}">
+      <a style="text-decoration: none" class="logo" href="{{site.baseurl_root}}{{lang_prefix | default: "/"}}">
         <img style="margin-bottom: -0.15em; height: 1em;" src="/assets/images/logo.svg" />
         ILYBA
       </a>
