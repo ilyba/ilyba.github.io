@@ -1,7 +1,7 @@
 ---
 layout: article
 title:  "Bienvenue sur Jekyll!"
-date:   2023-07-05 00:38:44 +0200
+date:   2023-07-05 00:38:00 +0200
 categories: jekyll update
 ---
 Vous trouverez cet article dans votre répertoire `_posts`. Allez-y, modifiez-le et reconstruisez le site pour voir vos modifications. Vous pouvez reconstruire le site de différentes manières, mais la méthode la plus courante consiste à exécuter « jekyll serve », qui lance un serveur Web et régénère automatiquement votre site lorsqu'un fichier est mis à jour.
@@ -27,3 +27,11 @@ Consultez les [Documents Jekyll][jekyll-docs] pour plus d'informations sur la fa
 [jekyll-docs]: https://jekyllrb.com/docs/home
 [jekyll-gh]: https://github.com/jekyll/jekyll
 [jekyll-talk]: https://talk.jekyllrb.com/
+
+Dir.glob("_i18n/*/_posts/*").map { |path|
+   date = YAML.load("---\n" +
+      File.read(path).match(/---\n(?<yaml>.*)---\n/m)['yaml'].split("\n")
+         .map.with_index { |line, index| "#{ index.zero? ? '-' : ' '}  #{line}" }
+         .join("\n"), permitted_classes: [Time]).first['date']
+   date > Time.now ? nil : (date + 60).utc.strftime('%M %H %d %m *')
+}
