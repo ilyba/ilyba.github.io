@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="fr" /><updated>2024-04-27T21:18:40+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Des exports de données scalables et performants : activez le mode asynchrone d’ActiveAdmin</title><link href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" rel="alternate" type="text/html" title="Des exports de données scalables et performants : activez le mode asynchrone d’ActiveAdmin" /><published>2024-04-25T19:37:00+00:00</published><updated>2024-04-25T19:37:00+00:00</updated><id>/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin</id><content type="html" xml:base="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"><![CDATA[<p>L’exportation de données est une fonctionnalité essentielle dans de nombreuses
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="fr" /><updated>2024-06-27T22:24:35+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Des exports de données scalables et performants : activez le mode asynchrone d’ActiveAdmin</title><link href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" rel="alternate" type="text/html" title="Des exports de données scalables et performants : activez le mode asynchrone d’ActiveAdmin" /><published>2024-04-25T19:37:00+00:00</published><updated>2024-04-25T19:37:00+00:00</updated><id>/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin</id><content type="html" xml:base="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"><![CDATA[<p>L’exportation de données est une fonctionnalité essentielle dans de nombreuses
 applications web modernes. Dans ActiveAdmin, les exports CSV sont générés
 de manière synchrone par défaut. Cependant, lorsque les données à exporter sont volumineuses,
 cette approche peut entraîner un blocage prolongé des connexions HTTP,
@@ -54,28 +54,8 @@ sa compatibilité avec notre application.</p>
 dans ActiveAdmin s’est révélée cruciale pour améliorer les performances
 de notre applications. En adaptant la gem existante à nos besoins
 spécifiques, nous avons pu bénéficier de cette technologie
-tout en conservant un contrôle total sur son fonctionnement.</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActiveAdmin" /><summary type="html"><![CDATA[L’exportation de données est une fonctionnalité essentielle dans de nombreuses applications web modernes. Dans ActiveAdmin, les exports CSV sont générés de manière synchrone par défaut. Cependant, lorsque les données à exporter sont volumineuses, cette approche peut entraîner un blocage prolongé des connexions HTTP, ce qui nuit aux performances globales de l’application.]]></summary></entry><entry><title type="html">Bienvenue sur Jekyll!</title><link href="/jekyll/update/2023/07/04/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Bienvenue sur Jekyll!" /><published>2023-07-04T22:38:00+00:00</published><updated>2023-07-04T22:38:00+00:00</updated><id>/jekyll/update/2023/07/04/welcome-to-jekyll</id><content type="html" xml:base="/jekyll/update/2023/07/04/welcome-to-jekyll.html"><![CDATA[<p>Vous trouverez cet article dans votre répertoire <code class="language-plaintext highlighter-rouge">_posts</code>. Allez-y, modifiez-le et reconstruisez le site pour voir vos modifications. Vous pouvez reconstruire le site de différentes manières, mais la méthode la plus courante consiste à exécuter « jekyll serve », qui lance un serveur Web et régénère automatiquement votre site lorsqu’un fichier est mis à jour.</p>
+tout en conservant un contrôle total sur son fonctionnement.</p>
 
-<p>Jekyll exige que les fichiers d’articles de blog soient nommés selon le format suivant :</p>
-
-<p><code class="language-plaintext highlighter-rouge">ANNÉE-MOIS-JOUR-titre.MARKUP</code></p>
-
-<p>Où « ANNÉE » est un nombre à quatre chiffres, « MOIS » et « JOUR » sont tous deux des nombres à deux chiffres et « MARKUP » est l’extension de fichier représentant le format utilisé dans le fichier. Après cela, incluez les éléments préliminaires nécessaires. Jetez un œil à la source de cet article pour avoir une idée de son fonctionnement.</p>
-
-<p>Jekyll offre également un support puissant pour les extraits de code :</p>
-
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="n">nom</span><span class="p">)</span>
-   <span class="n">met</span> <span class="s2">"Bonjour, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
-<span class="n">fin</span>
-<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
-<span class="c1">#=&gt; affiche 'Salut, Tom' sur STDOUT.</span></code></pre></figure>
-
-<p>Consultez les <a href="https://jekyllrb.com/docs/home">Documents Jekyll</a> pour plus d’informations sur la façon de tirer le meilleur parti de Jekyll. Déposez toutes les demandes de bogues/fonctionnalités sur <a href="https://github.com/jekyll/jekyll">dépôt GitHub de Jekyll</a>. Si vous avez des questions, vous pouvez les poser sur <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>
-
-<p>Dir.glob(“_i18n/<em>/_posts/</em>”).map { |path|
-   date = YAML.load(“—\n” +
-      File.read(path).match(/—\n(?<yaml>.*)---\n/m)['yaml'].split("\n")
-         .map.with_index { |line, index| "#{ index.zero? ? '-' : ' '}  #{line}" }
-         .join("\n"), permitted_classes: [Time]).first['date']
-   date &gt; Time.now ? nil : (date + 60).utc.strftime('%M %H %d %m *')
-}</yaml></p>]]></content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[Vous trouverez cet article dans votre répertoire _posts. Allez-y, modifiez-le et reconstruisez le site pour voir vos modifications. Vous pouvez reconstruire le site de différentes manières, mais la méthode la plus courante consiste à exécuter « jekyll serve », qui lance un serveur Web et régénère automatiquement votre site lorsqu’un fichier est mis à jour.]]></summary></entry></feed>
+<p>Grâce à ce processus, nous avons pu améliorer considérablement l’évolutivité
+et l’efficacité de notre système, tout en offrant une expérience
+plus fluide et plus réactive à nos utilisateurs.</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActiveAdmin" /><summary type="html"><![CDATA[L’exportation de données est une fonctionnalité essentielle dans de nombreuses applications web modernes. Dans ActiveAdmin, les exports CSV sont générés de manière synchrone par défaut. Cependant, lorsque les données à exporter sont volumineuses, cette approche peut entraîner un blocage prolongé des connexions HTTP, ce qui nuit aux performances globales de l’application.]]></summary></entry></feed>

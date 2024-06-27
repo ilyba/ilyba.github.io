@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>スケーラブルで効率的なデータエクスポート：ActiveAdminの非同期モードを有効にする | ILYBA</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="スケーラブルで効率的なデータエクスポート：ActiveAdminの非同期モードを有効にする" />
+<meta property="og:locale" content="ja" />
+<meta name="description" content="データエクスポートは、多くの現代のウェブアプリケーションにおいて不可欠な機能です。 ActiveAdminでは、CSVエクスポートがデフォルトでは同期的に生成されます。しかし、 エクスポートされるデータセットが大きい場合、 このアプローチはHTTP接続の長時間のブロックを引き起こし、 アプリケーションの全体的なパフォーマンスに悪影響を与えることがあります。" />
+<meta property="og:description" content="データエクスポートは、多くの現代のウェブアプリケーションにおいて不可欠な機能です。 ActiveAdminでは、CSVエクスポートがデフォルトでは同期的に生成されます。しかし、 エクスポートされるデータセットが大きい場合、 このアプローチはHTTP接続の長時間のブロックを引き起こし、 アプリケーションの全体的なパフォーマンスに悪影響を与えることがあります。" />
+<link rel="canonical" href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" />
+<meta property="og:url" content="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" />
+<meta property="og:site_name" content="ILYBA" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-04-25T19:37:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="スケーラブルで効率的なデータエクスポート：ActiveAdminの非同期モードを有効にする" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-04-25T19:37:00+00:00","datePublished":"2024-04-25T19:37:00+00:00","description":"データエクスポートは、多くの現代のウェブアプリケーションにおいて不可欠な機能です。 ActiveAdminでは、CSVエクスポートがデフォルトでは同期的に生成されます。しかし、 エクスポートされるデータセットが大きい場合、 このアプローチはHTTP接続の長時間のブロックを引き起こし、 アプリケーションの全体的なパフォーマンスに悪影響を与えることがあります。","headline":"スケーラブルで効率的なデータエクスポート：ActiveAdminの非同期モードを有効にする","mainEntityOfPage":{"@type":"WebPage","@id":"/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"},"url":"/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="ILYBA" /></head>
+  
+  <body>
+    <header>
+      <a style="text-decoration: none" class="logo" href="/ja">
+        <img style="margin-bottom: -0.15em; height: 1em;" src="/assets/images/logo.svg" />
+        ILYBA
+      </a>
+
+      <nav class="menu">
+        
+        
+          <a href="/ja/services/">サービス</a>
+        
+          <a href="/ja/blog/">ブログ</a>
+        
+          <a href="/ja/pricing/">当社の価格</a>
+        
+          <a href="/ja/contact/">連絡先</a>
+        
+      </nav>
+    </header>
+
+    <main>
+      <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">スケーラブルで効率的なデータエクスポート：ActiveAdminの非同期モードを有効にする</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2024-04-25T19:37:00+00:00" itemprop="datePublished">Apr 25, 2024
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>データエクスポートは、多くの現代のウェブアプリケーションにおいて不可欠な機能です。
+ActiveAdminでは、CSVエクスポートがデフォルトでは同期的に生成されます。しかし、
+エクスポートされるデータセットが大きい場合、
+このアプローチはHTTP接続の長時間のブロックを引き起こし、
+アプリケーションの全体的なパフォーマンスに悪影響を与えることがあります。</p>
+
+<p>接続が長時間忙しい状態のままになると、サーバーのリソースが枯渇し、
+他のユーザーに遅延を引き起こします。この状況が続き、リソースが完全に枯渇すると、
+他のユーザーのリクエストがブロックされ、アプリケーションが利用できなくなります。</p>
+
+<p>この問題に対処するために、<code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code>というジェムが最初に開発され、
+ActiveJob を通じて非同期エクスポートの生成を可能にしました。しかし、このソリューション
+にはいくつかの問題がありました。まず、<code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code>
+ジェムはもうメンテナンスされておらず、最新の Rails バージョンと互換性がありません。</p>
+
+<p>実際にインストールを試みた際、<code class="language-plaintext highlighter-rouge">NameError</code> に遭遇しました。
+これはオートローディングの問題に関連しているようでした。さらに、
+<code class="language-plaintext highlighter-rouge">strong parameters</code> の設定が考慮されておらず、このジェムは <code class="language-plaintext highlighter-rouge">current_admin_user</code>
+メソッドを使用していますが、私たちのアプリケーションでは <code class="language-plaintext highlighter-rouge">current_user</code> を使用しています。</p>
+
+<p>ActiveAdmin はこれらの設定を構成することは可能ですが、
+<code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code> ジェムはこれらの設定をサポートしていません。</p>
+
+<p>さらに、このジェムは ActiveStorage をサポートしておらず、
+異なるファイルストレージシステムを使用しています。</p>
+
+<p>また、データベースのマイグレーションと ActiveAdmin のリソースを設定するため
+のコードジェネレーターを提供していますが、その使用方法はREADMEに記載されていません。
+READMEには、単にGemをGemfileに追加することだけが記載されており、詳細な指示がありません。</p>
+
+<p>これらの制約を考慮して、私たちは<code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code>ジェムのコードを私たちのアプリケーションに統合し、
+私たちの具体的なニーズに合わせてカスタマイズすることに決めました。</p>
+
+<p>このジェムをまだ公開していないのは、現在の努力が他のプロジェクトの側面に集中しているためです。
+現在のコードは内部の要件を満たしていますが、公的なリリースのためにさらに時間を割く計画はありません。
+したがって、今のところはそのままにしておくことにしますが、将来的に公開する可能性を完全に否定するわけではありません。</p>
+
+<p>コードの抽出は技術的な挑戦を引き起こしました。特に、ワーカーはApplicationJobを継承する必要があり、
+そのためにコードを<code class="language-plaintext highlighter-rouge">app/workers</code>ディレクトリに配置する必要がありました。さらに、
+アプリケーションとの互換性を確保するために、コードのいくつかの側面を変更する必要がありました。</p>
+
+<p>これらの困難にもかかわらず、ActiveAdminで非同期エクスポートを使用することは、
+アプリケーションの性能向上において極めて重要であることが証明されました。
+既存のジェムを私たちの特定のニーズに合わせて適応させることで、この技術を活用しつつ、
+その機能性を完全にコントロールすることができました。</p>
+
+<p>このプロセスを通じて、私たちはシステムの拡張性と効率性を大幅に向上させることができ、
+同時にユーザーに対してよりスムーズで応答性の高いエクスペリエンスを提供することができました。</p>
+
+  </div><a class="u-url" href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" hidden></a>
+</article>
+
+    </main>
+
+    <footer>
+      <p>&copy; ILYBA</p>
+      <nav>
+        
+          
+          <a href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" >Français</a> |
+          
+          <a href="/en/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" >English</a> |
+          日本語
+        
+      </nav>
+    </footer>
+  </body>
+</html>
