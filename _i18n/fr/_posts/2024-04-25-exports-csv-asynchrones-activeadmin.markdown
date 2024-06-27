@@ -61,3 +61,7 @@ dans ActiveAdmin s'est révélée cruciale pour améliorer les performances
 de notre applications. En adaptant la gem existante à nos besoins
 spécifiques, nous avons pu bénéficier de cette technologie
 tout en conservant un contrôle total sur son fonctionnement.
+
+Grâce à ce processus, nous avons pu améliorer considérablement l'évolutivité
+et l'efficacité de notre système, tout en offrant une expérience
+plus fluide et plus réactive à nos utilisateurs.

@@ -4,7 +4,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {%- seo -%}
+    {%- if page.title contains "pages.posts - " -%}
+      <title>{%t pages.posts %} {{ page.title | replace: "pages.posts - ", "" }} | ILYBA</title>
+      <meta property="og:title" content="{%t pages.posts %} {{ page.title | replace: "pages.posts - ", "" }}" />
+      <meta property="twitter:title" content="{%t pages.posts %} {{ page.title | replace: "pages.posts - ", "" }}" />
+      {%- seo title=false -%}
+    {%- elsif page.title contains "titles." -%}
+      <title>{% t page.title %} | ILYBA</title>
+      <meta property="og:title" content="{% t page.title %}" />
+      <meta property="twitter:title" content="{% t page.title %}" />
+      {%- seo title=false -%}
+    {% else %}
+      {%- seo -%}
+    {% endif %}
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
     {%- feed_meta -%}
   </head>
@@ -33,12 +45,12 @@
       <nav>
         {% if site.lang == "fr" %}
           Français |
-          {% capture link1 %}{{ site.baseurl_root }}/en{{ page.url}}{% endcapture %}
+          {% capture link1 %}{{ site.baseurl_root }}/en{{ page.url }}{% endcapture %}
           <a href="{{ link1 }}" >English</a> |
-          {% capture link2 %}{{ site.baseurl_root }}/ja{{ page.url}}{% endcapture %}
+          {% capture link2 %}{{ site.baseurl_root }}/ja{{ page.url }}{% endcapture %}
           <a href="{{ link2 }}" >日本語</a>
         {% elsif site.lang == "en" %}
-          {% capture link1 %}{{ site.baseurl_root }}{{ page.url}}{% endcapture %}
+          {% capture link1 %}{{ site.baseurl_root }}{{ page.url }}{% endcapture %}
           <a href="{{ link1 }}" >Français</a> |
           English |
           {% capture link2 %}{{ site.baseurl_root }}/ja{{ page.url}}{% endcapture %}

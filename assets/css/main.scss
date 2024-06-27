@@ -26,6 +26,9 @@ main {
   grid-gap: 24px; */
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
+
+  font-family: Georgia, Times, "Times New Roman", serif;
+  font-size: 23px;
 }
 
 article, article > header {
@@ -74,8 +77,9 @@ nav a:hover::after, .hero a:hover::after {
   color: white;
   padding: 2rem;
   font-family: sans-serif;
+  font-family: Helvetica, sans-serif;
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1.2em;
   text-shadow: black 0 0 15px;
 }
 

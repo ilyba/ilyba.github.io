@@ -1,1 +1,1 @@
-<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfX-y1OnOo_wOqWQ1W4V2aNSWJSIkhB1SOpP0hmqOvZMediYA/viewform?embedded=true" width="760" height="780" frameborder="0" marginheight="0" marginwidth="0">Chargement…</iframe>
+<iframe style=".zAVwcb { display: none; }" src="https://docs.google.com/forms/d/e/1FAIpQLSfX-y1OnOo_wOqWQ1W4V2aNSWJSIkhB1SOpP0hmqOvZMediYA/viewform?embedded=true" width="760" height="780" frameborder="0" marginheight="0" marginwidth="0">Chargement…</iframe>
