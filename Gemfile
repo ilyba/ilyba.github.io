@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby '3.2.2'
+ruby '3.3.5'
 # Hello! This is where you manage which Jekyll version is used to run.
 # When you want to use a different version, change it below, save the
 # file and run `bundle install`. Run Jekyll with `bundle exec`, like so:
@@ -26,6 +26,8 @@ group :jekyll_plugins do
   gem "jekyll-multiple-languages-plugin"
   gem "jekyll-date-localization"
 end
+
+gem "sass-embedded", "~> 1.78.0"
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
 # and associated library.

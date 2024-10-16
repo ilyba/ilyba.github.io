@@ -128,5 +128,11 @@ p > code, li > code {
   color: #ee4422;
 }
 
+blockquote {
+  font-style: italic;
+  border-left: 4px solid lightgray;
+  padding-left: 8px;
+}
+
 
 @import "syntax-highlighting";
