@@ -1,4 +1,280 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="en" /><updated>2024-06-27T22:24:35+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Scalable and Efficient Data Exports: Enabling ActiveAdmin’s Asynchronous Mode</title><link href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" rel="alternate" type="text/html" title="Scalable and Efficient Data Exports: Enabling ActiveAdmin’s Asynchronous Mode" /><published>2024-04-25T19:37:00+00:00</published><updated>2024-04-25T19:37:00+00:00</updated><id>/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin</id><content type="html" xml:base="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"><![CDATA[<p>Data export is a essential feature in many modern web applications.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="en" /><updated>2024-10-16T11:33:57+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Best Practices Guide for Simple and Clean Rails Forms</title><link href="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html" rel="alternate" type="text/html" title="Best Practices Guide for Simple and Clean Rails Forms" /><published>2024-10-15T16:30:00+00:00</published><updated>2024-10-15T16:30:00+00:00</updated><id>/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails</id><content type="html" xml:base="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+
+<p>In Rails applications, <a href="https://guides.rubyonrails.org/action_controller_overview.html">controllers</a> and <a href="https://guides.rubyonrails.org/action_view_overview.html">views</a> can become complex when business logic or markup that could be avoided is added.</p>
+
+<p>In this article, we will explore strategies to keep your form code readable, particularly by using Rails’ <a href="https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html">FormBuilders</a> and <a href="https://guides.rubyonrails.org/active_record_basics.html">ActiveRecord</a> <a href="https://guides.rubyonrails.org/association_basics.html">associations</a>.</p>
+
+<h1 id="problem-statement">Problem Statement</h1>
+
+<p>In most companies where I’ve worked, I’ve often seen overloaded controllers and views, and despite many efforts, this problem wasn’t completely avoided.</p>
+
+<p>To me, an ideal controller should have actions that look like this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@todo</span> <span class="o">=</span> <span class="no">Todo</span><span class="p">.</span><span class="nf">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@todo</span> <span class="o">=</span> <span class="no">Todo</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">todo_params</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="vi">@todo</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">redirect_to</span> <span class="ss">action: :index</span><span class="p">,</span>
+                  <span class="ss">flash: </span><span class="p">{</span> <span class="ss">notice: :successfully_saved</span> <span class="p">}</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:new</span><span class="p">,</span>
+             <span class="ss">flash: </span><span class="p">{</span> <span class="ss">error: :could_not_be_saved</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div></div>
+
+<p>In this snippet, the action code is canonical and contains no business logic. The code is simple and immediately understandable.</p>
+
+<p>However, the associated business logic is not necessarily obvious, but it will be implemented in the model and the display logic in the views.</p>
+
+<p>Over time, successive developments will naturally tend to complicate the controller for various reasons:</p>
+
+<ul>
+  <li>They might require updating associated models, and for that, some developers might be tempted to add the configuration of these associations (by creating, for example, an empty object) in the controller to make the form display easier.</li>
+  <li>You might want to enable a specific behavior that doesn’t directly translate to the model. To do this, you would add a parameter in the form independent of the model’s structure, detect its value in the controller, and execute certain logic.</li>
+  <li>The increase in data quantity will lead to using filters (or scopes), making queries sometimes complex. These filters must sometimes be applied conditionally. If this logic is added to the controller, it can quickly degenerate.</li>
+  <li>I’ve occasionally seen developers lacking mastery in a complex domain end up separately saving certain objects of the graph. I emphasize that this can lead to data inconsistencies. Generally, proper use of associations and nested forms can avoid this.</li>
+  <li>The list goes on: I also think of sending emails or other notifications, actions non-compliant with the <a href="https://medium.com/podiihq/understanding-rails-routes-and-restful-design-a192d64cbbb5">REST</a> standard to manage autocomplete, etc.</li>
+</ul>
+
+<p>The view doesn’t escape complexity either. Adding interactive behaviors often requires integrating JavaScript code, for instance, via Stimulus controllers, whose configuration can clutter and complicate code readability. Using utility CSS classes or resorting to JSON data for server communication (instead of standard forms and Turbo) can also contribute to this complexity. Sometimes, it would be wiser to adapt the form structure and use Turbo. Other examples of complexity include redundant or similar code, as well as forms designed based on business requirements but without considering the existing data structure.</p>
+
+<h1 id="solutions">Solutions</h1>
+
+<p>It is actually relatively simple to solve these problems using the tools provided by Rails from the start. The solution lies in mastering a few essential Rails features:</p>
+
+<ul>
+  <li>FormBuilders</li>
+  <li>Associations</li>
+  <li><a href="https://guides.rubyonrails.org/action_view_helpers.html">Helpers</a></li>
+  <li><a href="https://guides.rubyonrails.org/active_record_callbacks.html">Callbacks</a></li>
+  <li><a href="https://codefol.io/posts/How-Does-Rack-Parse-Query-Params-With-parse-nested-query/">HTTP parameter management</a> in controllers and models.</li>
+</ul>
+
+<h3 id="rails-forms-for-managing-all-interactivity">Rails Forms for Managing All Interactivity</h3>
+
+<p>Associations in Rails are extremely powerful. Some developers see forms as a bit complicated to handle, not very flexible. In reality, every interaction between the browser and the server can be executed with a form.</p>
+
+<p>One of the barriers to using a form that I’ve observed is the notion of considering a form as merely a <a href="https://fr.wikipedia.org/wiki/CRUD#:~:text=L'acronyme%20informatique%20anglais%20CRUD,informations%20en%20base%20de%20donn%C3%A9es.">CRUD</a>. Essentially, the Rails <a href="https://guides.rubyonrails.org/command_line.html#bin-rails-generate">scaffold</a>, which means creating a form that mirrors the fields of a table and storing it in the database.</p>
+
+<p>But by using forms to juggle with associations, you can model any interaction with the server. Adding Hotwire makes the user not even aware of dealing with forms, turning them into a simple technical detail.</p>
+
+<p>Of course, I’m exaggerating a bit, in reality, you probably know <code class="language-plaintext highlighter-rouge">fields_for</code> for managing associations. <code class="language-plaintext highlighter-rouge">fields_for</code> is a Rails method that allows creating form fields for associated objects, thereby facilitating the management of complex model relationships. For example, <code class="language-plaintext highlighter-rouge">fields_for</code> can be used in an order editing form to input multiple associated items.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="sx">%= form_for @order do |f| %&gt;
+  &lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:name</span> <span class="o">%&gt;</span>
+  <span class="o">&lt;</span><span class="sx">%= f.text_field :name %&gt;
+
+  &lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">fields_for</span> <span class="ss">:items</span> <span class="k">do</span> <span class="o">|</span><span class="n">fi</span><span class="o">|</span> <span class="sx">%&gt;
+    &lt;%= fi.label :name %&gt;</span>
+    <span class="o">&lt;</span><span class="sx">%= fi.text_field :name %&gt;
+
+    &lt;%=</span> <span class="n">fi</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:quantity</span> <span class="o">%&gt;</span>
+    <span class="o">&lt;</span><span class="sx">%= fi.number_field :quantity %&gt;
+
+    &lt;%# Updating existing objects %&gt;
+    &lt;%=</span> <span class="n">fi</span><span class="p">.</span><span class="nf">hidden_field</span> <span class="ss">:id</span> <span class="o">%&gt;</span>
+  <span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+
+  <span class="o">&lt;</span><span class="sx">%= f.submit %&gt;
+&lt;% end %&gt;
+</span></code></pre></div></div>
+
+<h3 id="the-complexity-of-fields_for">The Complexity of <code class="language-plaintext highlighter-rouge">fields_for</code></h3>
+
+<p>Using <code class="language-plaintext highlighter-rouge">fields_for</code> may seem a bit cumbersome in a form at first as there are several cases to consider:</p>
+
+<ul>
+  <li>Displaying and updating objects already stored in the database.</li>
+  <li>The possibility of creating one or more new objects.</li>
+</ul>
+
+<p>ActiveRecord allows this to be almost transparent, but managing a persisted object and one that isn’t yet is not the same thing. Even though Rails is powerful, developers must always keep certain subtleties in mind to avoid getting tangled up, sometimes even giving up and tweaking the controller to get it to work.</p>
+
+<p>Some of these subtleties can really ruin your life if you miss them, you probably know some. I think in particular of forgetting the hidden field to update an association. Be careful in this case to properly filter updated objects for security, for this in the model, use <code class="language-plaintext highlighter-rouge">reject_if</code> to ensure the updated objects are part of the existing association or not yet in the database. Another one is forgetting to configure <code class="language-plaintext highlighter-rouge">accepts_nested_attributes_for</code> in the model.</p>
+
+<p>There are more, and confusion grows when they multiply.</p>
+
+<h3 id="managing-associations-with-checkboxes-and-_destroy-without-complicating-the-controller">Managing Associations with Checkboxes and _destroy without Complicating the Controller</h3>
+
+<p>Once you have your form with an object and its associations, you can already handle many more cases.</p>
+
+<p>But it becomes even more interesting when you break the equivalence between data storage and the form.</p>
+
+<p>For example, if you have an online sales application (Let’s take a <code class="language-plaintext highlighter-rouge">Order</code> model with a <code class="language-plaintext highlighter-rouge">has_many :services</code> association). When ordering, you simply want to choose the services you’re interested in by activating or deactivating them with a checkbox (or a toggle).</p>
+
+<p>A naive approach might involve adding additional attributes in the form, then retrieving the parameters on the controller side and creating/deleting the corresponding services.</p>
+
+<p>To avoid putting this code in the controller, you can create the corresponding accessors in the model (or in a <a href="https://jetthoughts.com/blog/cleaning-up-your-rails-views-with-view-objects-development/">View Object</a> since it’s view logic and not business logic). It would be cleaner and work just as well.</p>
+
+<p>This approach obviously works, but it entails writing quite a bit of plumbing logic that doesn’t really have business value.</p>
+
+<p>Using the <code class="language-plaintext highlighter-rouge">_destroy</code> attribute on the association solves these problems. There is still some logic to initialize all services available for the order with the right parameters, then <code class="language-plaintext highlighter-rouge">_destroy</code> needs to be set to true to not activate the service by default (opt-in), and not set to activate a service by default (opt-out). This can be done on the model side with an <code class="language-plaintext highlighter-rouge">after_initialize</code> callback, probably conditionally in this way <code class="language-plaintext highlighter-rouge">Order.new(build_services: true)</code>. <code class="language-plaintext highlighter-rouge">build_services</code> being an <code class="language-plaintext highlighter-rouge">attr_accessor</code> that indicates whether to activate the callback.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:services</span>
+
+  <span class="n">accepts_nested_attributes_for</span> <span class="p">\</span>
+    <span class="ss">:services</span><span class="p">,</span>
+    <span class="ss">allow_destroy: </span><span class="kp">true</span>
+    <span class="ss">reject_if: :belongs_to_foreign_record?</span>
+
+  <span class="nb">attr_accessor</span> <span class="ss">:build_services</span>
+  <span class="n">after_initialize</span> <span class="ss">:build_services_records</span><span class="p">,</span> <span class="ss">if: :build_services</span>
+
+  <span class="k">def</span> <span class="nf">build_services_records</span>
+    <span class="no">Service</span><span class="o">::</span><span class="no">KINDS</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">kind</span><span class="o">|</span> <span class="n">services</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">kind</span><span class="p">:)</span> <span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">belongs_to_foreign_record?</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s1">'id'</span><span class="p">].</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span>
+      <span class="n">services</span><span class="p">.</span><span class="nf">ids</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'id'</span><span class="p">].</span><span class="nf">to_i</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>The controller is a bit less canonical, but it’s fine. Even if a parameter is specified, this approach prevents the controller from having knowledge of the model’s implementation details (if strong_parameters is missed).</p>
+
+<p>On the view side, one can handle it with a <code class="language-plaintext highlighter-rouge">f.fields_for :services</code>. And the checkbox corresponding to <code class="language-plaintext highlighter-rouge">_destroy</code> is displayed but inverted with some CSS (when <code class="language-plaintext highlighter-rouge">_destroy</code> is true, the box will be unchecked and vice versa).</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="sx">%= f.fields_for :services do |fs| %&gt;
+  &lt;%=</span> <span class="n">fs</span><span class="p">.</span><span class="nf">hidden_field</span> <span class="ss">:id</span> <span class="o">%&gt;</span>
+  <span class="o">&lt;</span><span class="sx">%= fs.check_box :_destroy %&gt;
+&lt;% end %&gt;
+</span></code></pre></div></div>
+
+<p>When the controller sends form parameters to the model, associations with <code class="language-plaintext highlighter-rouge">_destroy</code> set to true are deleted. So only the activated services will be associated with the order.</p>
+
+<p>This was just to show an example of what can be done by bending Rails logic a bit.</p>
+
+<p>It may seem somewhat trivial, but this kind of approach helps limit superfluous code (bloat). It allows for implementing complex features while keeping relatively simple, understandable code. Even though the logic may appear a bit convoluted, since these patterns can be applied in different situations, the application can grow while maintaining accessible code even without having been modified for a long time.</p>
+
+<p>In our application, we use this approach to configure the services associated with an order. This allowed us to remove a lot of code in the view and simplify our controllers.</p>
+
+<h3 id="eliminating-redundancies-with-a-custom-formbuilder">Eliminating Redundancies with a Custom FormBuilder</h3>
+
+<p>ActiveAdmin uses <code class="language-plaintext highlighter-rouge">formtastic</code> to generate forms. You know, it’s the slightly quirky but very concise syntax that allows creating forms in ActiveAdmin, and you may have struggled with it if you’ve needed to customize them.</p>
+
+<p>You may also know <code class="language-plaintext highlighter-rouge">simple_form</code>, which is another form builder.</p>
+
+<p>But in reality, having your own form builder in your application will allow for cleaner views.</p>
+
+<p>The advantage is that rather than adapting to the choices made by the form builder’s creator and possibly ending up fighting with them, you can tailor it to suit your application’s needs, and it’s not really that complicated to do.</p>
+
+<p>Often, you have a generic way of writing your forms, applying a similar layout or style to nearly all your forms (or at least juggling with a few different styles).</p>
+
+<p>For example, you use a label, then your field, encapsulated in a div, possibly with some CSS classes (whether you’re a fan of Tailwind or prefer the semantic HTML/CSS approach).</p>
+
+<p>The default Rails helpers replicate HTML fields by hydrating them with ActiveRecord. So if you only rely on Rails helpers, your views will be verbose and repetitive. Consistently, you’ll have a div and its classes, with the label and field inside.</p>
+
+<p>In your FormBuilder, you can override Rails helpers (or create others alongside) so they generate everything at once. Your views become much cleaner. If you need to make a different version, you can always add another helper or add extra options to your helper.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">ApplicationFormHelper</span>
+  <span class="k">def</span> <span class="nf">semantic_form_with</span><span class="p">(</span><span class="ss">model: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">scope: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">url: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">format: </span><span class="kp">nil</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="n">merged_options</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">builder: </span><span class="no">ApplicationFormBuilder</span> <span class="p">}.</span><span class="nf">merge</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">form_with</span><span class="p">(</span><span class="n">model</span><span class="p">:,</span> <span class="n">scope</span><span class="p">:,</span> <span class="n">url</span><span class="p">:,</span> <span class="nb">format</span><span class="p">:,</span> <span class="o">**</span><span class="n">merged_options</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">ApplicationFormBuilder</span> <span class="o">&lt;</span> <span class="no">ActionView</span><span class="o">::</span><span class="no">Helpers</span><span class="o">::</span><span class="no">FormBuilder</span>
+  <span class="k">def</span> <span class="nf">text_field</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+    <span class="n">_wrapped_field</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="k">super</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="nb">method</span><span class="p">)</span>
+    <span class="n">_wrapped_field</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="n">object</span><span class="p">.</span><span class="nf">public_send</span><span class="p">(</span><span class="nb">method</span><span class="p">))</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">_wrapped_field</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="vi">@template</span><span class="p">.</span><span class="nf">content_tag</span><span class="p">(</span><span class="ss">:p</span><span class="p">)</span> <span class="k">do</span>
+      <span class="vi">@template</span><span class="p">.</span><span class="nf">safe_join</span> <span class="p">[</span><span class="n">label</span><span class="p">(</span><span class="nb">method</span><span class="p">),</span> <span class="n">value</span><span class="p">]</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Next comes the issue of your Stimulus controllers. The Stimulus syntax can be particularly verbose, and while it’s relatively easy to write, reading it sometimes becomes quite indigestible.</p>
+
+<p>For instance, if you want to dynamically add/remove an object in an association, you might wish to use <code class="language-plaintext highlighter-rouge">nested-form</code> from <a href="https://www.stimulus-components.com">Stimulus Components</a>. The syntax is relatively straightforward but could be simplified:</p>
+
+<ul>
+  <li>Data attributes must be added on the form tag to enable the functionality.</li>
+  <li>Configuring the template involves many tags.</li>
+</ul>
+
+<p>By adding a helper (which could be used with <code class="language-plaintext highlighter-rouge">f.has_many :items</code>, for instance), you can:</p>
+
+<ul>
+  <li>Automatically create a <code class="language-plaintext highlighter-rouge">fieldset</code> with a default legend.</li>
+  <li>Automatically call <code class="language-plaintext highlighter-rouge">fields_for</code> with the correct parameters.</li>
+  <li>Configure the Stimulus controller.</li>
+  <li>Add the add/remove buttons in the right place so the caller can simply define the fields to display.</li>
+</ul>
+
+<p>You can, of course, apply this logic of creating helpers with all Stimulus controllers in your application (whether they’re in forms or not), so your views should gain in readability.</p>
+
+<h3 id="associations-in-activerecord">Associations in ActiveRecord</h3>
+
+<p>A key to avoiding headaches when creating forms in Rails is understanding and mastering several concepts:</p>
+
+<ul>
+  <li>The parameter format in Rack (how parameters are passed as a hash of options).</li>
+  <li>How associations are handled in persisted and non-persisted mode. Rails is, indeed, capable of navigating an association graph whether they are persisted or not. But there are differences between the two. The magic of Rails has its limits.</li>
+  <li>Understanding the database transaction system is important. The key lies in one simple rule: one controller action = one save. It is crucial to grasp that a save in Rails allows saving an entire object graph in a transaction. You don’t need to manage the transaction manually with a block or anything; all it takes is to build your form so that it contains all the objects to save via the associations.</li>
+</ul>
+
+<h2 id="persistence-of-associations-in-activerecord">Persistence of Associations in ActiveRecord</h2>
+
+<p>To understand how a form should be written to function as desired, I usually start by taking a tour in the Rails console.</p>
+
+<p>Create a new object with the parameters expected in the form, navigate the graph, save, and if everything works as expected, replicate the structure used in a form.</p>
+
+<p>When making more complex associations, with scopes, for instance, or <a href="https://edgeguides.rubyonrails.org/association_basics.html#polymorphic-associations">polymorphic associations</a>, you may occasionally have <a href="https://stackoverflow.com/questions/35104876/why-are-polymorphic-associations-not-supported-by-inverse-of">surprises</a>.</p>
+
+<p>Usually, this doesn’t pose a problem in practice, but occasionally, you may have to configure manually.</p>
+
+<p>Keep your associations as simple as possible because certain combinations may not work correctly in Rails.</p>
+
+<p>In the case below, you can see that the association configuration doesn’t allow the inverse to be retrieved when the association isn’t yet persisted. This can be easily understood since the scope is a DB query and, therefore, not executed for a non-persisted association.</p>
+
+<p>If you already have a <code class="language-plaintext highlighter-rouge">has_many :items</code> and want to add <code class="language-plaintext highlighter-rouge">has_one :special_item, -&gt; { where(kind: :special) }</code> from the same class as items, the association won’t work correctly for non-persisted associations. This can sometimes cause issues in certain use cases.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Create a new todo with an item and a special item</span>
+<span class="o">&gt;</span>  <span class="n">todo</span> <span class="o">=</span> <span class="no">Todo</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+     <span class="ss">items_attributes: </span><span class="p">[{}],</span>
+     <span class="ss">special_item_attributes: </span><span class="p">{}</span>
+   <span class="p">)</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;Todo id: nil, name: nil&gt;</span>
+
+<span class="c1"># The item is well-linked to the todo via the inverse association</span>
+<span class="o">&gt;</span>  <span class="n">todo</span><span class="p">.</span><span class="nf">items</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">todo</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;Todo id: nil, name: nil&gt;</span>
+
+<span class="c1"># But not the special item</span>
+<span class="o">&gt;</span>  <span class="n">todo</span><span class="p">.</span><span class="nf">special_item</span><span class="p">.</span><span class="nf">todo</span>
+<span class="o">=&gt;</span> <span class="kp">nil</span>
+</code></pre></div></div>
+
+<p>When ActiveRecord behavior doesn’t function as expected, it’s worth checking the code managing the association to understand the issue’s origin.</p>
+
+<p>In these cases, I use <a href="https://ruby-doc.org/core-2.4.6/Method.html#method-i-source_location">source_location</a> to find easily the code used during the association call. This method returns the source file and the line number where the method is defined. For example:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="no">Todo</span><span class="p">.</span><span class="nf">method</span><span class="p">(</span><span class="ss">:has_many</span><span class="p">).</span><span class="nf">source_location</span>
+<span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"gems/activerecord-7.2.1.1/lib/active_record/associations.rb"</span><span class="p">,</span> <span class="mi">1268</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="no">Todo</span><span class="p">.</span><span class="nf">instance_method</span><span class="p">(</span><span class="ss">:items</span><span class="p">).</span><span class="nf">source_location</span>
+<span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"gems/activerecord-7.2.1.1/lib/active_record/associations/builder/association.rb"</span><span class="p">,</span> <span class="mi">103</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Understanding implementation details allows creating functions integrated with ActiveRecord. This enables adding your own magic to your app and having functions that seem like they belong to Rails.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Rails applications can be complex, and the pragmatic approach of the framework sometimes leads to problems in code organization. Using the techniques outlined in this article, you can maintain very simple and clear views and controllers. This issue also exists for managing model complexity, but we will tackle this topic in a future article.</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActionController" /><category term="ActionView" /><summary type="html"><![CDATA[Introduction]]></summary></entry><entry><title type="html">Scalable and Efficient Data Exports: Enabling ActiveAdmin’s Asynchronous Mode</title><link href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" rel="alternate" type="text/html" title="Scalable and Efficient Data Exports: Enabling ActiveAdmin’s Asynchronous Mode" /><published>2024-04-25T19:37:00+00:00</published><updated>2024-04-25T19:37:00+00:00</updated><id>/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin</id><content type="html" xml:base="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"><![CDATA[<p>Data export is a essential feature in many modern web applications.
 In ActiveAdmin, CSV exports are synchronously generated by default.
 However, when the exported data sets are large, this approach can lead
 to prolonged blocking of HTTP connections, negatively affecting

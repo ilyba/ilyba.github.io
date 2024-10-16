@@ -12,7 +12,7 @@ a.logo:hover { font-size: 24pt; text-decoration: underline; }
 
 nav { display: inline-block; }
 
-main { /* display: grid; grid-template-columns: repeat(12, [col-start] 72px); grid-gap: 24px; */ border-top: 1px solid lightgray; border-bottom: 1px solid lightgray; font-family: Georgia, Times, "Times New Roman", serif; font-size: 23px; }
+main { /* display: grid; grid-template-columns: repeat(12, [col-start] 72px); grid-gap: 24px; */ border-top: 1px solid lightgray; border-bottom: 1px solid lightgray; font-family: Georgia, Times, "Times New Roman", serif; font-size: 20px; }
 
 article, article > header { flex-wrap: wrap; padding: 0; margin: auto; }
 
@@ -34,9 +34,9 @@ nav a:hover::after, .hero a:hover::after { transform: scaleX(1); transform-origi
 
 ul.articles > li > * { vertical-align: text-top; }
 
-ul.articles > li > span.date { display: inline-block; width: 8em; }
+ul.articles > li > span.date { display: inline-block; width: 11em; }
 
-ul.articles > li > a { display: inline-block; width: calc(var(--site-width) - 12em); }
+ul.articles > li > a { display: inline-block; width: calc(var(--site-width) - 13em); }
 
 @media (max-width: 780px) { :root { --site-width: calc(8 * 72px + 7 * 8px); } }
 
@@ -45,6 +45,10 @@ ul.articles > li > a { display: inline-block; width: calc(var(--site-width) - 12
 @media (max-width: 480px) { :root { --site-width: calc(4 * 72px + 3 * 12px); } header { flex-wrap: wrap; } header .logo { display: inline-block; width: var(--site-width); text-align: center; } .hero h2 { font-size: 1.2em; } .hero a { font-size: 0.8em; } ul.articles > li > span.date { width: 12em; } ul.articles > li > a { display: inline-block; width: calc(var(--site-width) - 3em); } }
 
 .debug { border: 1px solid red; }
+
+pre { overflow: scroll; font-size: 0.7em; padding: 1em; }
+
+p > code, li > code { background-color: #e7e7e3; font-size: 0.75em; padding-left: 5px; padding-right: 5px; color: #ee4422; }
 
 /** Syntax highlighting styles */
 .highlight { margin-bottom: 15px; }

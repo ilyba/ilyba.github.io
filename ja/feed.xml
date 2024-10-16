@@ -1,4 +1,280 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="ja" /><updated>2024-06-27T22:24:35+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">スケーラブルで効率的なデータエクスポート：ActiveAdminの非同期モードを有効にする</title><link href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" rel="alternate" type="text/html" title="スケーラブルで効率的なデータエクスポート：ActiveAdminの非同期モードを有効にする" /><published>2024-04-25T19:37:00+00:00</published><updated>2024-04-25T19:37:00+00:00</updated><id>/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin</id><content type="html" xml:base="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"><![CDATA[<p>データエクスポートは、多くの現代のウェブアプリケーションにおいて不可欠な機能です。
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="ja" /><updated>2024-10-16T11:33:57+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">シンプルで洗練されたRailsフォームのためのベストプラクティスガイド</title><link href="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html" rel="alternate" type="text/html" title="シンプルで洗練されたRailsフォームのためのベストプラクティスガイド" /><published>2024-10-15T16:30:00+00:00</published><updated>2024-10-15T16:30:00+00:00</updated><id>/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails</id><content type="html" xml:base="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html"><![CDATA[<h1 id="はじめに">はじめに</h1>
+
+<p>Railsアプリケーションでは、ビジネスロジックや避けることができるマークアップを追加すると、<a href="https://guides.rubyonrails.org/action_controller_overview.html">コントローラー</a>や<a href="https://guides.rubyonrails.org/action_view_overview.html">ビュー</a>が複雑化することがあります。</p>
+
+<p>この記事では、Railsの<a href="https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html">FormBuilders</a>と<a href="https://guides.rubyonrails.org/active_record_basics.html">ActiveRecord</a>の<a href="https://guides.rubyonrails.org/association_basics.html">アソシエーション</a>を使用して、フォームコードを読みやすく保つための戦略を探ります。</p>
+
+<h1 id="問題提起">問題提起</h1>
+
+<p>私が働いてきたほとんどの企業では、コントローラーとビューが過剰になっていることが多々あり、数多くの努力にもかかわらず、この問題を完全になくすことはできませんでした。</p>
+
+<p>理想的なコントローラーは、次のようなアクションを持つべきだと考えます：</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@todo</span> <span class="o">=</span> <span class="no">Todo</span><span class="p">.</span><span class="nf">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@todo</span> <span class="o">=</span> <span class="no">Todo</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">todo_params</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="vi">@todo</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">redirect_to</span> <span class="ss">action: :index</span><span class="p">,</span>
+                  <span class="ss">flash: </span><span class="p">{</span> <span class="ss">notice: :successfully_saved</span> <span class="p">}</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:new</span><span class="p">,</span>
+             <span class="ss">flash: </span><span class="p">{</span> <span class="ss">error: :could_not_be_saved</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div></div>
+
+<p>このスニペットでは、アクションコードは標準的で、ビジネスロジックを含んでいません。コードはシンプルで理解しやすいです。</p>
+
+<p>しかし、関連するビジネスロジックは明示的ではなく、モデルに実装され、ビューに表示ロジックが組み込まれます。</p>
+
+<p>時間が経つと、さまざまな理由で、連続する開発がコントローラを自然に複雑化させる傾向があります：</p>
+
+<ul>
+  <li>関連モデルの更新を要求されることがあり、そのため、いくつかの開発者はこれらのアソシエーションの設定を（例：空のオブジェクトを作成する）コントローラーに追加して、フォームの表示を簡単にするかもしれません。</li>
+  <li>モデルに直接変換されない特定の動作を有効にしたい場合があります。このためには、モデル構造とは独立したパラメータをフォームに追加し、コントローラでその値を検出して特定のロジックを実行します。</li>
+  <li>データ量の増加は、フィルター（またはスコープ）を使用することにつながり、クエリが時折複雑化します。これらのフィルターは時には条件付きで適用する必要があります。このロジックがコントローラーに追加されると、すぐに悪化する可能性があります。</li>
+  <li>複雑な領域での習熟度が不足した開発者が、グラフの特定のオブジェクトを個別に保存することを結果的に行うことを見てきました。これがデータの不整合につながる可能性があることを強調しておきます。一般的に、アソシエーションとネストしたフォームの適切な使用はこれを避けるのに役立ちます。</li>
+  <li>リストは続きます：他にも、メールやその他の通知の送信、オートコンプリートを管理するための<a href="https://medium.com/podiihq/understanding-rails-routes-and-restful-design-a192d64cbbb5">REST</a>標準に準拠しないアクションなども考えられます。</li>
+</ul>
+
+<p>ビューもまた、複雑さを逃れることはできません。対話型の動作を追加するには、Stimulusコントローラーを介して例えばJavaScriptコードを統合する必要があり、その設定がコードの読みやすさを乱し、複雑化することがあります。ユーティリティCSSクラスの使用や、標準のフォームとTurboを使用する代わりにサーバーとの通信にJSONデータを使用することも、この複雑さに寄与することがあります。時にはフォーム構造を適応させ、Turboを使用する方が賢明です。その他の複雑さの例としては、冗長または類似のコード、既存のデータ構造を考慮せずにビジネス要件に基づいて設計されたフォームが含まれます。</p>
+
+<h1 id="解決策">解決策</h1>
+
+<p>実際には、この問題はRailsが初めから提供しているツールを使用して比較的簡単に解決することができます。解決策は、いくつかの重要なRails機能を習得することにあります：</p>
+
+<ul>
+  <li>FormBuilders</li>
+  <li>アソシエーション</li>
+  <li><a href="https://guides.rubyonrails.org/action_view_helpers.html">ヘルパー</a></li>
+  <li><a href="https://guides.rubyonrails.org/active_record_callbacks.html">コールバック</a></li>
+  <li>コントローラーとモデル内の<a href="https://codefol.io/posts/How-Does-Rack-Parse-Query-Params-With-parse-nested-query/">HTTPパラメータ管理</a></li>
+</ul>
+
+<h3 id="全インタラクティビティを管理するためのrailsフォーム">全インタラクティビティを管理するためのRailsフォーム</h3>
+
+<p>Railsのアソシエーションは非常に強力です。いくつかの開発者は、フォームを扱うのは少し複雑であまり柔軟ではないと見ています。実際には、ブラウザとサーバー間のすべてのインタラクションはフォームで実行できます。</p>
+
+<p>私が観察してきたフォームの使用への障壁の一つは、フォームを単なる<a href="https://fr.wikipedia.org/wiki/CRUD#:~:text=L'acronyme%20informatique%20anglais%20CRUD,informations%20en%20base%20de%20donn%C3%A9es.">CRUD</a>と見なしていることです。基本的に、Railsの<a href="https://guides.rubyonrails.org/command_line.html#bin-rails-generate">scaffold</a>、つまり、テーブルのフィールドを反映するフォームを作成し、それをデータベースに保存することです。</p>
+
+<p>しかし、フォームを用いてアソシエーションを駆使することで、サーバーとの任意のインタラクションをモデル化することができます。Hotwireを追加することで、ユーザーはフォームを扱っていることさえ意識せず、単なる技術的な細部に変えます。</p>
+
+<p>もちろん、少し誇張していますが、実際には、おそらくアソシエーションを管理するための<code class="language-plaintext highlighter-rouge">fields_for</code>をご存知でしょう。<code class="language-plaintext highlighter-rouge">fields_for</code>はRailsのメソッドで、関連するオブジェクトのためのフォームフィールドを作成することを可能にし、これにより複雑なモデル関係の管理が容易になります。例えば、注文編集フォームで複数の関連商品を入力するために<code class="language-plaintext highlighter-rouge">fields_for</code>を使用できます。</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="sx">%= form_for @order do |f| %&gt;
+  &lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:name</span> <span class="o">%&gt;</span>
+  <span class="o">&lt;</span><span class="sx">%= f.text_field :name %&gt;
+
+  &lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">fields_for</span> <span class="ss">:items</span> <span class="k">do</span> <span class="o">|</span><span class="n">fi</span><span class="o">|</span> <span class="sx">%&gt;
+    &lt;%= fi.label :name %&gt;</span>
+    <span class="o">&lt;</span><span class="sx">%= fi.text_field :name %&gt;
+
+    &lt;%=</span> <span class="n">fi</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:quantity</span> <span class="o">%&gt;</span>
+    <span class="o">&lt;</span><span class="sx">%= fi.number_field :quantity %&gt;
+
+    &lt;%# 既存オブジェクトの更新 %&gt;
+    &lt;%=</span> <span class="n">fi</span><span class="p">.</span><span class="nf">hidden_field</span> <span class="ss">:id</span> <span class="o">%&gt;</span>
+  <span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+
+  <span class="o">&lt;</span><span class="sx">%= f.submit %&gt;
+&lt;% end %&gt;
+</span></code></pre></div></div>
+
+<h3 id="fields_forの複雑さ"><code class="language-plaintext highlighter-rouge">fields_for</code>の複雑さ</h3>
+
+<p><code class="language-plaintext highlighter-rouge">fields_for</code>の使用は、フォーム内でいくつかのケースを考慮する必要があるため、最初は少し面倒に思えるかもしれません：</p>
+
+<ul>
+  <li>データベースに既に保存されているオブジェクトの表示と更新。</li>
+  <li>一つまたは複数の新規オブジェクトの作成可能性。</li>
+</ul>
+
+<p>ActiveRecordでは、これをほぼ透明に扱うことができますが、保存されたオブジェクトとまだ保存されていないオブジェクトの管理は同じではありません。Railsは強力ですが、開発者は常にいくつかの微妙な点を念頭に置いておく必要があります。そうしないと、混乱してコントローラを調整して動かすことで諦める可能性があります。</p>
+
+<p>これらの微妙な点の一部は、見逃すと本当に問題になります。おそらくいくつかはご存知でしょう。特に、アソシエーションを更新するためのhiddenフィールドを忘れることを考えています。この場合、安全のために更新されたオブジェクトを適切にフィルタリングしてください。モデル内では、<code class="language-plaintext highlighter-rouge">reject_if</code>を使用して、更新されたオブジェクトが既存のアソシエーションの一部か、まだデータベースに存在しないことを確認します。別の例としては、モデル内で<code class="language-plaintext highlighter-rouge">accepts_nested_attributes_for</code>を設定することを忘れることです。</p>
+
+<p>他にもいくつかあり、それらが増えるにつれて混乱が増します。</p>
+
+<h3 id="チェックボックスと_destroyを使ったアソシエーションの管理コントローラーを複雑にせずに">チェックボックスと_destroyを使ったアソシエーションの管理（コントローラーを複雑にせずに）</h3>
+
+<p>オブジェクトとそのアソシエーションを持つフォームを用意したら、より多くのケースを扱うことができます。</p>
+
+<p>しかし、データストレージとフォームの等価性を壊すとさらに興味深くなります。</p>
+
+<p>例えば、オンライン販売アプリケーションを持っているとします（<code class="language-plaintext highlighter-rouge">Order</code>モデルを<code class="language-plaintext highlighter-rouge">has_many :services</code>アソシエーションと一緒に考えます）。注文時には、チェックボックス（またはトグル）を使って、どのサービスを有効にするかを選択するだけです。</p>
+
+<p>単純なアプローチは、フォームに追加属性を追加し、コントローラ側でパラメータを取得し、対応するサービスを作成/削除することを含むかもしれません。</p>
+
+<p>このコードをコントローラーに置くのを避けるために、モデルに対応するアクセサを作成することができます（またはビューのロジックで、ビジネスロジックではないため、<a href="https://jetthoughts.com/blog/cleaning-up-your-rails-views-with-view-objects-development/">View Object</a>内に作成します）。それはよりクリーンで、同様に機能します。</p>
+
+<p>このアプローチはもちろん機能しますが、ビジネスの価値をほとんど持たない多くのプランビングロジックを書くことを伴います。</p>
+
+<p>関連付けに<code class="language-plaintext highlighter-rouge">_destroy</code>属性を使用することでこれらの問題を解決します。注文に利用可能なすべてのサービスを正しいパラメータで初期化するためのいくつかのロジックはまだありますが、デフォルトでサービスを有効にしないためには（オプトイン）、<code class="language-plaintext highlighter-rouge">_destroy</code>をtrueに設定し、デフォルトでサービスを有効にするためには（オプトアウト）設定しない必要があります。モデル側で<code class="language-plaintext highlighter-rouge">after_initialize</code>コールバックを使って行うことができます。条件付きで<code class="language-plaintext highlighter-rouge">Order.new(build_services: true)</code>のように行います。<code class="language-plaintext highlighter-rouge">build_services</code>はコールバックを有効にするかどうかを示す<code class="language-plaintext highlighter-rouge">attr_accessor</code>です。</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:services</span>
+
+  <span class="n">accepts_nested_attributes_for</span> <span class="p">\</span>
+    <span class="ss">:services</span><span class="p">,</span>
+    <span class="ss">allow_destroy: </span><span class="kp">true</span><span class="p">,</span>
+    <span class="ss">reject_if: :belongs_to_foreign_record?</span>
+
+  <span class="nb">attr_accessor</span> <span class="ss">:build_services</span>
+  <span class="n">after_initialize</span> <span class="ss">:build_services_records</span><span class="p">,</span> <span class="ss">if: :build_services</span>
+
+  <span class="k">def</span> <span class="nf">build_services_records</span>
+    <span class="no">Service</span><span class="o">::</span><span class="no">KINDS</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">kind</span><span class="o">|</span> <span class="n">services</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">kind</span><span class="p">:)</span> <span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">belongs_to_foreign_record?</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s1">'id'</span><span class="p">].</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span>
+      <span class="n">services</span><span class="p">.</span><span class="nf">ids</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'id'</span><span class="p">].</span><span class="nf">to_i</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>この方法でコントローラーは、モデルの実装詳細を知る必要がなくなります（strong_parametersを忘れない場合）。少しだけ標準から外れていますが、実際には問題ありません。</p>
+
+<p>ビュー側では、<code class="language-plaintext highlighter-rouge">f.fields_for :services</code>を使ってそれを処理できます。そして、<code class="language-plaintext highlighter-rouge">_destroy</code>に対応するチェックボックスをCSSで反転して表示します（<code class="language-plaintext highlighter-rouge">_destroy</code>がtrueの場合、ボックスはチェックされず、その反対も同様です）。</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="sx">%= f.fields_for :services do |fs| %&gt;
+  &lt;%=</span> <span class="n">fs</span><span class="p">.</span><span class="nf">hidden_field</span> <span class="ss">:id</span> <span class="o">%&gt;</span>
+  <span class="o">&lt;</span><span class="sx">%= fs.check_box :_destroy %&gt;
+&lt;% end %&gt;
+</span></code></pre></div></div>
+
+<p>フォームのパラメータがコントローラからモデルに送られると、<code class="language-plaintext highlighter-rouge">_destroy</code>がtrueに設定されたアソシエーションが削除されます。したがって、アクティブ化されたサービスのみが注文に関連付けられます。</p>
+
+<p>ここで示したのは、Railsのロジックを少し曲げることで何ができるかを示す一例に過ぎません。</p>
+
+<p>些細なことに見えるかもしれませんが、この手法は余分なコード（肥大化）を制限するのに役立ちます。比較的簡単で理解しやすいコードを維持しながら、複雑な機能を実装することができます。このロジックは少し込み入っているかもしれませんが、これらのパターンは異なる状況に適用できるため、アプリケーションは成長し続け、さらに長い時間修正されていなくてもアクセス可能なコードを維持できます。</p>
+
+<p>私たちのアプリケーションでは、このアプローチを使用して、注文に関連付けられたサービスを構成しています。これによってビューの多くのコードを削除し、コントローラーを簡素化することができました。</p>
+
+<h3 id="カスタムformbuilderを使用した冗長性の排除">カスタムFormBuilderを使用した冗長性の排除</h3>
+
+<p>ActiveAdminは、<code class="language-plaintext highlighter-rouge">formtastic</code>を使用してフォームを生成します。これは少し風変わりで非常に簡潔な構文で、ActiveAdminでフォームを作成することができます。カスタマイズする必要があった場合には、この構文と苦闘したことがあるかもしれません。</p>
+
+<p>おそらく、別のform builderである<code class="language-plaintext highlighter-rouge">simple_form</code>もご存知でしょう。</p>
+
+<p>しかし実際には、アプリケーションに自分のform builderを持つことで、よりクリーンなビューが可能になります。</p>
+
+<p>利点は、form builderの作成者が行った選択に適応するのではなく、自分のアプリケーションのニーズに応じて調整できる点で、本当はそれほど難しいことではありません。</p>
+
+<p>多くの場合、フォームを書くときに一般的な方法があります。ほぼすべてのフォームに似たレイアウトやスタイルを適用します（または少なくともいくつかの異なるスタイルをうまく使い分けます）。</p>
+
+<p>例えば、ラベルを使用し、その後にフィールドを使用し、場合によってはCSSクラスを追加してdivにカプセル化します（Tailwindを好む場合や、セマンティックHTML/CSSアプローチを好む場合でも）。</p>
+
+<p>Railsのデフォルトのヘルパーは、ActiveRecordを使ってHTMLフィールドを再現します。そのため、Railsのヘルパーにだけ依存している場合、ビューは冗長で反復的になります。必ずその中にdivとそのクラスがあり、それにラベルとフィールドが含まれています。</p>
+
+<p>FormBuilder内で、Railsのヘルパーをオーバーライドする（または別のものを横に作成します）ことで、一度にすべてを生成できます。これにより、ビューはずっとクリーンになります。異なるバージョンを作成する必要がある場合は、別のヘルパーを追加するか、追加オプションをヘルパーに追加することもできます。</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">ApplicationFormHelper</span>
+  <span class="k">def</span> <span class="nf">semantic_form_with</span><span class="p">(</span><span class="ss">model: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">scope: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">url: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">format: </span><span class="kp">nil</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="n">merged_options</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">builder: </span><span class="no">ApplicationFormBuilder</span> <span class="p">}.</span><span class="nf">merge</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">form_with</span><span class="p">(</span><span class="n">model</span><span class="p">:,</span> <span class="n">scope</span><span class="p">:,</span> <span class="n">url</span><span class="p">:,</span> <span class="nb">format</span><span class="p">:,</span> <span class="o">**</span><span class="n">merged_options</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">ApplicationFormBuilder</span> <span class="o">&lt;</span> <span class="no">ActionView</span><span class="o">::</span><span class="no">Helpers</span><span class="o">::</span><span class="no">FormBuilder</span>
+  <span class="k">def</span> <span class="nf">text_field</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+    <span class="n">_wrapped_field</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="k">super</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="nb">method</span><span class="p">)</span>
+    <span class="n">_wrapped_field</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="n">object</span><span class="p">.</span><span class="nf">public_send</span><span class="p">(</span><span class="nb">method</span><span class="p">))</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">_wrapped_field</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="vi">@template</span><span class="p">.</span><span class="nf">content_tag</span><span class="p">(</span><span class="ss">:p</span><span class="p">)</span> <span class="k">do</span>
+      <span class="vi">@template</span><span class="p">.</span><span class="nf">safe_join</span> <span class="p">[</span><span class="n">label</span><span class="p">(</span><span class="nb">method</span><span class="p">),</span> <span class="n">value</span><span class="p">]</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>次に問題となってくるのがStimulusコントローラーです。Stimulusの構文は特に冗長で、書くのは比較的簡単ですが、読み解くのは時にかなり消化不良になります。</p>
+
+<p>例えば、アソシエーション内で動的にオブジェクトを追加/削除したい場合、<a href="https://www.stimulus-components.com">Stimulus Components</a>の<code class="language-plaintext highlighter-rouge">nested-form</code>を使用したいかもしれません。構文は比較的まっすぐですが、簡素化できるでしょう：</p>
+
+<ul>
+  <li>機能を有効にするためにフォームタグにデータ属性を追加する必要があります。</li>
+  <li>テンプレートの設定が多くのタグを伴います。</li>
+</ul>
+
+<p>ヘルパーを追加することによって（例えば<code class="language-plaintext highlighter-rouge">f.has_many :items</code>を使用するのに使用できる）、次のことができます：</p>
+
+<ul>
+  <li>デフォルトの伝説を持つ<code class="language-plaintext highlighter-rouge">fieldset</code>を自動的に生成します。</li>
+  <li><code class="language-plaintext highlighter-rouge">fields_for</code>を正しいパラメータで自動的に呼び出します。</li>
+  <li>Stimulusコントローラーを設定します。</li>
+  <li>追加/削除ボタンを適切な場所に配置することで、呼び出し元が表示するフィールドを簡単に定義できるようにします。</li>
+</ul>
+
+<p>このロジックを、アプリケーション内のすべてのStimulusコントローラー（フォーム内であってもそうでなくても）に適用することもでき、その結果、ビューの可読性がさらに向上するはずです。</p>
+
+<h3 id="activerecordのアソシエーション">ActiveRecordのアソシエーション</h3>
+
+<p>Railsでフォームを作成する際に頭を悩ませる問題を避ける鍵は、いくつかの概念を理解し、習得することです：</p>
+
+<ul>
+  <li>Rackのパラメータ形式（パラメータがどのようにオプションのハッシュとして渡されるか）。</li>
+  <li>永続化された状態と非永続化された状態でのアソシエーション管理。Railsは、アソシエーションのグラフが永続化されているかどうかに関わらずナビゲートできる機能を持っています。しかし、両者の間には違いがあります。Railsの魔法にも限界があります。</li>
+  <li>データベースのトランザクションシステムの理解が重要です。鍵は一つの簡単なルールにあります：一つのコントローラーアクション = 一回のsave。Railsでのsaveは、オブジェクトグラフ全体をトランザクションで保存することを可能にすることを理解することが重要です。トランザクションを手動でブロック管理する必要はなく、フォームをすべての関連オブジェクトを、それらのアソシエーションを介して保存するように構築する必要があるだけです。</li>
+</ul>
+
+<h2 id="activerecord内のアソシエーションの永続化">ActiveRecord内のアソシエーションの永続化</h2>
+
+<p>フォームが期待通りに機能するためにどのように書かれるべきか理解するために、一般的に最初はRailsコンソールを探ります。</p>
+
+<p>フォームで想定されるパラメータを持つ新しいオブジェクトを作成し、グラフをナビゲートし、保存し、すべてが期待通りに機能する場合は、フォームで使用される構造を複製します。</p>
+
+<p>スコープを使用したより複雑なアソシエーションや<a href="https://edgeguides.rubyonrails.org/association_basics.html#polymorphic-associations">ポリモーフィックアソシエーション</a>を行う場合には、時折<a href="https://stackoverflow.com/questions/35104876/why-are-polymorphic-associations-not-supported-by-inverse-of">驚き</a>を伴うことがあります。</p>
+
+<p>通常、これが実際の参考にならないことはめったにありませんが、時折、手動で設定しなければならないことがあります。</p>
+
+<p>アソシエーションは可能な限りシンプルに保ってください。一部の組み合わせはRailsで正しく機能しない可能性があるためです。</p>
+
+<p>以下のケースでは、アソシエーションがまだ保存されていない場合、逆の取得を許可しないことがわかります。これは容易に理解できることであり、スコープがDBクエリであるため保存されたアソシエーションでは実行されないためです。</p>
+
+<p>すでに<code class="language-plaintext highlighter-rouge">has_many :items</code>があり、アイテムと同じクラスから<code class="language-plaintext highlighter-rouge">has_one :special_item, -&gt; { where(kind: :special) }</code>を追加したい場合、そのアソシエーションは保存されていないアソシエーションに対して正しく機能しません。これは特定の使用ケースで問題を引き起こすことがあります。</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># アイテムとスペシャルアイテムを持つ新しいtodoを作成する</span>
+<span class="o">&gt;</span>  <span class="n">todo</span> <span class="o">=</span> <span class="no">Todo</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+     <span class="ss">items_attributes: </span><span class="p">[{}],</span>
+     <span class="ss">special_item_attributes: </span><span class="p">{}</span>
+   <span class="p">)</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;Todo id: nil, name: nil&gt;</span>
+
+<span class="c1"># アイテムは逆のアソシエーションを介してtodoにしっかりと関連付けられている</span>
+<span class="o">&gt;</span>  <span class="n">todo</span><span class="p">.</span><span class="nf">items</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">todo</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;Todo id: nil, name: nil&gt;</span>
+
+<span class="c1"># しかし、スペシャルアイテムは違う</span>
+<span class="o">&gt;</span>  <span class="n">todo</span><span class="p">.</span><span class="nf">special_item</span><span class="p">.</span><span class="nf">todo</span>
+<span class="o">=&gt;</span> <span class="kp">nil</span>
+</code></pre></div></div>
+
+<p>ActiveRecordの動作が期待通りにうまくいかない場合、そのアソシエーションを管理しているコードを確認し、問題の原因を理解する価値があります。</p>
+
+<p>このような場合、私は<a href="https://ruby-doc.org/core-2.4.6/Method.html#method-i-source_location">source_location</a>を使って、アソシエーションコール中に使用されるコードを簡単に見つけます。このメソッドは、ソースファイルとメソッドが定義されている行番号を返します。例えば：</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="no">Todo</span><span class="p">.</span><span class="nf">method</span><span class="p">(</span><span class="ss">:has_many</span><span class="p">).</span><span class="nf">source_location</span>
+<span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"gems/activerecord-7.2.1.1/lib/active_record/associations.rb"</span><span class="p">,</span> <span class="mi">1268</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="no">Todo</span><span class="p">.</span><span class="nf">instance_method</span><span class="p">(</span><span class="ss">:items</span><span class="p">).</span><span class="nf">source_location</span>
+<span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"gems/activerecord-7.2.1.1/lib/active_record/associations/builder/association.rb"</span><span class="p">,</span> <span class="mi">103</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>実装の詳細を理解することで、ActiveRecordと統合された機能を作成できます。それにより、アプリに自分自身の特殊な機能を追加でき、Railsの一部として存在するように見える機能を持つことが可能です。</p>
+
+<h1 id="結論">結論</h1>
+
+<p>Railsアプリケーションは複雑になることがあります。フレームワークの実用的なアプローチは時折、コードの組織上の問題を引き起こすことがあります。このような手法を使うことで、非常にシンプルで明確なビューとコントローラーを維持することができます。この問題はモデルの複雑さを管理する際にも存在しますが、私たちは次の機会にこの話題を取り上げることにします。</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActionController" /><category term="ActionView" /><summary type="html"><![CDATA[はじめに]]></summary></entry><entry><title type="html">スケーラブルで効率的なデータエクスポート：ActiveAdminの非同期モードを有効にする</title><link href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" rel="alternate" type="text/html" title="スケーラブルで効率的なデータエクスポート：ActiveAdminの非同期モードを有効にする" /><published>2024-04-25T19:37:00+00:00</published><updated>2024-04-25T19:37:00+00:00</updated><id>/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin</id><content type="html" xml:base="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"><![CDATA[<p>データエクスポートは、多くの現代のウェブアプリケーションにおいて不可欠な機能です。
 ActiveAdminでは、CSVエクスポートがデフォルトでは同期的に生成されます。しかし、
 エクスポートされるデータセットが大きい場合、
 このアプローチはHTTP接続の長時間のブロックを引き起こし、
