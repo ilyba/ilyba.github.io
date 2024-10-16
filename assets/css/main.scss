@@ -28,7 +28,7 @@ main {
   border-bottom: 1px solid lightgray;
 
   font-family: Georgia, Times, "Times New Roman", serif;
-  font-size: 23px;
+  font-size: 20px;
 }
 
 article, article > header {
@@ -91,8 +91,8 @@ nav a:hover::after, .hero a:hover::after {
 }
 
 ul.articles > li > * { vertical-align: text-top; }
-ul.articles > li > span.date { display: inline-block; width: 8em; }
-ul.articles > li > a { display: inline-block; width: calc(var(--site-width) - 12em); }
+ul.articles > li > span.date { display: inline-block; width: 11em; }
+ul.articles > li > a { display: inline-block; width: calc(var(--site-width) - 13em); }
 
 @media (max-width: 780px) {
   :root { --site-width: calc(8 * 72px + 7 * 8px); }
@@ -113,5 +113,20 @@ ul.articles > li > a { display: inline-block; width: calc(var(--site-width) - 12
 }
 
 .debug { border: 1px solid red; }
+
+pre {
+  overflow: scroll;
+  font-size: 0.7em;
+  padding: 1em;
+}
+
+p > code, li > code {
+  background-color: #e7e7e3;
+  font-size: 0.75em;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #ee4422;
+}
+
 
 @import "syntax-highlighting";

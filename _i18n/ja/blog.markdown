@@ -4,7 +4,7 @@
 <ul class="articles">
   {% for post in site.posts %}
     <li>
-      <span class="date">{{ post.date | date: "%-d %B %Y" }}</span><a href="{{site.baseurl_root}}{{lang_prefix}}{{ post.url }}">{{ post.title }}</a>
+      <span class="date">{{ post.date | localize: "%Y年%b%-d日", 'ja' | replace_chars: '0123456789', '０１２３４５６７８９' }}</span><a href="{{site.baseurl_root}}{{lang_prefix}}{{ post.url }}">{{ post.title }}</a>
     </li>
   {% endfor %}
 </ul>

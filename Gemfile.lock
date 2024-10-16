@@ -32,6 +32,8 @@ GEM
       webrick (~> 1.7)
     jekyll-archives (2.2.1)
       jekyll (>= 3.6, < 5.0)
+    jekyll-date-localization (0.0.6)
+      i18n (~> 1.0)
     jekyll-feed (0.17.0)
       jekyll (>= 3.7, < 5.0)
     jekyll-multiple-languages-plugin (1.8.0)
@@ -79,6 +81,7 @@ DEPENDENCIES
   http_parser.rb (~> 0.6.0)
   jekyll (~> 4.3.2)
   jekyll-archives
+  jekyll-date-localization
   jekyll-feed (~> 0.12)
   jekyll-multiple-languages-plugin
   minima (~> 2.5)

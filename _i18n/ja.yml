@@ -3,3 +3,5 @@ titles:
   blog: ブログ
   pricing: 当社の価格
   contact: 連絡先
+
+date_format: '%Y年%b%-d日'
