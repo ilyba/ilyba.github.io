@@ -8,7 +8,11 @@ layout: main
     <p class="post-meta">
       <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
         {%- assign date_format = site.translations[site.lang].date_format | default: "%B %-d, %Y" -%}
-        {{ page.date | localize: date_format, site.lang }}
+        {%- if site.lang == 'ja' -%}
+          {{ page.date | localize: "%Y年%b%-d日", 'ja' | replace_chars: '0123456789', '０１２３４５６７８９' }}
+        {%- else -%}
+          {{ page.date | localize: date_format, site.lang }}
+        {%- endif -%}
       </time>
       {%- if page.author -%}
         • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>

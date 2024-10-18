@@ -44,7 +44,7 @@ Pour moi, la bonne raison c’est que cette approche permet d’améliorer la qu
 
 ## Cela réduit la quantité de JavaScript
 
-Pour commencer, on de va utiliser JavaScript que pour améliorer l’expérience existante.
+Pour commencer, on ne va utiliser JavaScript que pour améliorer l’expérience existante.
 Cette expérience sera donc réalisée uniquement grâce aux fonctionnalités standard du Web.
 On utilisera du coup par défaut [les liens et les formulaires](/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html)
 pour communiquer avec le serveur. Pour une majorité des fonctionnalités
