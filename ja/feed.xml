@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="ja" /><updated>2024-10-18T22:50:32+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">シンプルで洗練されたRailsフォームのためのベストプラクティスガイド</title><link href="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html" rel="alternate" type="text/html" title="シンプルで洗練されたRailsフォームのためのベストプラクティスガイド" /><published>2024-10-15T16:30:00+00:00</published><updated>2024-10-15T16:30:00+00:00</updated><id>/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails</id><content type="html" xml:base="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html"><![CDATA[<h1 id="はじめに">はじめに</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="ja" /><updated>2024-10-20T13:04:29+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">シンプルで洗練されたRailsフォームのためのベストプラクティスガイド</title><link href="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html" rel="alternate" type="text/html" title="シンプルで洗練されたRailsフォームのためのベストプラクティスガイド" /><published>2024-10-15T16:30:00+00:00</published><updated>2024-10-15T16:30:00+00:00</updated><id>/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails</id><content type="html" xml:base="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html"><![CDATA[<h1 id="はじめに">はじめに</h1>
 
 <p>Railsアプリケーションでは、ビジネスロジックや避けることができるマークアップを追加すると、<a href="https://guides.rubyonrails.org/action_controller_overview.html">コントローラー</a>や<a href="https://guides.rubyonrails.org/action_view_overview.html">ビュー</a>が複雑化することがあります。</p>
 
@@ -274,51 +274,36 @@
 
 <h1 id="結論">結論</h1>
 
-<p>Railsアプリケーションは複雑になることがあります。フレームワークの実用的なアプローチは時折、コードの組織上の問題を引き起こすことがあります。このような手法を使うことで、非常にシンプルで明確なビューとコントローラーを維持することができます。この問題はモデルの複雑さを管理する際にも存在しますが、私たちは次の機会にこの話題を取り上げることにします。</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActionController" /><category term="ActionView" /><summary type="html"><![CDATA[はじめに]]></summary></entry><entry><title type="html">スケーラブルで効率的なデータエクスポート：ActiveAdminの非同期モードを有効にする</title><link href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" rel="alternate" type="text/html" title="スケーラブルで効率的なデータエクスポート：ActiveAdminの非同期モードを有効にする" /><published>2024-04-25T19:37:00+00:00</published><updated>2024-04-25T19:37:00+00:00</updated><id>/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin</id><content type="html" xml:base="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"><![CDATA[<p>データエクスポートは、多くの現代のウェブアプリケーションにおいて不可欠な機能です。
-ActiveAdminでは、CSVエクスポートがデフォルトでは同期的に生成されます。しかし、
-エクスポートされるデータセットが大きい場合、
-このアプローチはHTTP接続の長時間のブロックを引き起こし、
-アプリケーションの全体的なパフォーマンスに悪影響を与えることがあります。</p>
+<p>Railsアプリケーションは複雑になることがあります。フレームワークの実用的なアプローチは時折、コードの組織上の問題を引き起こすことがあります。このような手法を使うことで、非常にシンプルで明確なビューとコントローラーを維持することができます。この問題はモデルの複雑さを管理する際にも存在しますが、私たちは次の機会にこの話題を取り上げることにします。</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActionController" /><category term="ActionView" /><summary type="html"><![CDATA[はじめに]]></summary></entry><entry><title type="html">ActiveAdminでの非同期エクスポート</title><link href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" rel="alternate" type="text/html" title="ActiveAdminでの非同期エクスポート" /><published>2024-04-25T19:37:00+00:00</published><updated>2024-04-25T19:37:00+00:00</updated><id>/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin</id><content type="html" xml:base="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"><![CDATA[<h1 id="はじめに">はじめに</h1>
 
-<p>接続が長時間忙しい状態のままになると、サーバーのリソースが枯渇し、
-他のユーザーに遅延を引き起こします。この状況が続き、リソースが完全に枯渇すると、
-他のユーザーのリクエストがブロックされ、アプリケーションが利用できなくなります。</p>
+<p>データエクスポートはほとんどの企業アプリケーションに存在する機能です。ActiveAdmin はデフォルトでエクスポート機能を提供しており、この機能は同期的に動作します。つまり、データの生成はクライアントの要求時に行われます。</p>
 
-<p>この問題に対処するために、<code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code>というジェムが最初に開発され、
-ActiveJob を通じて非同期エクスポートの生成を可能にしました。しかし、このソリューション
-にはいくつかの問題がありました。まず、<code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code>
-ジェムはもうメンテナンスされておらず、最新の Rails バージョンと互換性がありません。</p>
+<h1 id="同期エクスポートの問題">同期エクスポートの問題</h1>
 
-<p>実際にインストールを試みた際、<code class="language-plaintext highlighter-rouge">NameError</code> に遭遇しました。
-これはオートローディングの問題に関連しているようでした。さらに、
-<code class="language-plaintext highlighter-rouge">strong parameters</code> の設定が考慮されておらず、このジェムは <code class="language-plaintext highlighter-rouge">current_admin_user</code>
-メソッドを使用していますが、私たちのアプリケーションでは <code class="language-plaintext highlighter-rouge">current_user</code> を使用しています。</p>
+<p>しかし、エクスポートするデータの量が多い場合、処理に時間がかかることがあります。サーバーが忙しくなると、それによって要求を処理できず、要求が積み重なり、ボトルネックが発生します。パフォーマンスが低下し、アプリケーションが遅いことにユーザーが気付きます。</p>
 
-<p>ActiveAdmin はこれらの設定を構成することは可能ですが、
-<code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code> ジェムはこれらの設定をサポートしていません。</p>
+<p>状況が悪化すると、バックログが大きくなりすぎて、サーバーがリクエストをタイムリーに処理できなくなります。アプリケーションはエラーを返し始めます。状況がさらに悪化し続けると、アプリケーションは完全に機能しなくなり、アクセスできなくなります。</p>
 
-<p>さらに、このジェムは ActiveStorage をサポートしておらず、
-異なるファイルストレージシステムを使用しています。</p>
+<h1 id="非同期ソリューションの実装">非同期ソリューションの実装</h1>
 
-<p>また、データベースのマイグレーションと ActiveAdmin のリソースを設定するため
-のコードジェネレーターを提供していますが、その使用方法はREADMEに記載されていません。
-READMEには、単にGemをGemfileに追加することだけが記載されており、詳細な指示がありません。</p>
+<p>このような問題に直面した際、私たちは <a href="https://github.com/rootstrap/activeadmin-async_exporter"><code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code></a> というgemを使用して対処しました。このライブラリは、ActiveJobを使用してActiveAdminでデータエクスポートを非同期に行うことを可能にします。しかし、私たちはこのソリューションを利用するために調整を行う必要がありました。</p>
 
-<p>これらの制約を考慮して、私たちは<code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code>ジェムのコードを私たちのアプリケーションに統合し、
-私たちの具体的なニーズに合わせてカスタマイズすることに決めました。</p>
+<p>まず、<code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code>というgemはその作者によってもはやメンテナンスされておらず、私たちのRailsのバージョンとは互換性がありませんでした。そのため、私たちはそれを修正し、その依存関係を更新する必要がありました。</p>
 
-<p>このジェムをまだ公開していないのは、現在の努力が他のプロジェクトの側面に集中しているためです。
-現在のコードは内部の要件を満たしていますが、公的なリリースのためにさらに時間を割く計画はありません。
-したがって、今のところはそのままにしておくことにしますが、将来的に公開する可能性を完全に否定するわけではありません。</p>
+<p>さらに、strong_parametersを使用してパラメータを管理し、 <code class="language-plaintext highlighter-rouge">current_user</code> を使用する際に欠落するメソッドの問題を解決するためにいくつかの追加の適応を行いました。これは、作者のgemが <code class="language-plaintext highlighter-rouge">current_admin_user</code> を使用しているためです。</p>
 
-<p>コードの抽出は技術的な挑戦を引き起こしました。特に、ワーカーはApplicationJobを継承する必要があり、
-そのためにコードを<code class="language-plaintext highlighter-rouge">app/workers</code>ディレクトリに配置する必要がありました。さらに、
-アプリケーションとの互換性を確保するために、コードのいくつかの側面を変更する必要がありました。</p>
+<p>私たちのアプリケーションとは異なり、gemは添付ファイルにActiveStorageを使用していません。そのため、この部分も調整を行いました。</p>
 
-<p>これらの困難にもかかわらず、ActiveAdminで非同期エクスポートを使用することは、
-アプリケーションの性能向上において極めて重要であることが証明されました。
-既存のジェムを私たちの特定のニーズに合わせて適応させることで、この技術を活用しつつ、
-その機能性を完全にコントロールすることができました。</p>
+<p>リクエストを記録するために、gemはデータベースに必要なテーブルを作成するマイグレーションのためのジェネレーターを提供します。また、エクスポートを管理するためのインターフェイス用のActiveAdminジェネレーターも提供します。ただし、これらのジェネレーターは文書化されていません。</p>
 
-<p>このプロセスを通じて、私たちはシステムの拡張性と効率性を大幅に向上させることができ、
-同時にユーザーに対してよりスムーズで応答性の高いエクスペリエンスを提供することができました。</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActiveAdmin" /><summary type="html"><![CDATA[データエクスポートは、多くの現代のウェブアプリケーションにおいて不可欠な機能です。 ActiveAdminでは、CSVエクスポートがデフォルトでは同期的に生成されます。しかし、 エクスポートされるデータセットが大きい場合、 このアプローチはHTTP接続の長時間のブロックを引き起こし、 アプリケーションの全体的なパフォーマンスに悪影響を与えることがあります。]]></summary></entry></feed>
+<p>最終的に、私たちはgemのコードをアプリケーションに直接取り込み、必要に応じてカスタマイズしました。</p>
+
+<h1 id="gemとしての公開">gemとしての公開</h1>
+
+<p>コードがアプリケーションに統合されているため、私たちはこれを新しいgemとして公開しないことに決めました。新たな適応努力が必要となるでしょう。また、このライブラリの活動が少ないことを考えると、このソリューションがコミュニティのニーズを必ずしも満たしているとは思えませんが、私たちのアプリケーションのパフォーマンスを向上させるのに非常に役立ちました。</p>
+
+<p>それでも、これらの変更に興味がある場合や質問やコメントがある場合は、お気軽にお問い合わせください。</p>
+
+<h1 id="結論">結論</h1>
+
+<p>このエピソードは、アプリケーションの進化における問題がどのように発生するかを具体的な例で示しています。人気がなくメンテナンスされていないgemの使用と調整に基づくソリューションは一見非定型に見えるかもしれませんが、このアプローチは実際には技術的な問題解決の非常にクラシックなプロセスに従っています。</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActiveAdmin" /><summary type="html"><![CDATA[はじめに]]></summary></entry></feed>

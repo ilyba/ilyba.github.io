@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="fr" /><updated>2024-10-18T22:50:32+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Guide de bonnes pratiques pour des formulaires Rails simples et épurés</title><link href="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html" rel="alternate" type="text/html" title="Guide de bonnes pratiques pour des formulaires Rails simples et épurés" /><published>2024-10-15T16:30:00+00:00</published><updated>2024-10-15T16:30:00+00:00</updated><id>/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails</id><content type="html" xml:base="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="fr" /><updated>2024-10-20T13:04:29+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Guide de bonnes pratiques pour des formulaires Rails simples et épurés</title><link href="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html" rel="alternate" type="text/html" title="Guide de bonnes pratiques pour des formulaires Rails simples et épurés" /><published>2024-10-15T16:30:00+00:00</published><updated>2024-10-15T16:30:00+00:00</updated><id>/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails</id><content type="html" xml:base="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html"><![CDATA[<h1 id="introduction">Introduction</h1>
 
 <p>Dans les applications Rails, les <a href="https://guides.rubyonrails.org/action_controller_overview.html">contrôleurs</a> et les <a href="https://guides.rubyonrails.org/action_view_overview.html">vues</a> peuvent devenir complexes quand on y ajoute de la logique métier ou du balisage qui pourrait être évité.</p>
 
@@ -274,64 +274,69 @@
 
 <h1 id="conclusion">Conclusion</h1>
 
-<p>Les applications Rails peuvent être complexes et l’approche pragmatique du framework mène parfois à des problèmes d’organisation du code. En utilisant les techniques exposées dans cet article, vous pourrez conserver des vues et des contrôleurs très simples et très lisibles. Cette problématique existe également pour gérer la complexité des modèles, mais nous aborderons cette problématique dans un futur article.</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActionController" /><category term="ActionView" /><summary type="html"><![CDATA[Introduction]]></summary></entry><entry><title type="html">Des exports de données scalables et performants : activez le mode asynchrone d’ActiveAdmin</title><link href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" rel="alternate" type="text/html" title="Des exports de données scalables et performants : activez le mode asynchrone d’ActiveAdmin" /><published>2024-04-25T19:37:00+00:00</published><updated>2024-04-25T19:37:00+00:00</updated><id>/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin</id><content type="html" xml:base="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"><![CDATA[<p>L’exportation de données est une fonctionnalité essentielle dans de nombreuses
-applications web modernes. Dans ActiveAdmin, les exports CSV sont générés
-de manière synchrone par défaut. Cependant, lorsque les données à exporter sont volumineuses,
-cette approche peut entraîner un blocage prolongé des connexions HTTP,
-ce qui nuit aux performances globales de l’application.</p>
+<p>Les applications Rails peuvent être complexes et l’approche pragmatique du framework mène parfois à des problèmes d’organisation du code. En utilisant les techniques exposées dans cet article, vous pourrez conserver des vues et des contrôleurs très simples et très lisibles. Cette problématique existe également pour gérer la complexité des modèles, mais nous aborderons cette problématique dans un futur article.</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActionController" /><category term="ActionView" /><summary type="html"><![CDATA[Introduction]]></summary></entry><entry><title type="html">Exports asynchrones dans ActiveAdmin</title><link href="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html" rel="alternate" type="text/html" title="Exports asynchrones dans ActiveAdmin" /><published>2024-04-25T19:37:00+00:00</published><updated>2024-04-25T19:37:00+00:00</updated><id>/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin</id><content type="html" xml:base="/rails/activeadmin/2024/04/25/exports-csv-asynchrones-activeadmin.html"><![CDATA[<h1 id="introduction">Introduction</h1>
 
-<p>Lorsqu’une connexion reste occupée trop longtemps, cela peut épuiser
-les ressources du serveur, entraînant des retards pour les utilisateurs suivants.
-Si cette situation persiste et que les ressources sont complètement épuisées,
-les requêtes des autres utilisateurs se retrouvent bloquées rendant
-l’application inaccessible.</p>
+<p>L’exportation de données est une fonctionnalité présente dans la plupart
+des applications d’entreprise. ActiveAdmin propose une fonctionnalité d’export
+par défaut, cette fonctionnalité fonctionne de manière synchrone, c’est à dire
+que la génération des données se fait au moment de la demande du client.</p>
 
-<p>Pour remédier à cette situation, la gem <code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code>
-a été initialement développée pour permettre la génération d’exports
-de manière asynchrone via ActiveJob. Cependant, nous avons rencontré
-plusieurs défis avec cette solution. Tout d’abord,
-la gem activeadmin-async_exporter n’est plus maintenue
-et n’est pas compatible avec les versions les plus récentes de Rails.</p>
+<h1 id="le-problème-des-exports-synchrones">Le problème des exports synchrones</h1>
 
-<p>Lors de nos tentatives d’installation, nous avons rencontré une erreur <code class="language-plaintext highlighter-rouge">NameError</code>,
-apparemment liée à des problèmes d’autoloading. De plus, la configuration des
-strong_parameters n’est pas prise en compte, et la gem utilise
-la méthode <code class="language-plaintext highlighter-rouge">current_admin_user</code>, alors que notre application utilise <code class="language-plaintext highlighter-rouge">current_user</code>.</p>
+<p>Cependant, lorsque le volume de données à exporter est important,
+le traitement peut prendre du temps. Le serveur étant occupé il n’est pas disponible
+pour traiter les demandes qui s’empilent, ce qui entraine un embouteillage.
+Les performances se dégradent et les utilisateurs constatent que l’application
+est lente.</p>
 
-<p>Bien que ActiveAdmin permette de configurer ces aspects,
-la gem <code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code> ne tient pas compte de ces configurations.</p>
+<p>Si la situation se dégrade, le bouchon devient alors trop important,
+et le serveur n’est plus en mesure de les requêtes dans les délais. L’application
+se met alors à renvoyer des erreurs. Si la situation continue à se détériorer,
+l’application cesse alors complètement de fonctionner et devient inaccessible.</p>
 
-<p>En outre, la gestion d’ActiveStorage n’est pas prise en charge par la gem,
-qui utilise un autre système pour le stockage des fichiers.</p>
+<h1 id="mise-en-place-dune-solution-asynchrone">Mise en place d’une solution asynchrone</h1>
 
-<p>Bien que la gem propose un générateur de fichiers de code pour configurer
-une migration de base de données et une ressource ActiveAdmin, son utilisation
-n’est pas documentée dans le README. Celui-ci mentionne simplement l’ajout de
-la gem au Gemfile sans fournir de directives supplémentaires.</p>
+<p>Confrontés à ce type de problème, nous avons utilisé
+la gem <a href="https://github.com/rootstrap/activeadmin-async_exporter"><code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code></a>
+pour y remédier. Cette librairie permet de générer des exports de données
+dans ActiveAdmin de manière asynchrone avec ActiveJob. Cependant, nous avons
+dû faire des adaptations pour pouvoir utiliser cette solution.</p>
 
-<p>Face à ces limitations, nous avons décidé de reprendre le code
-de la gem <code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code> dans notre application afin de
-le personnaliser selon nos besoins spécifiques.</p>
+<p>Tout d’abord, la gem <code class="language-plaintext highlighter-rouge">activeadmin-async_exporter</code> n’est plus maintenue
+par son auteur et n’était pas compatible avec notre version de Rails.
+Nous avons donc du la modifier et mettre à jour ses dépendances.</p>
 
-<p>Nous n’avons pas encore publié la gem car, pour le moment, nos efforts sont concentrés
-sur d’autres aspects de notre projet. Bien que le code actuel fonctionne
-pour nos besoins internes, nous n’avons pas planifié de consacrer
-du temps supplémentaire pour l’adapter à une éventuelle publication publique.
-Nous préférons donc pour l’instant le laisser en l’état, sans toutefois exclure
-définitivement la possibilité d’une publication future.</p>
+<p>Nous avons faits quelques adaptations supplémentaires afin de gérer les
+paramètres avec strong_parameters et résoudre un problème
+de méthode manquante due à l’utilisation de <code class="language-plaintext highlighter-rouge">current_user</code> dans notre application
+alors que l’auteur gem utilise <code class="language-plaintext highlighter-rouge">current_admin_user</code>.</p>
 
-<p>L’extraction du code nous a présenté certains défis techniques.
-En particulier, le worker doit hériter de la classe ApplicationJob,
-ce qui implique de placer le code dans le dossier <code class="language-plaintext highlighter-rouge">app/workers</code>.
-De plus, certains aspects du code ont dû être modifiés pour assurer
-sa compatibilité avec notre application.</p>
+<p>Contrairement à notre application, la gem n’utilise pas ActiveStorage
+pour les pièces jointes. Nous avons donc également adapté cette partie.</p>
 
-<p>Malgré ces difficultés, l’utilisation d’exports asynchrones
-dans ActiveAdmin s’est révélée cruciale pour améliorer les performances
-de notre applications. En adaptant la gem existante à nos besoins
-spécifiques, nous avons pu bénéficier de cette technologie
-tout en conservant un contrôle total sur son fonctionnement.</p>
+<p>Pour enregistrer la demande, la gem fournit un générateur pour la migration
+pour créer les tables nécessaire en base de données. La gem fournit également
+un générateur ActiveAdmin pour l’interface permettant de gérer les exports.
+Cependant, ces générateurs ne sont pas documentés.</p>
 
-<p>Grâce à ce processus, nous avons pu améliorer considérablement l’évolutivité
-et l’efficacité de notre système, tout en offrant une expérience
-plus fluide et plus réactive à nos utilisateurs.</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActiveAdmin" /><summary type="html"><![CDATA[L’exportation de données est une fonctionnalité essentielle dans de nombreuses applications web modernes. Dans ActiveAdmin, les exports CSV sont générés de manière synchrone par défaut. Cependant, lorsque les données à exporter sont volumineuses, cette approche peut entraîner un blocage prolongé des connexions HTTP, ce qui nuit aux performances globales de l’application.]]></summary></entry></feed>
+<p>Nous avons donc finalement repris le code de la gem directement dans notre
+application et nous l’avons personnalisé selon nos besoins.</p>
+
+<h1 id="publication-dans-une-gem">Publication dans une gem</h1>
+
+<p>Nous avons décidé de ne pas publier nos modifications sous forme d’une nouvelle gem
+car le code est intégré à notre application, et cela demanderait un nouvel effort d’adaptation.
+Par ailleurs, vu le peu d’activité sur cette librairie, je ne suis pas convaincu
+que cette solution réponde forcément à un besoin de la communauté. Même si ça s’est
+révélé très utile pour améliorer les performances de notre application.</p>
+
+<p>Néanmoins si ces modifications vous intéressent, si vous avez des questions
+ou des commentaires n’hésitez pas à me contacter pour en savoir plus.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Cette anecdote illustre au travers d’un exemple concret le type problématique
+qui peut se poser au cours de l’évolution d’une application. La solution basée
+sur l’utilisation et l’adaptation d’une gem peu populaire et non maintenue
+peut sembler atypique, mais cette approche suit en réalité un processus très classique
+de résolution d’un problème technique.</p>]]></content><author><name></name></author><category term="Rails" /><category term="ActiveAdmin" /><summary type="html"><![CDATA[Introduction]]></summary></entry></feed>
