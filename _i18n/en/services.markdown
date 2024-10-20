@@ -23,7 +23,7 @@ to create a complete web application independently. This training, thanks to
 its high level of detail and expertise allows experienced developers to improve
 their skills in particular aspects of web development and Ruby on Rails.
 
-[Go to Rails Sessions YouTube channel](www.youtube.com)
+[Go to Rails Sessions YouTube channel](https://www.youtube.com)
 
 ## Web development training
 

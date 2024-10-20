@@ -23,7 +23,7 @@ Ruby on Rails permettant à un public débutant de développer toutes les compé
 son haut niveau de détail et d'expertise permet aux développeurs confirmés d'améliorer
 leurs compétences sur des aspects particuliers du développement Web et de Ruby on Rails.
 
-[Accéder à la chaîne YouTube Rails Sessions](www.youtube.com)
+[Accéder à la chaîne YouTube Rails Sessions](https://www.youtube.com)
 
 ## Formation au développement Web
 

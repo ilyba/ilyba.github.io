@@ -23,7 +23,7 @@ Ruby on Rails により、初心者でも必要なスキルをすべて身につ
 その高レベルの詳細と専門知識により、経験豊富な開発者が改善を図ることができます。
 Web 開発と Ruby on Rails の特定の側面におけるスキル。
 
-[Rails Sessions YouTube チャンネルにアクセス](www.youtube.com)
+[Rails Sessions YouTube チャンネルにアクセス](https://www.youtube.com)
 
 ## Web開発トレーニング
 

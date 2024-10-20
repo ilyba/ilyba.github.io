@@ -90,6 +90,7 @@ nav a:hover::after, .hero a:hover::after {
   color: white;
 }
 
+header > h1 { flex-basis: 100%; }
 ul.articles > li > * { vertical-align: text-top; }
 ul.articles > li > span.date { display: inline-block; width: 11em; }
 ul.articles > li > a { display: inline-block; width: calc(var(--site-width) - 13em); }
