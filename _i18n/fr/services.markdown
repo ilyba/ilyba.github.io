@@ -42,4 +42,10 @@ efficaces et productifs pour développer avec Ruby on Rails.
 ILYBA développe la version Web du jeu RubyWarrior qui permet de découvrir le Ruby de manière ludique.
 La version Web propose une interface graphique permettant une immersion plus naturelle.
 
+Le développement en est actuellement à ses débuts. Cependant, en attendant, vous pouvez profiter
+d'une adaptation de Vladimir Dementyev d'Evil Martians. J'ai apporté quelques
+modifications mineures pour permettre l'affichage des erreurs Ruby. Cette adaptation
+reste fondamentalement identique à la version originale basée sur le texte,
+mais elle fonctionne directement dans le navigateur sans nécessiter de modifications supplémentaires.
+
 [Lancer le jeu RubyWarrior](/rubywarrior)
