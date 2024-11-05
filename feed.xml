@@ -1,4 +1,239 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="fr" /><updated>2024-10-23T12:26:00+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Guide de bonnes pratiques pour des formulaires Rails simples et épurés</title><link href="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html" rel="alternate" type="text/html" title="Guide de bonnes pratiques pour des formulaires Rails simples et épurés" /><published>2024-10-15T16:30:00+00:00</published><updated>2024-10-15T16:30:00+00:00</updated><id>/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails</id><content type="html" xml:base="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="fr" /><updated>2024-11-05T07:20:56+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Pourquoi continuer à faire du progressive enhancement en 2024 ?</title><link href="/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html" rel="alternate" type="text/html" title="Pourquoi continuer à faire du progressive enhancement en 2024 ?" /><published>2024-11-05T06:00:00+00:00</published><updated>2024-11-05T06:00:00+00:00</updated><id>/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement</id><content type="html" xml:base="/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+
+<p>L’amélioration progressive est une méthode de conception des sites Web qui consiste à réaliser une version minimaliste et résiliente d’une fonctionnalité. C’est à dire qui sera utilisable dans un navigateur des années 2000. Puis d’intégrer progressivement par couches successives les fonctionnalités modernes.</p>
+
+<p>Pour réaliser cela, on commence par écrire une page avec du code HTML minimaliste et standard, on lui associe une feuille de style CSS avec des directives également minimalistes et standard. On obtient alors une page fonctionnelle qui s’affiche instantanément même avec une connexion bien pourrie et avec le JavaScript désactivé.</p>
+
+<p>Toutes les fonctionnalités non indispensables mais qui améliorent l’expérience utilisateur (polices, comportements interactifs, effets visuels) sont ajoutées ensuite progressivement tout en permettant le fonctionnement de base de la page quand ces améliorations ne sont pas activées.</p>
+
+<h1 id="létat-de-lart-en-2024">L’état de l’art en 2024</h1>
+
+<p>La <a href="https://piccalil.li/blog/its-about-time-i-tried-to-explain-what-progressive-enhancement-actually-is/">motivation généralement admise</a> dans la littérature pour utiliser l’amélioration progressive est de proposer une expérience utilisateur acceptable même dans des conditions dégradées.</p>
+
+<p>Mais en 2024, il est tout à fait possible de lancer un service sans se préoccuper de l’expérience d’un petit nombre de personnes dans des conditions dégradées. C’est d’ailleurs pour ça que beaucoup de développeurs depuis plus de 20 ans choisissent des technologies qui nécessitent d’avoir JavaScript activé et nécessite généralement le téléchargement d’une grande quantité de JavaScript avant de pouvoir commencer à intéragir avec le site.</p>
+
+<p>C’est une approche qui permet sans aucun doute de faire des affaires florissantes. Et même si une partie des utilisateurs est mise de côté, cela n’empêchera certainement pas votre service d’être un succès.</p>
+
+<p>Et même si j’ai évidemment à cœur de ne mettre personne sur le côté dans mes développements, ce n’est pas la raison la plus importante pour moi pour adopter cette approche.</p>
+
+<h1 id="la-raison-pour-faire-de-lamélioration-progressive">La raison pour faire de l’amélioration progressive</h1>
+
+<p>La bonne raison c’est celle qui va vous convaincre ou vous permettre de convaincre toute une équipe, des dirigeants de passer sur cette approche.</p>
+
+<p>Si vous vous espérez convaincre toutes ces personnes en leur disant qu’ils vont pouvoir augmenter leur cible de 98% des utilisateurs à 99%, vous avez peu de chances de les convaincre à moins que ce soit une multinationale déjà bien implantée dont c’est peut-être le dernier levier de croissance.</p>
+
+<p>Même si vous les convainquez qu’une majeure partie de leurs utilisateurs sera de temps en temps confrontée à une mauvaise expérience (une pensée à tous ceux qui utilisent leur téléphone dans les transports), parce qu’elle se trouvera face à des conditions dégradées, ça ne permettra pas forcément de changer leurs priorités.</p>
+
+<p>Mais pour moi le plus intéressant est que cette technique permet d’obtenir un code plus simple et plus facile à maintenir.</p>
+
+<h1 id="lamélioration-progressive-améliore-le-code">L’amélioration progressive améliore le code</h1>
+
+<p>Pour moi, la bonne raison c’est que cette approche permet d’améliorer la qualité du code et d’éviter un nombre considérable de problèmes dans une application. C’est ce que je vais vous expliquer ici.</p>
+
+<blockquote>
+  <p>Working in the actual deliverable’s medium — the web — in cycles/iterations/sprints, with progressive enhancement at the root will — I promise — result in smaller codebases, simpler UIs and happier users!</p>
+
+  <p><a href="https://piccalil.li/author/andy-bell"><em>Andy Bell</em></a></p>
+
+</blockquote>
+
+<h2 id="cela-réduit-la-quantité-de-javascript">Cela réduit la quantité de JavaScript</h2>
+
+<p>Pour commencer, on ne va utiliser JavaScript que pour améliorer l’expérience existante.
+Cette expérience sera donc réalisée uniquement grâce aux fonctionnalités standard du Web.
+On utilisera du coup par défaut <a href="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html">les liens et les formulaires</a>
+pour communiquer avec le serveur. Pour une majorité des fonctionnalités
+cela sera tout à fait suffisant, et il n’y aura rien besoin d’ajouter
+pour avoir une expérience satisfaisante.</p>
+
+<p>Mais parfois, on voudra optimiser l’expérience. Prenons l’exemple d’un champ avec autocompletion.
+Le principe est d’afficher une liste de suggestions au fur et à mesure de la saisie.
+<a href="https://gomakethings.com/how-to-create-an-autocomplete-input-with-only-html/">Une telle fonctionnalité <del>est irréalisable sans</del> nécessite souvent JavaScript</a>
+puisqu’elle nécessite de déclencher un comportement au fil de la saisie.
+Si une interaction avec le serveur est nécessaire avec le serveur, le HTML simple ne suffit pas.</p>
+
+<p>Pourtant réaliser ce type de fonctionnalité en suivant les principes de
+l’amélioration progressive permet de simplifier l’architecture du code.</p>
+
+<p>Imaginons à quoi pourrait ressembler une telle fonctionnalité sans JavaScript.
+Nous pouvons afficher un champ de saisie et une liste de proposition initialement vide.
+Lors de la saisie, l’utilisateur va vouloir consulter les suggestions.
+Pour cela, plutôt que de lui afficher instantanément, l’utilisateur pourra activer
+un bouton dédié au chargement des suggestions sur le formulaire pour les afficher.
+Sans JavaScript l’ensemble de la page sera rechargée y compris la liste.
+Il pourra ensuite choisir un élément dans la liste et valider définitivement le formulaire.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:product</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:product_name</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Product</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">none</span> <span class="k">if</span> <span class="n">query</span><span class="p">.</span><span class="nf">blank?</span>
+
+    <span class="n">where</span><span class="p">(</span><span class="s1">'name like :query'</span><span class="p">,</span> <span class="ss">query: </span><span class="s2">"</span><span class="si">#{</span><span class="n">query</span><span class="si">}</span><span class="se">\%</span><span class="s2">"</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">OrdersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@order</span> <span class="o">=</span> <span class="no">Order</span><span class="p">.</span><span class="nf">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@order</span> <span class="o">=</span> <span class="no">Order</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:order</span><span class="p">].</span><span class="nf">permit!</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="ss">:commit</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="vi">@order</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">redirect_to</span> <span class="vi">@order</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="vi">@order</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;fieldset&gt;</span>
+    <span class="nt">&lt;legend&gt;</span>Todo<span class="nt">&lt;/legend&gt;</span>
+
+    <span class="cp">&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:name</span> <span class="cp">%&gt;</span>
+
+    <span class="cp">&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:product_name</span><span class="p">,</span>
+                     <span class="ss">list: </span><span class="s1">'product-suggestions'</span><span class="p">,</span>
+                     <span class="ss">value: </span><span class="n">params</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:order</span><span class="p">,</span> <span class="ss">:product_name</span><span class="p">)</span> <span class="cp">%&gt;</span>
+
+    <span class="nt">&lt;datalist</span> <span class="na">id=</span><span class="s">"product-suggestions"</span><span class="nt">&gt;</span>
+      <span class="cp">&lt;%</span> <span class="no">Product</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span><span class="vi">@order</span><span class="p">.</span><span class="nf">product_name</span><span class="p">).</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">product</span><span class="o">|</span> <span class="cp">%&gt;</span>
+        <span class="cp">&lt;%=</span> <span class="n">content_tag</span> <span class="ss">:option</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="ss">value: </span><span class="n">product</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span>
+      <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+    <span class="nt">&lt;/datalist&gt;</span>
+
+    <span class="cp">&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">submit</span> <span class="s1">'Rechercher'</span><span class="p">,</span> <span class="ss">name: </span><span class="s1">'autocomplete'</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/fieldset&gt;</span>
+
+  <span class="cp">&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">submit</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre></div></div>
+
+<p>On peut ensuite utiliser JavaScript pour améliorer l’expérience. L’avantage d’avoir utilisé
+cette approche, c’est qu’on aura très peu de JavaScript à ajouter. Et en utilisant
+des technologies comme Hotwire Turbo, on n’aura même pas à ajouter le JavaScript nous-même
+mais seulement un peu de configuration sur les formulaires. Le JavaScript permettra de
+masquer le bouton et de déclencher le comportement lors de la saisie. Ce comportement consiste à
+charger la liste puis en remplaçant la liste sur la page actuelle. Le chargement de la liste
+pourra se faire en récupérant la page existante mise à jour (et donc sans nécessiter de
+mise à jour de la partie serveur) ou bien une version partielle de la page contenant
+uniquement les suggestions.</p>
+
+<p>Dans notre exemple, on note que le contrôleur n’a besoin d’aucune adaptation
+pour pouvoir afficher les suggestions de produits et nécessite uniquement
+de vérifier si <code class="language-plaintext highlighter-rouge">params[:commit]</code> est défini pour gérer les comportements interactifs
+avant validation.</p>
+
+<p>On a donc montré comment cette approche peut permettre de réduire la quantité de JavaScript
+dans une application. Nous allons maintenant voir comment la réduction du JavaScript permet en plus
+de faciliter la maintenance de votre application.</p>
+
+<h1 id="cela-facilite-la-maintenance-du-code">Cela facilite la maintenance du code</h1>
+
+<p>Dans une application Rails, le code JavaScript est plus difficile et complexe à tester car il nécessite un navigateur Web pour fonctionner contrairement au code backend qui tourne nativement sur le serveur sans navigateur. Cela va donc rendre les tests également plus longs à s’exécuter.</p>
+
+<p>Avec l’amélioration progressive le code JavaScript produit est plus général, ce qui le rend beaucoup plus facile à tester. Il n’y a pas de dépendances envers le code métier donc le code est plus susceptible de pouvoir être réutilisé ailleurs dans l’application. Par effet boule de neige, cette capacité à pouvoir être réutilisé réduit d’autant la quantité de code JavaScript. C’est un cercle vertueux.</p>
+
+<p>Évidemment, le code JavaScript (plus précisément le code JavaScript exécuté directement par le navigateur) n’est pas en soi un problème, mais son utilisation systématique rend les systèmes plus complexes. La réduction de cette complexité entraine une amélioration de la maintenabilité des applications.</p>
+
+<h1 id="un-deuxième-exemple">Un deuxième exemple</h1>
+
+<p>Pour copier un texte dans le presse-papier automatiquement, le JavaScript est obligatoire.</p>
+
+<p>Mais là encore, on peut concevoir une fonctionnalité équivalente qui ne nécessite pas de JavaScript. À savoir : afficher le texte à copier et suggérer à l’utilisateur de copier le texte en question lui-même en utilisant les fonctionnalités de son système d’exploitation.</p>
+
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;%</span> <span class="k">if</span> <span class="vi">@order</span><span class="p">.</span><span class="nf">product</span> <span class="cp">%&gt;</span>
+  URL <span class="cp">&lt;%=</span> <span class="n">text_field_tag</span> <span class="s1">''</span><span class="p">,</span> <span class="n">url_for</span><span class="p">(</span><span class="vi">@order</span><span class="p">.</span><span class="nf">product</span><span class="p">)</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre></div></div>
+
+<p>Le besoin de l’utilisateur est ainsi satisfait. La solution proposée est extrêmement rudimentaire mais terriblement efficace.</p>
+
+<p>Il est ensuite possible d’utiliser JavaScript pour améliorer l’expérience utilisateur de cette fonctionnalité de base en permettant de réaliser l’opération de sélection du texte et de copie automatiquement.</p>
+
+<p>Le principe consiste à (éventuellement) masquer le texte à copier tout en le laissant dans de code de la page et à ajouter un bouton qui permettra de déclencher la copie dans le presse-papier de l’utilisateur et afficher un message confirmant le bon déroulement de l’opération.</p>
+
+<p>Ainsi lorsque JavaScript n’est pas disponible, le site affichera un texte simple et suggèrera à l’utilisateur de copier le texte avec un message. La fonction restera ainsi accessible. Puis quand le JavaScript, l’utilisateur verra un simple bouton pour copier le texte automatiquement.</p>
+
+<p>Dans cet exemple également, le principe reste le même : on crée une version de base fonctionnelle sans JavaScript et on en améliore l’expérience utilisateur en ajoutant plus d’interactivité grâce à JavaScript. On constante tous les avantages cités précédemment : la fonction est toujours accessible et la version améliorée est réutilisable, facilement maintenable et ne nécessite que peu de code supplémentaire.</p>
+
+<h1 id="plus-cest-complexe-plus-cest-avantageux">Plus c’est complexe, plus c’est avantageux</h1>
+
+<p>L’exemple précédent était extrêmement simple, mais est suffisant pour illustrer l’intérêt de cette approche.</p>
+
+<p>Poussons l’exemple un peu plus loin en y ajoutant des interactions avec le serveur.</p>
+
+<p>Désormais, notre utilisateur va sélectionner un produit de la base de données à partir de son nom (en utilisant la fonction d’autocomplete). Notre utilisateur souhaite ensuite copier le lien permettant d’accéder à ce produit pour l’envoyer par email à un client.</p>
+
+<p>Comme dans le premier exemple, la saisie de l’utilisateur va être envoyée au serveur (via le bouton du formulaire ou bien automatiquement), et le navigateur va récupérer une liste de résultats.</p>
+
+<p>La différence cette fois, est que lorsque l’utilisateur sélectionne un résultat, on veut lui proposer de copier le lien correspondant à ce résultat.</p>
+
+<p>Pour cela on peut utiliser la même approche et ajouter un bouton ‘Afficher le lien’ sur le formulaire pour déclencher l’interaction. Une fois notre produit sélectionner, l’utilisateur pourra activer ce bouton et la page sera rechargée avec le lien du produit que l’utilisateur pourra copier.</p>
+
+<p>Ici aussi, on pourra améliorer l’expérience utilisateur en déclenchant ce comportement automatiquement lors de la sélection du produit. L’utilisateur verra alors un bouton lui permettant de copier le lien dans le presse-papier.</p>
+
+<p>Sans JavaScript, l’utilisateur utilise les boutons du formulaire pour déclencher les comportements interactifs. Avec, les comportements sont déclenchés automatiquement par les actions de l’utilisateurs. L’expérience est ainsi plus naturelle.</p>
+
+<p>On peut noter dans nos approches qu’on ajoute ces boutons dans le formulaire existant. Il est essentiel de procéder ainsi pour que le serveur récupère les informations et qu’au rechargement de la page, la saisie de l’utilisateur soit conservée sur la nouvelle page. Avec JavaScript on peut recharger partiellement la page et contourner le problème, mais sans JavaScript le rechargement de la page sera un passage obligé.</p>
+
+<p>On remarque également que chaque comportement a son propre bouton. Cette approche permet de pourvoir réutiliser et combiner les différents comportements. Cela peut permettre au serveur de s’adapter si nécessaire, autrement l’activation de n’importe quel bouton pourra déclencher l’ensemble des interactions disponibles.</p>
+
+<p>Le fait d’utiliser le processus requête / réponse habituel du navigateur permet aussi de mieux gérer les erreurs. En cas d’erreur serveur ou de problème réseau empêchant de le chargement de la page par exemple un message clair sera affiché au client là où une interaction JavaScript par défaut se contentera de ne pas fonctionner.</p>
+
+<p>Si nous avions eu une autre approche, il nous aurait peut-être paru plus naturel de combiner les comportements en même temps, d’envoyer des requêtes au serveur et d’utiliser une réponse avec un format qui ne pourrait être traité par le navigateur qu’avec du code JavaScript. Finalement, le résultat aurait été moins robuste, moins fiable et plus difficile à maintenir.</p>
+
+<p>Finalement, on peut voir grâce à cet exemple qu’on peut facilement utiliser cette approche pour concevoir des interactivités complexes en ajoutant très peu de code JavaScript sur le navigateur. Mais évidemment, ce qu’on gagne côté client on le perd côté serveur.</p>
+
+<p>Notre formulaire doit en effet répondre à plusieurs besoins fonctionnels :</p>
+
+<ul>
+  <li>Il faut distinguer les différentes actions (autocomplete, affichage du lien, validation définitive).</li>
+  <li>Lorsqu’on ne valide par définitivement le formulaire, il faut l’afficher à nouveau tout en conservant la saisie de l’utilisateur sans réellement créer l’objet associé.</li>
+  <li>Lorsqu’un produit est sélectionné la page renvoyée par le serveur doit contenir le lien à copier et la configuration permettant l’activation du comportement JavaScript pour la copie dans le presse-papier.</li>
+</ul>
+
+<p>Gérer ces comportements supplémentaires nécessite effectivement des adaptations du serveur. Mais en réalité c’est un moindre mal :</p>
+
+<ul>
+  <li>Les adaptations sont en réalité simple à implémenter, de simples ajouts dans le code de la vue sont suffisants pour transmettre les nouvelles données des différentes interactions.</li>
+  <li>Il suffira de re-réhydrater le formulaire avec les paramètres reçus par le serveur pour préserver la saisie.</li>
+  <li>En réalité, il n’est pas nécessaire de distinguer les différentes actions individuellement. Il suffit en fait de différencier la validation définitive d’une simple demande d’interaction. On voit que cette approche est facilement généralisable et la quantité de code n’augmente pas avec le nombre de comportement interactifs (on gère tous les comportements interactifs avec une seule modification du contrôleur).</li>
+  <li>Une autre approche aurait également nécessité des adaptations côté serveur (par exemple, une API permettant de renvoyer la liste ou le lien à copier). On peut en plus remarquer que les adaptations rendues nécessaires par l’approche d’amélioration progressive sont beaucoup plus génériques et seront donc aussi plus faciles à maintenir.</li>
+</ul>
+
+<p>Cette approche ne dépend pas du type de fonctionnalité et peut donc être facilement généralisée à n’importe quel type de comportement interactif. En plus les fonctionnalités elles-mêmes sont génériques et pourront sans difficulté être réutilisées dans différents contextes et combinées pour fournir une expérience optimale tout en s’adaptant à la qualité de l’environnement de l’utilisateur.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>L’amélioration progressive, bien que n’étant pas un concept nouveau est toujours d’actualité.
+Elle permet de concevoir toutes les fonctionnalités dont vous avez besoin à l’aide
+des technologies web standard, complétées progressivement avec du JavaScript pour
+enrichir l’expérience utilisateur. Même si de nombreux services se lancent sans
+se soucier des conditions dégradées que peuvent expérimenter leurs utilisateurs,
+notamment mobiles, l’amélioration progressive permet d’atteindre un public plus large
+et d’offrir une expérience utilisateur satisfaisante.</p>
+
+<p>Les avantages de cette approche sont multiples. En réduisant la quantité de
+JavaScript utilisée, elle conduit à un code plus léger, simple et facile à maintenir.
+La maintenance s’en trouve facilitée, car le code JavaScript est également
+plus général et réutilisable. Cette méthode offre également une robustesse accrue,
+les interactions utilisateur étant plus fiables grâce à l’utilisation des
+cycles de requête/réponse standards du navigateur, qui offrent également
+une meilleure gestion des erreurs par défaut.</p>
+
+<p>Enfin, bien que l’adoption de l’amélioration progressive nécessite
+quelques ajustements côté serveur, ces derniers restent simples et génériques,
+favorisant l’évolutivité et la maintenabilité du code. En intégrant ces principes,
+les développeurs peuvent concevoir des applications performantes et accessibles.</p>]]></content><author><name></name></author><category term="Rails" /><category term="Hotwire" /><category term="Stimulus" /><category term="Turbo" /><summary type="html"><![CDATA[Introduction]]></summary></entry><entry><title type="html">Guide de bonnes pratiques pour des formulaires Rails simples et épurés</title><link href="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html" rel="alternate" type="text/html" title="Guide de bonnes pratiques pour des formulaires Rails simples et épurés" /><published>2024-10-15T16:30:00+00:00</published><updated>2024-10-15T16:30:00+00:00</updated><id>/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails</id><content type="html" xml:base="/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html"><![CDATA[<h1 id="introduction">Introduction</h1>
 
 <p>Dans les applications Rails, les <a href="https://guides.rubyonrails.org/action_controller_overview.html">contrôleurs</a> et les <a href="https://guides.rubyonrails.org/action_view_overview.html">vues</a> peuvent devenir complexes quand on y ajoute de la logique métier ou du balisage qui pourrait être évité.</p>
 

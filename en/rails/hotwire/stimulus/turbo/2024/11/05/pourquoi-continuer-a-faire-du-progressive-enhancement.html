@@ -1,0 +1,301 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Why Continue Embrassing Progressive Enhancement in 2024? | ILYBA</title>
+<meta name="generator" content="Jekyll v4.3.4" />
+<meta property="og:title" content="Why Continue Embrassing Progressive Enhancement in 2024?" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html" />
+<meta property="og:url" content="/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html" />
+<meta property="og:site_name" content="ILYBA" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-11-05T06:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Why Continue Embrassing Progressive Enhancement in 2024?" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-11-05T06:00:00+00:00","datePublished":"2024-11-05T06:00:00+00:00","description":"Introduction","headline":"Why Continue Embrassing Progressive Enhancement in 2024?","mainEntityOfPage":{"@type":"WebPage","@id":"/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html"},"url":"/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="ILYBA" /></head>
+  
+  <body>
+    <header>
+      <a style="text-decoration: none" class="logo" href="/en">
+        <img style="margin-bottom: -0.15em; height: 1em;" src="/assets/images/logo.svg" />
+        ILYBA
+      </a>
+
+      <nav class="menu">
+        
+        
+          <a href="/en/services/">Services</a>
+        
+          <a href="/en/blog/">Blog</a>
+        
+          <a href="/en/pricing/">Pricing</a>
+        
+          <a href="/en/contact/">Contact</a>
+        
+      </nav>
+    </header>
+
+    <main>
+      <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Why Continue Embrassing Progressive Enhancement in 2024?</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2024-11-05T06:00:00+00:00" itemprop="datePublished">November 5, 2024</time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="introduction">Introduction</h1>
+
+<p>Progressive enhancement is a web design methodology that involves creating a minimalist and resilient version of a feature—meaning one that will be usable in a browser from the 2000s. Then, modern features are gradually layered over it.</p>
+
+<p>To achieve this, start by writing a page with minimal and standard HTML code, and associate a CSS stylesheet with equally minimal and standard directives. You get a functional page that loads instantly, even with a poor connection and JavaScript disabled.</p>
+
+<p>All non-essential functionalities that enhance user experience (fonts, interactive behaviors, visual effects) are added progressively, ensuring that the basic page functionality works even when these enhancements aren’t activated.</p>
+
+<h1 id="the-state-of-the-art-in-2024">The State of the Art in 2024</h1>
+
+<p>The generally accepted <a href="https://piccalil.li/blog/its-about-time-i-tried-to-explain-what-progressive-enhancement-actually-is/">motivation</a> in the literature for using progressive enhancement is to provide an acceptable user experience even in degraded conditions.</p>
+
+<p>However, in 2024, it is entirely possible to launch a service without worrying about the experience of a small number of people in degraded conditions. This is why many developers for over 20 years have chosen technologies that require JavaScript to be enabled and generally require the download of a large amount of JavaScript before users can interact with the site.</p>
+
+<p>This approach unquestionably allows for thriving business. And even if some users are left behind, it certainly won’t prevent your service from being a success.</p>
+
+<p>While I am obviously committed to not leaving anyone behind in my developments, for me, that is not the most important reason to adopt this approach.</p>
+
+<h1 id="the-reason-for-progressive-enhancement">The Reason for Progressive Enhancement</h1>
+
+<p>The right reason is the one that will convince you or allow you to convince an entire team or executives to switch to this approach.</p>
+
+<p>If you hope to convince all these people by telling them they can increase their target from 98% of users to 99%, you have little chance of convincing them unless it’s an already well-established multinational, where this might be the last lever for growth.</p>
+
+<p>Even if you convince them that a major part of their users will occasionally encounter a poor experience (a thought for those using their phone on public transport), because they face degraded conditions, it won’t necessarily change their priorities.</p>
+
+<p>But for me, the most interesting thing is that this technique leads to simpler and easier-to-maintain code.</p>
+
+<h1 id="progressive-enhancement-improves-code">Progressive Enhancement Improves Code</h1>
+
+<p>For me, the good reason is that this approach improves code quality and avoids a considerable number of problems in an application. That’s what I’m going to explain here.</p>
+
+<blockquote>
+  <p>Working in the actual deliverable’s medium — the web — in cycles/iterations/sprints, with progressive enhancement at the root will — I promise — result in smaller codebases, simpler UIs and happier users!</p>
+
+  <p><a href="https://piccalil.li/author/andy-bell"><em>Andy Bell</em></a></p>
+</blockquote>
+
+<h2 id="it-reduces-the-amount-of-javascript">It Reduces the Amount of JavaScript</h2>
+
+<p>To start, we’re going to use JavaScript only to enhance the existing experience.
+Thus, this experience will be realized only with the standard features of the Web.
+We’ll use <a href="/en/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html">links and forms</a>
+by default to communicate with the server. For the majority of functionalities,
+this will be sufficient, and nothing will need to be added
+to achieve a satisfactory experience.</p>
+
+<p>However, sometimes we’ll want to optimize the experience. Take, for example, a field with autocompletion.
+The principle is to display a list of suggestions as you type.
+<a href="https://gomakethings.com/how-to-create-an-autocomplete-input-with-only-html/">Such functionality <del>is unachievable without</del> often requires JavaScript</a>
+as it needs to trigger a behavior with each input.
+If server interaction is necessary, simple HTML is not enough.</p>
+
+<p>However, implementing this type of functionality by following the principles of
+progressive enhancement simplifies code architecture.</p>
+
+<p>Imagine how such a feature might look without JavaScript.
+We can display an input field and an initially empty suggestion list.
+As the user types, they will want to consult the suggestions.
+To do this, instead of displaying them instantly, the user can activate
+a dedicated suggestion-loading button on the form to display them.
+Without JavaScript, the entire page will reload with the list.
+The user can then choose an item from the list and finalize the form.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:product</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:product_name</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Product</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">none</span> <span class="k">if</span> <span class="n">query</span><span class="p">.</span><span class="nf">blank?</span>
+
+    <span class="n">where</span><span class="p">(</span><span class="s1">'name like :query'</span><span class="p">,</span> <span class="ss">query: </span><span class="s2">"</span><span class="si">#{</span><span class="n">query</span><span class="si">}</span><span class="se">\%</span><span class="s2">"</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">OrdersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@order</span> <span class="o">=</span> <span class="no">Order</span><span class="p">.</span><span class="nf">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@order</span> <span class="o">=</span> <span class="no">Order</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:order</span><span class="p">].</span><span class="nf">permit!</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="ss">:commit</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="vi">@order</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">redirect_to</span> <span class="vi">@order</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="vi">@order</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;fieldset&gt;</span>
+    <span class="nt">&lt;legend&gt;</span>Todo<span class="nt">&lt;/legend&gt;</span>
+
+    <span class="cp">&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:name</span> <span class="cp">%&gt;</span>
+
+    <span class="cp">&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:product_name</span><span class="p">,</span>
+                     <span class="ss">list: </span><span class="s1">'product-suggestions'</span><span class="p">,</span>
+                     <span class="ss">value: </span><span class="n">params</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:order</span><span class="p">,</span> <span class="ss">:product_name</span><span class="p">)</span> <span class="cp">%&gt;</span>
+
+    <span class="nt">&lt;datalist</span> <span class="na">id=</span><span class="s">"product-suggestions"</span><span class="nt">&gt;</span>
+      <span class="cp">&lt;%</span> <span class="no">Product</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span><span class="vi">@order</span><span class="p">.</span><span class="nf">product_name</span><span class="p">).</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">product</span><span class="o">|</span> <span class="cp">%&gt;</span>
+        <span class="cp">&lt;%=</span> <span class="n">content_tag</span> <span class="ss">:option</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="ss">value: </span><span class="n">product</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span>
+      <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+    <span class="nt">&lt;/datalist&gt;</span>
+
+    <span class="cp">&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">submit</span> <span class="s1">'Search'</span><span class="p">,</span> <span class="ss">name: </span><span class="s1">'autocomplete'</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/fieldset&gt;</span>
+
+  <span class="cp">&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">submit</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre></div></div>
+
+<p>We can then use JavaScript to enhance the experience. The advantage of using
+this approach is that there will be very little JavaScript to add. By using
+technologies like Hotwire Turbo, we don’t even need to add the JavaScript ourselves
+but just a bit of configuration on the forms. JavaScript will hide the button and trigger behavior on input. This behavior involves
+loading the list, then replacing the list on the current page. Loading the list
+can be done by fetching the updated current page (thus not requiring
+an update to the server part) or a partial version of the page containing
+only the suggestions.</p>
+
+<p>In our example, note that the controller requires no adaptation
+to display product suggestions and only needs
+to check if <code class="language-plaintext highlighter-rouge">params[:commit]</code> is defined to handle interactive behaviors
+before validation.</p>
+
+<p>Thus, we have shown how this approach can reduce the amount of JavaScript
+in an application. We will now see how reducing JavaScript also
+facilitates application maintenance.</p>
+
+<h1 id="it-facilitates-code-maintenance">It Facilitates Code Maintenance</h1>
+
+<p>In a Rails application, JavaScript code is more difficult and complex to test as it requires a web browser to run, in contrast to backend code, which runs natively on the server without a browser. This will also make tests longer to execute.</p>
+
+<p>With progressive enhancement, the JavaScript code produced is more general, making it much easier to test. It has no dependencies on business logic so code is more likely to be reusable elsewhere in the application. This snowball effect of reusability further reduces the amount of JavaScript code. It’s a virtuous cycle.</p>
+
+<p>Of course, JavaScript code (more precisely the code executed directly by the browser) is not inherently a problem, but its systematic use makes systems more complex. Reducing this complexity leads to improved maintainability of applications.</p>
+
+<h1 id="a-second-example">A Second Example</h1>
+
+<p>To automatically copy text to the clipboard, JavaScript is required.</p>
+
+<p>However, we can design an equivalent feature without JavaScript. Namely: display the text to be copied and suggest the user copy the text themselves using their operating system’s functionality.</p>
+
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;%</span> <span class="k">if</span> <span class="vi">@order</span><span class="p">.</span><span class="nf">product</span> <span class="cp">%&gt;</span>
+  URL <span class="cp">&lt;%=</span> <span class="n">text_field_tag</span> <span class="s1">''</span><span class="p">,</span> <span class="n">url_for</span><span class="p">(</span><span class="vi">@order</span><span class="p">.</span><span class="nf">product</span><span class="p">)</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre></div></div>
+
+<p>This satisfies the user’s need. The proposed solution is extremely rudimentary but incredibly effective.</p>
+
+<p>JavaScript can then be used to enhance the user experience of this basic feature by allowing the text selection and copying to be done automatically.</p>
+
+<p>The principle is to (optionally) hide the text to be copied while keeping it in the page’s code and add a button to trigger the copy to the user’s clipboard and display a message confirming successful operation.</p>
+
+<p>Thus, when JavaScript is not available, the site will display simple text and suggest the user copy the text with a message. The function remains accessible. Then, when JavaScript is available, the user will see a simple button to automatically copy the text.</p>
+
+<p>In this example, the principle remains the same: create a functional base version without JavaScript and enhance the user experience by adding more interactivity with JavaScript. We see all the previously mentioned advantages: the function is always accessible, and the enhanced version is reusable, easily maintainable, and requires little additional code.</p>
+
+<h1 id="the-more-complex-the-more-advantageous">The More Complex, the More Advantageous</h1>
+
+<p>The previous example was extremely simple but sufficient to illustrate the interest of this approach.</p>
+
+<p>Let’s push the example a little further by adding interactions with the server.</p>
+
+<p>Now, our user will select a product from the database by its name (using the autocomplete function). The user then wants to copy the link to access this product to send it by email to a customer.</p>
+
+<p>As in the first example, the user’s input will be sent to the server (via the form button or automatically), and the browser will retrieve a list of results.</p>
+
+<p>The difference this time is when the user selects a result, we want to offer them the option to copy the link corresponding to that result.</p>
+
+<p>To do this, we use the same approach and add a ‘Display Link’ button on the form to trigger the interaction. Once our product is selected, the user can activate this button, and the page will reload with the link to the product that the user can copy.</p>
+
+<p>Here too, we can enhance the user experience by automatically triggering this behavior when the product is selected. The user will then see a button allowing them to copy the link to the clipboard.</p>
+
+<p>Without JavaScript, the user utilizes the form buttons to trigger interactive behaviors. With JavaScript, behaviors are automatically triggered by user actions, making the experience more natural.</p>
+
+<p>Note that in our approaches, we add these buttons to the existing form. It’s essential to do this so the server retrieves the information, ensuring that user input is preserved on the new page when it’s reloaded. With JavaScript, we can partially reload the page and circumvent the problem, but without JavaScript, page reloads are necessary.</p>
+
+<p>We also observe that each behavior has its own button. This approach allows for the reuse and combination of the different behaviors. It may allow the server to adapt if needed, otherwise, the activation of any button can trigger all available interactions.</p>
+
+<p>Using the usual request/response process of the browser also helps better manage errors. In case of a server error or network issue preventing page loading, for example, a clear message will be displayed to the client, where a default JavaScript interaction might simply fail silently.</p>
+
+<p>Had we taken another approach, it might have seemed more natural to combine behaviors simultaneously, send requests to the server, and use a response in a format that could only be processed by the browser with JavaScript. Ultimately, the result would have been less robust, less reliable, and harder to maintain.</p>
+
+<p>In conclusion, this example shows that we can easily use this approach to design complex interactions by adding very little JavaScript code in the browser. However, what we save on the client side, we spend on the server side.</p>
+
+<p>Our form must indeed respond to multiple functional needs:</p>
+
+<ul>
+  <li>Differentiate between different actions (autocomplete, link display, final validation).</li>
+  <li>When not definitively validating the form, re-display it while retaining user inputs without actually creating the associated object.</li>
+  <li>When a product is selected, the page returned by the server must contain the link to copy and the configuration for activating the clipboard copy JavaScript behavior.</li>
+</ul>
+
+<p>Handling these additional behaviors indeed requires some server adaptations. But this is a manageable drawback:</p>
+
+<ul>
+  <li>The adaptations are actually simple to implement, with simple additions in the view code sufficing to transmit new data for the different interactions.</li>
+  <li>Rehydrating the form with parameters received by the server preserves the input.</li>
+  <li>It’s unnecessary to distinguish individual actions; differentiating final validation from a simple interaction request suffices. This approach generalizes easily, and the amount of code doesn’t increase with the number of interactive behaviors (all handled with a single controller modification).</li>
+  <li>Another approach would also require server-side adaptations (e.g., an API to return the list or link to copy). Note that the adaptations required by progressive enhancement are more generic and thus easier to maintain.</li>
+</ul>
+
+<p>This approach isn’t dependent on the type of functionality and can be generalized to any type of interactive behavior. Additionally, the functionalities themselves are generic and can be reused in different contexts, combining to provide an optimal experience tailored to user environment quality.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Progressive enhancement, while not a new concept, remains relevant. It allows designing all needed functionalities using standard web technologies, progressively complemented with JavaScript to enrich user experience. Even though many services launch without considering degraded conditions users might experience, especially on mobile, progressive enhancement lets you reach a broader audience and offer a satisfactory user experience.</p>
+
+<p>The benefits of this approach are numerous. By reducing the amount of JavaScript used, it leads to lighter, simpler, and easier-to-maintain code. Maintenance becomes easier, as the JavaScript code is also more general and reusable. This method also offers increased robustness, with user interactions being more reliable thanks to the use of standard request/response cycles of the browser, which also provide better default error handling.</p>
+
+<p>Finally, while adopting progressive enhancement requires some server-side adjustments, these are simple and generic, promoting scalability and maintainability of the code. By integrating these principles, developers can design performant and accessible applications.</p>
+
+  </div>
+
+  
+  
+
+  
+    <p>&laquo; <a rel="previous" href="/en/rails/actioncontroller/actionview/2024/10/15/les-bonnes-pratiques-avec-les-formulaires-rails.html">Best Practices Guide for Simple and Clean Rails Forms</a> &laquo;
+  <a class="u-url" href="/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html" hidden></a>
+</article>
+
+    </main>
+
+    <footer>
+      <p>&copy; ILYBA</p>
+      <nav>
+        
+          
+          <a href="/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html" >Français</a> |
+          English |
+          
+          <a href="/ja/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html" >日本語</a>
+        
+      </nav>
+    </footer>
+  </body>
+</html>
