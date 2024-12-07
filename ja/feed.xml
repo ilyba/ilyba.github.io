@@ -1,4 +1,139 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="ja" /><updated>2024-11-05T07:20:57+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">2024年にプログレッシブエンハンスメントを継続する理由？</title><link href="/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html" rel="alternate" type="text/html" title="2024年にプログレッシブエンハンスメントを継続する理由？" /><published>2024-11-05T06:00:00+00:00</published><updated>2024-11-05T06:00:00+00:00</updated><id>/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement</id><content type="html" xml:base="/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html"><![CDATA[<h1 id="はじめに">はじめに</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="ja" /><updated>2024-12-07T09:35:28+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">PostgreSQLのインストール方法: Homebrew対Docker対Postgres.app</title><link href="/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html" rel="alternate" type="text/html" title="PostgreSQLのインストール方法: Homebrew対Docker対Postgres.app" /><published>2024-11-26T06:00:00+00:00</published><updated>2024-11-26T06:00:00+00:00</updated><id>/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app</id><content type="html" xml:base="/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html"><![CDATA[<h1 id="はじめに">はじめに</h1>
+
+<p>PostgreSQLのインストールは、いくつかの方法で行うことができます。本記事では、さまざまなインストール方法の利点と欠点を探り、どの方法が特定のニーズに最適かを判断します。</p>
+
+<p>本番環境用のインストールと開発用のインストールの違いを理解することは重要です。なぜなら、それぞれのコンテキストには独自の課題と優先事項があるからです。</p>
+
+<p>まずは本番環境に関する一般的な考慮事項から始め、その後、開発環境におけるさまざまなインストール方法について深く掘り下げていきます。</p>
+
+<h1 id="本番環境でのpostgresqlのインストール">本番環境でのPostgreSQLのインストール</h1>
+
+<p>本番環境でのPostgreSQLのインストール方法を選択することは、アプリケーションのパフォーマンス、セキュリティ、堅牢性を確保するために不可欠です。この概要はすべての可能性を網羅しているわけではありませんが、選択肢を明確にし、特定のニーズに最も適したオプションに向けたガイドを提供することを目的としています。特に、マネージドデータベースを使用することと、独自の専用サーバーにインストールすることの違いについて説明します。</p>
+
+<h2 id="マネージドデータベースサービスの使用">マネージドデータベースサービスの使用</h2>
+
+<p>多くのプロジェクト、特に始まったばかりのプロジェクトにとって、マネージドデータベースインスタンスを選択することが最も明白な選択であることが多いです。このアプローチの主な利点は次のとおりです：</p>
+
+<ul>
+  <li><strong>デプロイの容易さ:</strong> 簡単にセットアップでき、通常ワンクリックで安全で最適化されています。手動や技術的なインストール手順は不要です。</li>
+  <li><strong>即時の可用性:</strong> データベースはたいてい数十秒後に利用可能です。</li>
+  <li><strong>メンテナンスの容易化:</strong> 更新とメンテナンスがプロバイダーによって管理されます。</li>
+  <li><strong>簡略化された統合:</strong> 接続URLをアプリケーションに追加するだけで済みます。</li>
+  <li><strong>自動バックアップ:</strong> このサービスも一般的にプロバイダーが管理しています。</li>
+  <li><strong>高度な機能:</strong> 冗長性のようなオプションへのアクセス。</li>
+  <li><strong>時間の節約:</strong> 特にプロジェクトの最初に、開発に集中することができます。</li>
+</ul>
+
+<p>しかし、いくつかの欠点があります：</p>
+
+<ul>
+  <li><strong>コストの増加:</strong> ニーズが増えるにつれて（実際には：データベースをより大きなインスタンスにアップグレードするとき）、コストが急増することがあります。</li>
+  <li><strong>移行の複雑さ:</strong> データベースが大きくなった場合、他のプロバイダーへの移行がより複雑で、より高価で、アプリケーションのダウンタイムが増加します。</li>
+  <li><strong>制御の限定:</strong> サーバーへの直接制御ができず、すべてのオプションにアクセスできないかもしれません。</li>
+  <li><strong>必要な知識:</strong> データベースの内部動作の詳細を理解し、データベース内のデータ量が増えるにつれて良好なパフォーマンスを維持するための知識が必要です。</li>
+  <li><strong>プロバイダーへの依存:</strong> 問題が発生した場合、貴重な助けとなることもありますが、ブロックする要因にもなり得るプロバイダーへの依存。</li>
+</ul>
+
+<p>例えば、私たちの会社は最初にマネージドデータベースサービスを選択しました。しかし、あるインシデントの後、コントロールの欠如が、他のプロバイダーへの移行、同様にマネージドサービスへの移行を予想以上に複雑にすることに気づき、それにより内部で管理されたソリューションを検討することになりました。</p>
+
+<p>結論として、このソリューションはシンプルなニーズに適しています。即時のニーズと予算を考慮してください。アプリケーションが進化するにつれて、コストとコントロールの欠如が別の選択肢を正当化するかどうか評価してください。</p>
+
+<h2 id="専用サーバーへのインストール">専用サーバーへのインストール</h2>
+
+<p>PostgreSQLを自分で管理するサーバーにインストールすることも、もう一つの有効なオプションです。これは、Dockerを使って行うことも、従来のインストールを行うこともできます。これは、利用者の技術の好みによります。考慮すべき点として以下のようなものがあります：</p>
+
+<ul>
+  <li><strong>Dockerによるメンテナンス:</strong> Dockerを使用することで、PostgreSQLのアップデートに加え、Dockerのアップデートも管理する必要がある追加のメンテナンス層が追加されます。</li>
+  <li><strong>プリコンフィギュアされたイメージ:</strong> Dockerはすぐに使えるイメージを提供しており、手動のインストールと比べて初期設定を簡単にします。</li>
+  <li><strong>使いやすさ:</strong> Dockerに不慣れな人にとっては、従来のインストールの方が直感的または使いやすいかもしれません。</li>
+  <li><strong>既存インフラへの統合:</strong> Dockerがシステム内の他のサービスで既に使用されている場合、Dockerを通じてPostgreSQLを統合することで、設定を調和させることができます。</li>
+</ul>
+
+<p>これらの2つのアプローチは、リソースとセキュリティの観点で比較可能です。このソリューションは高パフォーマンスや特定の設定を必要とするアプリケーションに理想的です。例えば、マネージドサービスでサポートされていない拡張機能を必要とする場合です。サービス料に関していくつかのマネージドサービスよりも経済的である可能性がありますが、システムのセキュリティと適切な動作を保つための継続的な投資が必要です。問題が発生した場合、外部の連絡先もありません。</p>
+
+<p>成長中の企業で内部メンテナンスに必要なリソースを持っている場合、このソリューションが推奨されます。チームが必要なスキルを持ち、継続的なトレーニングのために予算を計画することが重要です。定期的なアップデート、メンテナンス、最適化のための持続的なコミットメントが不可欠です。</p>
+
+<h1 id="開発者向けのpostgresql">開発者向けのPostgreSQL</h1>
+
+<p>最近のPostgreSQLに関するリサーチでは、Postgres.appを使ったインストールがよく推奨されていることに気づきました。個人的には、Homebrewを使用することが私にとっては理想的でした。</p>
+
+<p>ここでは、Macの環境に焦点を当てますが、議論される概念は他のオペレーティングシステムにも容易に適応できます。この考察は、開発者に利用可能なオプションをよりよく理解させ、その作業環境やソフトウェアの好みに基づいて選択を助けることを目的としています。</p>
+
+<h2 id="postgresappを使って">Postgres.appを使って</h2>
+
+<p>Postgres.appを使ったインストールには、いくつかの注目すべき利点があります：</p>
+
+<ul>
+  <li><strong>グラフィカルインターフェース:</strong> 基本的ではありますが、データベースとのインタラクションに追加の快適性を提供します。</li>
+  <li><strong>スタンドアロンインストール:</strong> 必要な依存関係がすべて統合されており、追加のインストールを避けることができます。</li>
+  <li><strong>バージョン柔軟性:</strong> 複数のPostgreSQLバージョンを同時にインストールして実行でき、さまざまなバージョンでのテストや開発を容易にします。</li>
+</ul>
+
+<p>このようにして、Homebrewをまだ利用していない開発者にとって、Postgres.appはしばしば最も合理的な選択であり、実験と開発を簡素化します。</p>
+
+<h2 id="homebrewを使って">Homebrewを使って</h2>
+
+<p>Homebrewを介してPostgreSQLをインストールすることの<a href="https://chrisrbailey.medium.com/postgres-on-mac-skip-brew-use-postgres-app-dda95da38d74">よく言及される欠点</a>の一つは、それがパッケージを自動的に更新することです。これには2つの主要な問題が伴います。第一に、ローカルのメジャーバージョンの更新が本番環境からの乖離を引き起こす可能性があり、開発と本番環境をできるだけ類似させておくことが重要です。第二に、メジャーアップグレードがストレージフォーマットの互換性をなくし、データベースが起動できなくなる可能性があります。</p>
+
+<p>しかしながら、Homebrewにはこの問題を回避するための簡単なソリューションがあります。<code class="language-plaintext highlighter-rouge">@</code>と<code class="language-plaintext highlighter-rouge">brew link</code>を使用して使用するメジャーバージョンを指定することができます。また、<code class="language-plaintext highlighter-rouge">pin</code>コマンドを使えば、必要であればマイナーバージョンを固定することもできます：</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>postgresql@17
+brew pin postgresql@17
+brew <span class="nb">link </span>postgresql@17
+</code></pre></div></div>
+
+<p>これらのコマンドを適用することで、ローカル環境が本番環境のバージョンを正確に反映することを保証し、互換性の問題を減少させます。Homebrewの自動メジャーバージョンの更新による不便を避け、PostgreSQLの起動を妨げることがなくなります。</p>
+
+<h2 id="railsでの設定">Railsでの設定</h2>
+
+<p>Homebrewを使うにせよ、Postgres.appを使うにせよ、PostgreSQLをアプリケーション（例としてRails）に統合する際には特に設定は必要ありません。デフォルトの権限は、本番環境デプロイのためのベストプラクティスには準じていませんが、開発には問題ありません。私の<code class="language-plaintext highlighter-rouge">database.yml</code>の例を以下に示します：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">default</span><span class="pi">:</span> <span class="nl">&amp;default</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">postgresql</span>
+  <span class="na">encoding</span><span class="pi">:</span> <span class="s">unicode</span>
+  <span class="c1"># コネクションプーリングに関する詳細は、Rails設定ガイドを参照</span>
+  <span class="c1"># http://guides.rubyonrails.org/configuring.html#database-pooling</span>
+  <span class="na">pool</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %&gt;</span>
+
+<span class="na">development</span><span class="pi">:</span>
+  <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">myapp_development</span>
+</code></pre></div></div>
+
+<p>これは、アプリケーション作成時にPostgreSQLをデータベースとして構成することを選ぶだけで、Railsによって生成されたデフォルトの設定であり、何の修正もないものです。その後、次のようにしてデータベースを作成することができます：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails new myapp <span class="nt">--database</span><span class="o">=</span>postgresql
+bin/setup
+</code></pre></div></div>
+
+<p>その後、データベースへの接続は単に以下のようにして行います：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails db
+</code></pre></div></div>
+
+<p>そして、PostgreSQL側で何も設定することなく、ユーザーを作成することもなく私のアプリケーションは動作します。</p>
+
+<p>Postgres.appを利用する際には、コマンドラインツールを使用するために、シェルの<code class="language-plaintext highlighter-rouge">PATH</code>変数に適切なパスを<a href="https://postgresapp.com/documentation/cli-tools.html">追加することを忘れないようにしてください</a>。</p>
+
+<h2 id="dockerを使用して">Dockerを使用して</h2>
+
+<p>開発環境におけるDockerとのPostgreSQLの統合は、検討すべき潜在的な代替案を提示します。</p>
+
+<p>すでにDockerを基盤とした環境で、かつその設定に慣れている場合、ちょうど本番環境のように使うことは良い選択です。しかし、これはDockerのインストールを必要とし、Mac上でパフォーマンスの問題を引き起こす可能性があります。これらの問題を避けるために、Docker Desktopの代わりにOrbStackのような代替策を使用することができます。</p>
+
+<p>Dockerを使ったインストールは、すでに使用されている設定である場合に非常に有利です。これにより、すべてのサービスをそれと一緒に起動することが可能です。Dockerに特に投資していない場合は、Postgres.appやHomebrewがより良い代替になるかもしれません。</p>
+
+<p>最終的に、Dockerを使用することで前述のシンプルなアプリケーション設定を利用することが可能ですが、これはDockerがどのようにPostgreSQLをインストールしたかの設定次第です。</p>
+
+<h1 id="結論">結論</h1>
+
+<p>最終的に、PostgreSQLのインストール方法の選択は、パフォーマンス、セキュリティ、およびリソース管理に関する特定のニーズの徹底的な分析によって導かれるべきです。小規模なプロジェクトに取り組んでいる開発者は、複雑なアプリケーションを管理する企業と同じ期待を持っていないでしょう。</p>
+
+<p>決断を下す前に、プロジェクトの成長の可能性を評価しましょう。現在のニーズを満たし、将来の進化に適応するソリューションを選択してください。</p>
+
+<p>プロジェクトの立ち上げ時や個々の開発者には、マネージドデータベースが大きな快適さを提供することがあります。逆に、特定のパフォーマンス要件と必要な技術資源を持つ企業は、専用サーバーやDockerによるインストールを好むことが多いでしょう。</p>
+
+<p>すべてのケースで優れた普遍的なソリューションは存在しません。これらの要素を慎重に評価することによって、自分の環境に最も適したPostgreSQLのインストールソリューションを選択してください。プロジェクトの進展に応じて選択を調整しましょう。</p>]]></content><author><name></name></author><category term="PostgreSQL" /><category term="Homebrew" /><category term="Docker" /><summary type="html"><![CDATA[はじめに]]></summary></entry><entry><title type="html">2024年にプログレッシブエンハンスメントを継続する理由？</title><link href="/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html" rel="alternate" type="text/html" title="2024年にプログレッシブエンハンスメントを継続する理由？" /><published>2024-11-05T06:00:00+00:00</published><updated>2024-11-05T06:00:00+00:00</updated><id>/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement</id><content type="html" xml:base="/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html"><![CDATA[<h1 id="はじめに">はじめに</h1>
 
 <p>プログレッシブエンハンスメントは、Webデザインの手法で、まず機能のミニマリストかつ堅牢なバージョンを作成します。つまり、2000年代のブラウザでも使用可能なものです。その後、その上に現代的な機能を段階的に追加していきます。</p>
 

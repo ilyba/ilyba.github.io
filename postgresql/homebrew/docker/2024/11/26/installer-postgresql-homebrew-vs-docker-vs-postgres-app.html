@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Installer PostgreSQL : Homebrew vs. Docker vs. Postgres.app | ILYBA</title>
+<meta name="generator" content="Jekyll v4.3.4" />
+<meta property="og:title" content="Installer PostgreSQL : Homebrew vs. Docker vs. Postgres.app" />
+<meta property="og:locale" content="fr" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html" />
+<meta property="og:url" content="/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html" />
+<meta property="og:site_name" content="ILYBA" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-11-26T06:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Installer PostgreSQL : Homebrew vs. Docker vs. Postgres.app" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-11-26T06:00:00+00:00","datePublished":"2024-11-26T06:00:00+00:00","description":"Introduction","headline":"Installer PostgreSQL : Homebrew vs. Docker vs. Postgres.app","mainEntityOfPage":{"@type":"WebPage","@id":"/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html"},"url":"/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="ILYBA" /></head>
+  
+  <body>
+    <header>
+      <a style="text-decoration: none" class="logo" href="/">
+        <img style="margin-bottom: -0.15em; height: 1em;" src="/assets/images/logo.svg" />
+        ILYBA
+      </a>
+
+      <nav class="menu">
+        
+        
+          <a href="/services/">Services</a>
+        
+          <a href="/blog/">Blog</a>
+        
+          <a href="/pricing/">Nos tarifs</a>
+        
+          <a href="/contact/">Contact</a>
+        
+      </nav>
+    </header>
+
+    <main>
+      <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Installer PostgreSQL : Homebrew vs. Docker vs. Postgres.app</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2024-11-26T06:00:00+00:00" itemprop="datePublished">26 novembre 2024</time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="introduction">Introduction</h1>
+
+<p>L’installation de PostgreSQL peut être réalisée de plusieurs manières. Dans cet article, nous allons explorer les avantages et les inconvénients de différentes méthodes d’installation pour déterminer laquelle répondra le mieux à vos besoins spécifiques.</p>
+
+<p>Comprendre les distinctions entre les installations destinées à un environnement de production et celles conçues pour le développement est crucial, chaque contexte ayant ses propres défis et priorités.</p>
+
+<p>Nous débuterons des considérations générales sur les environnements de production, avant de plonger plus en détail dans les différentes alternatives d’installation dans le cadre d’un environnement de développement.</p>
+
+<h1 id="installer-postgresql-en-production">Installer PostgreSQL en production</h1>
+
+<p>Choisir le bon moyen d’installer PostgreSQL dans un environnement de production est essentiel pour garantir la performance, la sécurité et la robustesse de votre application. Bien que cet aperçu ne couvre pas toutes les possibilités, il vise à clarifier vos choix et à vous guider vers l’option la plus adaptée à vos besoins spécifiques. Je vous exposerai notamment les différences entre l’utilisation de bases de données gérées et l’installation sur vos propres serveurs dédiés.</p>
+
+<h2 id="utiliser-un-service-de-base-de-données-gérée">Utiliser un service de base de données gérée</h2>
+
+<p>Pour de nombreux projets, notamment ceux qui démarrent, opter pour une instance de base de données gérée est souvent le choix le plus évident. Voici les avantages majeurs de cette approche :</p>
+
+<ul>
+  <li><strong>Déploiement aisé :</strong> Facile à mettre en place, souvent en un clic, sécurisé et optimisé par défaut. Aucun besoin de procédures manuelles ou techniques pour l’installation.</li>
+  <li><strong>Disponibilité immédiate :</strong> La base de données est généralement disponible après quelques dizaines de secondes.</li>
+  <li><strong>Maintenance facilitée :</strong> Les mises à jour et la maintenance sont gérées par le prestataire.</li>
+  <li><strong>Intégration simplifiée :</strong> L’URL de connexion peut être simplement ajoutée à votre application.</li>
+  <li><strong>Sauvegardes automatisées :</strong> Ce service est généralement également géré par le prestataire.</li>
+  <li><strong>Fonctionnalités avancées :</strong> Accès à des options comme la redondance.</li>
+  <li><strong>Gain de temps :</strong> Permet un focus sur le développement, surtout au démarrage du projet.</li>
+</ul>
+
+<p>Cependant, il existe quelques inconvénients :</p>
+
+<ul>
+  <li><strong>Coût croissant :</strong> Le coût peut devenir prohibitif à mesure que vos besoins augmentent (en pratique : vous mettez à jour votre base avec des instances plus grandes et cela coute plus cher).</li>
+  <li><strong>Complexité de migration :</strong> Une fois que votre base de données sera devenue importante, la migration vers un autre prestataire sera plus complexe, plus couteuse et nécessitera une indisponibilité de votre application plus importante.</li>
+  <li><strong>Contrôle limité :</strong> Vous n’aurez pas directement la main sur le serveur et vous n’aurez pas forcément accès à toutes les options.</li>
+  <li><strong>Connaissances nécessaires :</strong> Une compréhension des détails de fonctionnement internes de la base de données restera nécessaire pour conserver de bonnes performances à mesure que le volume de données dans la base augmente.</li>
+  <li><strong>Dépendance au fournisseur :</strong> La dépendance au fournisseur, qui peut être une aide précieuse mais également un point de blocage en cas de problèmes.</li>
+</ul>
+
+<p>Par exemple, notre entreprise a initialement opté pour un service de base de données géré. Cependant, après un incident, nous avons réalisé que le manque de contrôle rendait la migration vers un autre fournisseur (géré également) plus complexe que prévue, ce qui nous a poussés à envisager une solution gérée en interne.</p>
+
+<p>En conclusion, cette solution convient pour des besoins simples. Réfléchissez à vos besoins immédiats par rapport à votre budget. À mesure que votre application évolue, considérez si le coût et le manque de contrôle justifient alternative.</p>
+
+<h2 id="installation-sur-un-serveur-dédié">Installation sur un serveur dédié</h2>
+
+<p>Installer PostgreSQL sur un serveur sous votre administration est une autre option viable. Ceci peut être réalisé via Docker ou une installation classique, selon vos préférences et votre familiarité avec ces technologies. Voici quelques distinctions à prendre en compte :</p>
+
+<ul>
+  <li><strong>Maintenance avec Docker :</strong> Utiliser Docker ajoute une couche de maintenance supplémentaire, nécessitant la gestion des mises à jour de Docker en parallèle de celles de PostgreSQL.</li>
+  <li><strong>Images préconfigurées :</strong> Docker vous propose des images prêtes à l’emploi, simplifiant le processus initial par rapport à un montage manuel.</li>
+  <li><strong>Confort d’utilisation :</strong> Pour ceux moins familiers avec Docker, une installation classique pourrait être plus intuitive.</li>
+  <li><strong>Intégration dans l’infrastructure existante :</strong> Si Docker est déjà présent pour d’autres services dans votre système, intégrer PostgreSQL à travers Docker vous permettra d’harmoniser votre configuration.</li>
+</ul>
+
+<p>Les deux approches sont comparables en termes de ressources et de sécurité. Cette solution est idéale pour les applications nécessitant des performances élevées et une configuration spécifique, par exemple si vos besoins incluent des extensions non prises en charge par des services gérés. Bien que potentiellement moins coûteuse que certains services gérés en frais de service, elle demande un investissement continu pour maintenir la sécurité et le bon fonctionnement du système. Et vous n’aurez pas de contact extérieur en cas de problème.</p>
+
+<p>Cette solution est préconisée pour les entreprises en croissance disposant des ressources nécessaires à la maintenance interne. Il est crucial que votre équipe possède les compétences requises, tout en prévoyant un budget pour la formation continue. Un engagement soutenu est indispensable pour les mises à jour, la maintenance et l’optimisation régulière.</p>
+
+<h1 id="postgresql-pour-les-développeurs">PostgreSQL pour les développeurs</h1>
+
+<p>Dans mes recherches récentes sur PostgreSQL, j’ai souvent remarqué une recommandation pour l’installation via Postgres.app. Personnellement, j’ai trouvé que l’utilisation de Homebrew me convenait parfaitement.</p>
+
+<p>Je vais me concentrer ici sur l’environnement Mac, bien que les concepts discutés puissent facilement être adaptés à d’autres systèmes d’exploitation. Cette réflexion vise à offrir aux développeurs une meilleure compréhension des options disponibles, et à les aider à choisir en fonction de leur environnement de travail et de leurs préférences logicielles.</p>
+
+<h2 id="avec-postgresapp">Avec Postgres.app</h2>
+
+<p>L’installation via Postgres.app présente plusieurs avantages notables :</p>
+
+<ul>
+  <li><strong>Interface graphique :</strong> Bien que basique, elle apporte un confort supplémentaire dans l’interaction avec les bases de données.</li>
+  <li><strong>Installation autonome :</strong> Toutes les dépendances nécessaires sont intégrées, évitant des installations supplémentaires.</li>
+  <li><strong>Flexibilité des versions :</strong> Permet d’installer et d’exécuter plusieurs versions de PostgreSQL simultanément, facilitant ainsi le test et le développement sur différentes versions.</li>
+</ul>
+
+<p>Ainsi, pour les développeurs qui ne s’appuient pas déjà sur Homebrew, Postgres.app constitue souvent le choix le plus judicieux, simplifiant l’expérimentation et le développement.</p>
+
+<h2 id="avec-homebrew">Avec Homebrew</h2>
+
+<p>L’un des <a href="https://chrisrbailey.medium.com/postgres-on-mac-skip-brew-use-postgres-app-dda95da38d74">inconvénients souvent mentionnés</a> de l’installation de PostgreSQL via Homebrew réside dans le fait qu’il mette à jour automatiquement les packages. Cela pose deux problèmes majeurs : d’abord, les mises à jour des versions majeures en local peuvent entraîner une divergence par rapport à l’environnement de production, alors qu’il est essentiel de maintenir les environnements de développement et de production aussi similaires que possible. Ensuite, une mise à jour majeure peut rendre le format de stockage utilisé incompatible, empêchant ainsi le démarrage de la base de données.</p>
+
+<p>Cependant, Homebrew offre des solutions simples pour éviter ce problème. Vous pouvez préciser la version majeure à utiliser avec <code class="language-plaintext highlighter-rouge">@</code> et <code class="language-plaintext highlighter-rouge">brew link</code>. Vous pouvez également fixer la version mineure si vous le souhaitez avec la commande <code class="language-plaintext highlighter-rouge">pin</code> :</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>postgresql@17
+brew pin postgresql@17
+brew <span class="nb">link </span>postgresql@17
+</code></pre></div></div>
+
+<p>En appliquant ces commandes, vous vous assurez que votre environnement local reflète précisément la version de votre environnement de production, réduisant ainsi les problèmes de compatibilité.</p>
+
+<p>En appliquant ces commandes, vous vous assurez que votre environnement local reflète précisément la version de votre environnement de production, réduisant ainsi les risques de problèmes de compatibilité. Vous éviterez également les désagréments liés aux mises à jour automatiques de Homebrew de versions majeures qui peuvent empêcher PostgreSQL de démarrer.</p>
+
+<h2 id="configuration-dans-rails">Configuration dans Rails</h2>
+
+<p>Que vous utilisiez Homebrew ou Postgres.app, l’intégration de PostgreSQL dans une application (Rails dans l’exemple) ne nécessite aucune configuration. Les droits par défaut ne respectent pas les bonnes pratiques pour un déploiement en production, ne posent aucun problème pour du développement. Voici pour illustration un extrait de mon <code class="language-plaintext highlighter-rouge">database.yml</code>:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">default</span><span class="pi">:</span> <span class="nl">&amp;default</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">postgresql</span>
+  <span class="na">encoding</span><span class="pi">:</span> <span class="s">unicode</span>
+  <span class="c1"># For details on connection pooling, see Rails configuration guide</span>
+  <span class="c1"># http://guides.rubyonrails.org/configuring.html#database-pooling</span>
+  <span class="na">pool</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %&gt;</span>
+
+<span class="na">development</span><span class="pi">:</span>
+  <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">myapp_development</span>
+</code></pre></div></div>
+
+<p>C’est exactement la configuration par défaut générée par Rails lors de la création de l’application, simplement en en choisissant de configurer PostgreSQL comme base de données, sans aucune modification. Après cela je peux créer la base :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails new myapp <span class="nt">--database</span><span class="o">=</span>postgresql
+bin/setup
+</code></pre></div></div>
+
+<p>Ensuite, la connexion à la base de données se fait simplement via :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails db
+</code></pre></div></div>
+
+<p>Et mon application fonctionne sans rien avoir à configuré du côté de PostgreSQL. Pas d’utilisateur à créer ou quoi que ce soit.</p>
+
+<p>Un point à ne pas oublier avec Postgres.app, pour utiliser les outils en ligne de commande,  <a href="https://postgresapp.com/documentation/cli-tools.html">assurez-vous d’ajouter le chemin approprié à la variable <code class="language-plaintext highlighter-rouge">PATH</code> de votre shell</a>.</p>
+
+<h2 id="avec-docker">Avec Docker</h2>
+
+<p>Intégrer PostgreSQL avec Docker dans votre développement présente une alternative potentielle à considérer.</p>
+
+<p>Si votre environnement est déjà basé sur Docker et que vous êtes à l’aise avec sa configuration, tout comme en production, c’est une bonne option. Cependant, cela nécessite l’installation de Docker, ce qui pourrait entraîner des problèmes de performance sur Mac. Pour éviter ces problèmes, vous pouvez utiliser une alternative comme OrbStack à la place de Docker Desktop.</p>
+
+<p>L’installation via Docker sera très avantageuse si votre configuration l’utilise déjà, car elle vous permettra de démarrer tous vos services avec. Si n’avez pas particulièrement investi dans Docker, Postgres.app ou Homebrew peuvent être de meilleures alternatives.</p>
+
+<p>Enfin, avec Docker, il est possible d’utiliser la configuration simplifiée d’application décrite précédemment, mais cela dépendra de la configuration avec laquelle Docker aura installé PostgreSQL.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>En fin de compte, le choix de la méthode d’installation de PostgreSQL doit être guidé par une analyse approfondie de vos besoins spécifiques en matière de performances, de sécurité et de gestion des ressources. Un développeur travaillant sur un petit projet n’aura pas les mêmes attentes qu’une entreprise gérant une application complexe.</p>
+
+<p>Avant de prendre une décision, évaluez la croissance potentielle de votre projet. Optez pour une solution qui non seulement répond à vos besoins actuels, mais aussi s’adapte à son évolution future.</p>
+
+<p>Pour les débuts de projets ou pour les développeurs individuels, une base de données gérée peut apporter un confort considérable. À l’inverse, les entreprises avec des exigences spécifiques en matière de performance et les ressources techniques nécessaires préféreront souvent une installation sur serveur dédié ou via Docker.</p>
+
+<p>Il n’existe pas de solution universelle qui serait supérieure aux autres dans tous les cas. En évaluant attentivement ces facteurs, vous pouvez choisir la solution d’installation de PostgreSQL la mieux adaptée à vos environnements. Adaptez vos choix au fil du temps pour répondre aux évolutions de votre projet.</p>
+
+  </div>
+
+  
+  
+
+  
+    <p>&laquo; <a rel="previous" href="/rails/hotwire/stimulus/turbo/2024/11/05/pourquoi-continuer-a-faire-du-progressive-enhancement.html">Pourquoi continuer à faire du progressive enhancement en 2024 ?</a> &laquo;
+  <a class="u-url" href="/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html" hidden></a>
+</article>
+
+    </main>
+
+    <footer>
+      <p>&copy; ILYBA</p>
+      <nav>
+        
+          Français |
+          
+          <a href="/en/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html" >English</a> |
+          
+          <a href="/ja/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html" >日本語</a>
+        
+      </nav>
+    </footer>
+  </body>
+</html>
