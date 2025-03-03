@@ -1,4 +1,80 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-03-01T23:01:08+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Install PostgreSQL: Homebrew vs. Docker vs. Postgres.app</title><link href="/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html" rel="alternate" type="text/html" title="Install PostgreSQL: Homebrew vs. Docker vs. Postgres.app" /><published>2024-11-26T06:00:00+00:00</published><updated>2024-11-26T06:00:00+00:00</updated><id>/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app</id><content type="html" xml:base="/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-03-03T07:09:43+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">ActiveRecord vs Repository: Understanding Their Differences</title><link href="/ruby/rails/architecture/2025/03/02/le-pattern-active-record-n-est-pas-repository.html" rel="alternate" type="text/html" title="ActiveRecord vs Repository: Understanding Their Differences" /><published>2025-03-02T07:00:00+00:00</published><updated>2025-03-02T07:00:00+00:00</updated><id>/ruby/rails/architecture/2025/03/02/le-pattern-active-record-n-est-pas-repository</id><content type="html" xml:base="/ruby/rails/architecture/2025/03/02/le-pattern-active-record-n-est-pas-repository.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+
+<p>I am going to talk about a well-known case study. All Rails developers are confronted sooner or later with the need to send an email after performing an operation in the database. Typically, sending a welcome email to a user after they have registered for the service. However, this simple task can quickly become complicated, especially when it involves ActiveRecord callbacks, database transactions, and queues…</p>
+
+<p>This sets the stage to illustrate the confusion that can arise in Ruby on Rails between the ActiveRecord and Repository patterns.</p>
+
+<h1 id="scenario">Scenario</h1>
+
+<p>The situation is quite ordinary: a user registration corresponds to the creation of a row in the <code class="language-plaintext highlighter-rouge">users</code> table in the database. If we use ActiveRecord terminology, we would simply say that we are going to create a new user.</p>
+
+<p>And this is perfect, our developer might not have much experience, but they have studied well and know that in ActiveRecord we have a callback called <code class="language-plaintext highlighter-rouge">after_create</code>, and we want to send an email right after the user is created.</p>
+
+<p>Our junior developer has also learned that emails must be sent using a queue, and so they use Sidekiq, Good Job, or Solid Queue.</p>
+
+<p>In no time, within 5 minutes, our dev sets up the email to be sent after creation… It seems to work, but there’s a catch… It doesn’t work every time; it’s very unstable: sometimes the email is sent, sometimes it’s not.</p>
+
+<h1 id="problem-analysis">Problem Analysis</h1>
+
+<p>To understand what is going wrong, our junior needs to grasp how transactions intervene here.</p>
+
+<p>Rails uses transactions for database operations (a <code class="language-plaintext highlighter-rouge">save</code>). This means that if an error occurs during the creation of a user, the entire transaction (insertion into the <code class="language-plaintext highlighter-rouge">users</code> table and other associated actions) is cancelled, and nothing is modified in the database. If everything goes smoothly, Rails commits the transaction, and all the tables are updated at the same time.</p>
+
+<p>And here is where the problem arises. Our app uses the <code class="language-plaintext highlighter-rouge">after_create</code> callback to add the email to the queue, and this callback is triggered before the transaction has finished. When the email is queued, the transaction is not yet complete. When the email job is triggered, the transaction is not necessarily committed, and the user is not yet fully created in the database. This causes an error when trying to retrieve the user, as they are not yet visible in the database during the execution of the job.</p>
+
+<h1 id="the-bad-advice-from-the-senior">The Bad Advice from the Senior</h1>
+
+<p>Obviously, our junior, not understanding what is going wrong, goes to see a senior who tells them: “You poor thing, you’ve used callbacks, that’s evil, be damned for eternity!”</p>
+
+<p>Our junior is even more confused – why are there callbacks in Rails if we’re not allowed to use them?</p>
+
+<p>“But you’ve misunderstood the separation of concerns. ActiveRecord is for the database, you can’t use it to send emails, for that you need to use a service. And don’t call your service with ActiveRecord, use your controller. But since that will dirty your controller, use dry-transaction<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.”</p>
+
+<p>And so our junior developer ends up spending a week just to send an email.</p>
+
+<p>Our senior didn’t mean any harm, but this doesn’t solve the real problem and unnecessarily complicates the situation.</p>
+
+<h1 id="lets-distribute-the-bad-points">Let’s Distribute the Bad Points</h1>
+
+<p>In this case, our senior developer is wrong. They’re not wrong to praise the merits of the dry ecosystem, the separation of concerns, or separating database code from code related to external services, but they are absolutely wrong to impose this on our junior.</p>
+
+<p>The senior’s mistake lies in a confusion: the junior’s problem is not related to using callbacks. In fact, the callback would never have been a problem if the email was not being sent in a job. The job is not the problem either; everything would work fine if the job was triggered after the transaction.</p>
+
+<p>This is exactly what our junior should do here: replace the <code class="language-plaintext highlighter-rouge">after_create</code> with <code class="language-plaintext highlighter-rouge">after_create_commit</code>. In this case, the email will be sent after the transaction has finished, which will solve the problem. Our junior will then have the opportunity to deepen their understanding of how callbacks work internally, their order, and their interactions with database transactions.</p>
+
+<p>In this case, and this is the advice the senior should have given first, even if they wanted to digress and later discuss architectural points, rather than using an argument that is at best incorrect, and at worst fallacious, to impose their own way of working and seek reassurance for their own software architecture decisions. By doing so, they are not helping our junior, and instead of solving their problem, they are bypassing it.</p>
+
+<p>However, the senior’s solution also works, although it is more costly to implement.</p>
+
+<h1 id="activerecord-is-not-the-repository-pattern">ActiveRecord is Not the Repository Pattern</h1>
+
+<p>Another confusion made by our senior is that ActiveRecord is not the repository pattern.</p>
+
+<p>If we go back to the definition of ActiveRecord, the ActiveRecord class is designed to encapsulate both data and business logic. Now, sending emails is very much part of business logic, and in this pattern, it is perfectly legitimate for it to be triggered by ActiveRecord.</p>
+
+<p>In the Repository pattern, this is not the case; the responsibility of a Repository class is solely to communicate with the database and therefore should contain no business logic. In Rails, it is possible to use ActiveRecord with the Repository pattern, but this would require doing away with many of ActiveRecord’s features (and this likely includes callbacks).</p>
+
+<p>But it’s an architectural choice. There’s not just one way to do things. Each choice has its consequences, advantages, and disadvantages. And, of course, it’s also a matter of personal preference.</p>
+
+<p>For me, the main advantage of ActiveRecord is code readability, the magical aspect that is actually just complexity hidden away (to ask a dog to bark, we write <code class="language-plaintext highlighter-rouge">dog.bark!</code>, not <code class="language-plaintext highlighter-rouge">DogBarker.new(AnimalFactory.create(:dog, DogAttributeValidator.validate(dog_attributes)).call</code>, for example, even if the action involves calling an external service or whatever, the implementation details are hidden).</p>
+
+<p>But there’s a price to pay for this advantage. And those who are not willing to pay that price can absolutely choose another architecture. But they should not feel compelled to impose their decision on everyone else to reassure themselves about their own architectural decisions.</p>
+
+<p>Let’s leave our junior to make their own architectural choices, weighing up the pros and cons.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Every architectural choice has its own flaws. ActiveRecord has its own, but callbacks are a powerful tool, and I find it a shame to discourage junior devs from using them rather than encouraging them to understand how they work and use them correctly in order to master them.</p>
+
+<p>In our debates, let’s use arguments, remain factual, pragmatic, open, and polite. And let’s not use straw man arguments, as I have done here…</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>The dry-transaction tool is an approach that allows encapsulating business steps into distinct objects, which helps better structure the code by separating responsibilities. However, for the sake of consistency, its use will require converting the entire application’s code to this approach, as well as training the development team. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>]]></content><author><name></name></author><category term="Ruby" /><category term="Rails" /><category term="Architecture" /><summary type="html"><![CDATA[Introduction]]></summary></entry><entry><title type="html">Install PostgreSQL: Homebrew vs. Docker vs. Postgres.app</title><link href="/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html" rel="alternate" type="text/html" title="Install PostgreSQL: Homebrew vs. Docker vs. Postgres.app" /><published>2024-11-26T06:00:00+00:00</published><updated>2024-11-26T06:00:00+00:00</updated><id>/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app</id><content type="html" xml:base="/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html"><![CDATA[<h1 id="introduction">Introduction</h1>
 
 <p>The installation of PostgreSQL can be carried out in several ways. In this article, we will explore the advantages and disadvantages of different installation methods to determine which one will best meet your specific needs.</p>
 

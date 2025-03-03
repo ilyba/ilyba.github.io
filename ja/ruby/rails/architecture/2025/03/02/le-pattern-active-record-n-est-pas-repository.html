@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>ActiveRecord vs Repository: それぞれの違いを理解する | ILYBA</title>
+<meta name="generator" content="Jekyll v4.3.4" />
+<meta property="og:title" content="ActiveRecord vs Repository: それぞれの違いを理解する" />
+<meta property="og:locale" content="ja" />
+<meta name="description" content="はじめに" />
+<meta property="og:description" content="はじめに" />
+<link rel="canonical" href="/ruby/rails/architecture/2025/03/02/le-pattern-active-record-n-est-pas-repository.html" />
+<meta property="og:url" content="/ruby/rails/architecture/2025/03/02/le-pattern-active-record-n-est-pas-repository.html" />
+<meta property="og:site_name" content="ILYBA" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-03-02T07:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="ActiveRecord vs Repository: それぞれの違いを理解する" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-03-02T07:00:00+00:00","datePublished":"2025-03-02T07:00:00+00:00","description":"はじめに","headline":"ActiveRecord vs Repository: それぞれの違いを理解する","mainEntityOfPage":{"@type":"WebPage","@id":"/ruby/rails/architecture/2025/03/02/le-pattern-active-record-n-est-pas-repository.html"},"url":"/ruby/rails/architecture/2025/03/02/le-pattern-active-record-n-est-pas-repository.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="ILYBA" /></head>
+  
+  <body>
+    <header>
+      <a style="text-decoration: none" class="logo" href="/ja">
+        <img style="margin-bottom: -0.15em; height: 1em;" src="/assets/images/logo.svg" />
+        ILYBA
+      </a>
+
+      <nav class="menu">
+        
+        
+          <a href="/ja/services/">サービス</a>
+        
+          <a href="/ja/blog/">ブログ</a>
+        
+          <a href="/ja/pricing/">当社の価格</a>
+        
+          <a href="/ja/contact/">連絡先</a>
+        
+      </nav>
+    </header>
+
+    <main>
+      <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">ActiveRecord vs Repository: それぞれの違いを理解する</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2025-03-02T07:00:00+00:00" itemprop="datePublished">２０２５年３月２日</time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="はじめに">はじめに</h1>
+
+<p>今回はよく知られたケーススタディについて話します。すべてのRails開発者は、データベース操作を行った後にメールを送信する必要に直面します。典型的には、ユーザーがサービスに登録した後に歓迎メールを送ることです。しかし、この単純なタスクは、特にActiveRecordのコールバックやデータベーストランザクション、キューが関わると、すぐに複雑になりがちです…</p>
+
+<p>この問題は、Ruby on RailsにおけるActiveRecordパターンとRepositoryパターンの間で生じる混乱を説明するための前提です。</p>
+
+<h1 id="シナリオ">シナリオ</h1>
+
+<p>状況は非常に普通です：ユーザー登録はデータベースの<code class="language-plaintext highlighter-rouge">users</code>テーブルに行を作成することに対応します。ActiveRecordの用語を使うと、単純に「新しいユーザーを作成する」と言います。</p>
+
+<p>そして、これが完璧です。私たちの開発者はあまり経験がないかもしれませんが、しっかり学んでおり、ActiveRecordには<code class="language-plaintext highlighter-rouge">after_create</code>というコールバックがあり、ユーザーが作成された後にメールを送信したいということを理解しています。</p>
+
+<p>また、私たちのジュニア開発者は、メール送信はキューを使って行うべきだと学んでおり、SidekiqやGood Job、Solid Queueを使っています。</p>
+
+<p>あっという間に、5分で、開発者はユーザー作成後にメールを送信する設定をしました…それは動作しているように見えますが、問題があります…毎回うまくいくわけではなく、とても不安定です。時々はメールが送信されますが、時々は送信されません。</p>
+
+<h1 id="問題の分析">問題の分析</h1>
+
+<p>何がうまくいかないのかを理解するために、ジュニア開発者はここでトランザクションがどのように関わっているのかを理解する必要があります。</p>
+
+<p>Railsはデータベース操作（<code class="language-plaintext highlighter-rouge">save</code>）にトランザクションを使用します。つまり、ユーザー作成中にエラーが発生すると、トランザクション全体（<code class="language-plaintext highlighter-rouge">users</code>テーブルへの挿入やその他の関連するアクション）はキャンセルされ、データベース内の何も変更されません。すべてが順調に進むと、Railsはトランザクションをコミットし、すべてのテーブルが同時に更新されます。</p>
+
+<p>そして、ここで問題が発生します。私たちのアプリでは<code class="language-plaintext highlighter-rouge">after_create</code>コールバックを使用してメールをキューに追加しますが、このコールバックはトランザクションが終了する前にトリガーされます。メールがキューに追加された時点では、トランザクションはまだ完了していません。メールジョブがトリガーされるとき、トランザクションは必ずしもコミットされておらず、ユーザーはまだデータベース内で完全に作成されていないため、ジョブの実行中にユーザーがデータベースに見つからないというエラーが発生します。</p>
+
+<h1 id="シニアからの誤ったアドバイス">シニアからの誤ったアドバイス</h1>
+
+<p>もちろん、ジュニア開発者は何がうまくいかないのか理解できず、シニアに相談します。シニアはこう言います。「君は不運だ、コールバックを使っているのは悪だ、永遠に呪われるべきだ！」</p>
+
+<p>ジュニアはさらに混乱します – もしコールバックを使ってはいけないなら、なぜRailsにコールバックがあるのでしょうか？</p>
+
+<p>「君は責任分担を理解していない。ActiveRecordはデータベース用で、メール送信に使ってはいけない。メール送信にはサービスを使うべきだ。しかも、ActiveRecordを使ってサービスを呼ばないで、コントローラを使うべきだ。しかし、コントローラが汚れてしまうから、dry-transaction<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>を使うんだ。」</p>
+
+<p>そして、ジュニア開発者はメールを送るために1週間を費やすことになります。</p>
+
+<p>シニアは悪意があったわけではありませんが、これでは実際の問題を解決せず、状況を不必要に複雑にしています。</p>
+
+<h1 id="誤った点を整理しましょう">誤った点を整理しましょう</h1>
+
+<p>このケースでは、シニア開発者は間違っています。dryエコシステムや責任分担、データベースコードと外部サービス関連のコードの分離の利点を称賛することは間違っていませんが、それをジュニアに強制するのは間違いです。</p>
+
+<p>シニアの間違いは、誤解にあります。ジュニアの問題はコールバックの使用に関するものではありません。実際、もしメールがジョブ内で送信されなければ、コールバックは問題にならなかったでしょう。ジョブも問題ではなく、もしジョブがトランザクションの後にトリガーされていれば、すべてうまくいったはずです。</p>
+
+<p>ここでジュニアがやるべきことは、<code class="language-plaintext highlighter-rouge">after_create</code>を<code class="language-plaintext highlighter-rouge">after_create_commit</code>に置き換えることです。この場合、メールはトランザクションが完了した後に送信され、問題が解決します。これにより、ジュニアはコールバックの内部動作やその順序、データベーストランザクションとの相互作用をより深く理解することができるでしょう。</p>
+
+<p>シニアは、このアドバイスを最初に伝えるべきでした。もしアーキテクチャの議論をしたいのであれば、誤った、あるいは最悪の場合は詐欺的な論点を使って自分の方法を強制し、ソフトウェアアーキテクチャの決定に安心を求める代わりに、ジュニアを助けるべきでした。こうすることで、ジュニアを助けることなく、問題を回避することになります。</p>
+
+<p>ただし、シニアの解決策も機能しますが、それを実装するにはコストがかかります。</p>
+
+<h1 id="activerecordはrepositoryパターンではない">ActiveRecordはRepositoryパターンではない</h1>
+
+<p>シニアが犯したもう一つの誤解は、ActiveRecordがRepositoryパターンではないということです。</p>
+
+<p>ActiveRecordの定義に戻ると、ActiveRecordクラスはデータとビジネスロジックの両方をカプセル化することを目的としています。さて、メール送信はビジネスロジックの一部であり、このパターンではActiveRecordによってトリガーされることが完全に正当です。</p>
+
+<p>Repositoryパターンでは、これは当てはまりません。Repositoryクラスの責任は、データベースとの通信のみであり、ビジネスロジックを含んではいけません。Railsでは、ActiveRecordをRepositoryパターンと一緒に使用することも可能ですが、これはActiveRecordの多くの機能（おそらくコールバックも含む）を放棄することを意味します。</p>
+
+<p>しかし、これはアーキテクチャの選択です。一つのやり方しかないわけではありません。各選択肢には、それぞれの結果、利点、欠点があります。そして、もちろん、それは個人の好みにも関わる問題です。</p>
+
+<p>私にとって、ActiveRecordの主な利点はコードの可読性であり、その魔法のような部分は実際には隠された複雑さです（例えば、犬に吠えさせるために<code class="language-plaintext highlighter-rouge">dog.bark!</code>と書く代わりに、<code class="language-plaintext highlighter-rouge">DogBarker.new(AnimalFactory.create(:dog, DogAttributeValidator.validate(dog_attributes)).call</code>のように書かないということです）。外部サービスを呼び出す場合でも、実装の詳細は隠されています）。</p>
+
+<p>しかし、この利点には代償があります。この代償を払う覚悟がない人は、別のアーキテクチャを選択することができます。しかし、他の全員に自分の決定を強制することなく、その決定を自分で確認すべきです。</p>
+
+<p>ジュニアが自分のアーキテクチャの選択をし、賛否を天秤にかけて判断できるようにしましょう。</p>
+
+<h1 id="結論">結論</h1>
+
+<p>すべてのアーキテクチャ選択には欠点があります。ActiveRecordにも欠点はありますが、コールバックは強力なツールであり、ジュニア開発者がそれを使用するのを躊躇させるのではなく、どのように機能し、正しく使う方法を理解し、使いこなせるように促すことは重要だと思います。</p>
+
+<p>議論の中で、論拠を使い、事実に基づき、実用的で、開かれた態度を保ち、礼儀正しく接しましょう。そして、私がここでやったようなストローマン論法を使わないようにしましょう…</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>dry-transactionツールは、ビジネスステップを異なるオブジェクトにカプセル化するアプローチで、責任を分離することによりコードの構造を改善します。ただし、一貫性のために、アプローチに合わせてアプリケーション全体のコードを変換する必要があり、開発チームのトレーニングも必要となります。 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+
+  
+  
+
+  
+    <p>&laquo; <a rel="previous" href="/ja/postgresql/homebrew/docker/2024/11/26/installer-postgresql-homebrew-vs-docker-vs-postgres-app.html">PostgreSQLのインストール方法: Homebrew対Docker対Postgres.app</a> &laquo;
+  <a class="u-url" href="/ruby/rails/architecture/2025/03/02/le-pattern-active-record-n-est-pas-repository.html" hidden></a>
+</article>
+
+    </main>
+
+    <footer>
+      <p>&copy; ILYBA</p>
+      <nav>
+        
+          
+          <a href="/ruby/rails/architecture/2025/03/02/le-pattern-active-record-n-est-pas-repository.html" >Français</a> |
+          
+          <a href="/en/ruby/rails/architecture/2025/03/02/le-pattern-active-record-n-est-pas-repository.html" >English</a> |
+          日本語
+        
+      </nav>
+    </footer>
+  </body>
+</html>
