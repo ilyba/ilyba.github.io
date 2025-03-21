@@ -16,3 +16,5 @@
     </li>
   {% endfor %}
 </ul>
+
+<a href="/ja/blog" class="btn-primary">すべての記事</a>

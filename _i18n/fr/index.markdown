@@ -16,3 +16,5 @@
     </li>
   {% endfor %}
 </ul>
+
+<a href="/blog" class="btn-primary">Tous les articles</a>
