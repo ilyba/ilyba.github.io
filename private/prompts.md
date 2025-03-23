@@ -5,7 +5,7 @@
 ```
 
 ```
-Translate this technical blog post into **British English**. Do not summarise. Keep it as literal as possible. Keep the formatting.
+Translate this technical blog post into **British English**. Do not summarise. Keep it as literal as possible. Keep the formatting. Just output the translation without comments.
 
 Title:
 
