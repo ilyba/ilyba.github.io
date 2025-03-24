@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Fail Fast : échouer rapidement pour corriger les bugs en production | ILYBA</title>
+<meta name="generator" content="Jekyll v4.3.4" />
+<meta property="og:title" content="Fail Fast : échouer rapidement pour corriger les bugs en production" />
+<meta property="og:locale" content="fr" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="/bonnes-pratiques/ruby/rails/architecture/2025/03/24/fail-fast-echouer-rapidement-pour-corriger-les-bugs.html" />
+<meta property="og:url" content="/bonnes-pratiques/ruby/rails/architecture/2025/03/24/fail-fast-echouer-rapidement-pour-corriger-les-bugs.html" />
+<meta property="og:site_name" content="ILYBA" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-03-24T07:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Fail Fast : échouer rapidement pour corriger les bugs en production" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-03-24T07:00:00+00:00","datePublished":"2025-03-24T07:00:00+00:00","description":"Introduction","headline":"Fail Fast : échouer rapidement pour corriger les bugs en production","mainEntityOfPage":{"@type":"WebPage","@id":"/bonnes-pratiques/ruby/rails/architecture/2025/03/24/fail-fast-echouer-rapidement-pour-corriger-les-bugs.html"},"url":"/bonnes-pratiques/ruby/rails/architecture/2025/03/24/fail-fast-echouer-rapidement-pour-corriger-les-bugs.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="ILYBA" /></head>
+  
+  <body>
+    <header>
+      <a style="text-decoration: none" class="logo" href="/">
+        <img style="margin-bottom: -0.15em; height: 1em;" src="/assets/images/logo.svg" />
+        ILYBA
+      </a>
+
+      <nav class="menu">
+        
+        
+          <a href="/services/">Services</a>
+        
+          <a href="/blog/">Blog</a>
+        
+          <a href="/pricing/">Nos tarifs</a>
+        
+          <a href="/contact/">Contact</a>
+        
+      </nav>
+    </header>
+
+    <main>
+      <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Fail Fast : échouer rapidement pour corriger les bugs en production</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2025-03-24T07:00:00+00:00" itemprop="datePublished">24 mars 2025</time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="introduction">Introduction</h1>
+
+<p>La stratégie ‘fail fast’ consiste à détecter les erreurs le plus tôt possible dans le cycle de développement ou d’exécution d’une application, afin de les corriger immédiatement et éviter qu’elles ne causent des problèmes plus graves par la suite. Cela permet d’améliorer la stabilité et la maintenabilité du code.</p>
+
+<p>Dans une application Web, la qualité de service perçue par l’utilisateur repose sur votre capacité à détecter les erreurs et à les traiter rapidement.</p>
+
+<p>Dans cet article, nous verrons comment les outils de monitoring permettent d’identifier et de corriger rapidement la majorité des erreurs. Nous aborderons ensuite les stratégies pour gérer des erreurs plus complexes.</p>
+
+<h1 id="les-outils-de-monitoring">Les outils de monitoring</h1>
+
+<p>Dans une application Rails, les erreurs sont envoyées dans un log et si personne ne le consulte, elles passeront inaperçues à moins qu’un utilisateur ne les signale.</p>
+
+<p>C’est pourquoi il est recommandé d’utiliser des outils de monitoring dédiés comme Rollbar, AppSignal ou Sentry. Ces outils permettent de gérer efficacement vos erreurs via une interface conviviale. L’installation d’un tel outil doit être une priorité dans une nouvelle application.</p>
+
+<p>Ainsi, les erreurs sont regroupées, comptabilisées et triées pour vous permettre de vous concentrer sur les plus importantes. Vous êtes averti immédiatement quand elles surviennent, ce qui permet de réagir rapidement et minimise la gêne pour les utilisateurs.</p>
+
+<h1 id="prioriser-les-correctifs">Prioriser les correctifs</h1>
+
+<p>Si vous avez installé votre outil de monitoring dès le début du projet, la quantité d’erreurs à traiter devrait être suffisamment faible, vous permettant de les corriger au fur et à mesure.</p>
+
+<p>La stratégie est simple : lorsqu’une erreur survient, vous recevez une notification. Si le volume est faible, il est préférable d’interrompre votre travail en cours pour consulter et corriger l’erreur sur le champ.</p>
+
+<p>Lorsque le volume est plus important, il devient nécessaire de prioriser. Voici quelques questions à se poser pour cela :</p>
+
+<h2 id="dois-je-interrompre-mon-travail-pour-traiter-les-erreurs-">Dois-je interrompre mon travail pour traiter les erreurs ?</h2>
+
+<p>Si les erreurs sont trop nombreuses, les interruptions risquent de retarder d’autres correctifs ou d’empêcher l’avancement de nouvelles fonctionnalités. Dans ce cas, il est plus efficace de planifier un suivi régulier des erreurs et d’intégrer leur correction dans votre flux de travail habituel minimisant ainsi l’impact des interruptions.</p>
+
+<p>Par exemple, vous pouvez prendre un moment chaque jour pour lister les nouvelles erreurs, les référencer dans votre outil de planification et ajuster leur rang dans votre flux de travail selon vos priorités parmi les autres tâches.</p>
+
+<h2 id="quelle-est-lurgence-de-lerreur-">Quelle est l’urgence de l’erreur ?</h2>
+
+<p>Pensez aux conséquences de l’erreur sur vos revenus, votre réputation ou sur l’expérience utilisateur. Y a-t-il des solutions de contournement disponibles ? Ces informations vous aideront à déterminer l’ordre de priorité des correctifs dans la liste de vos tâches.</p>
+
+<h2 id="passez-vous-assez-de-temps-à-corriger-les-erreurs-">Passez-vous assez de temps à corriger les erreurs ?</h2>
+
+<p>Utilisez des indicateurs chiffrés pour suivre l’évolution des erreurs. Le nombre d’erreurs augmente-t-il ou diminue-t-il ? En analysant cette tendance, vous pourrez ajuster le temps consacré à la correction.</p>
+
+<h1 id="résoudre-les-erreurs-complexes-avec-la-stratégie-de-léchec-rapide">Résoudre les erreurs complexes avec la stratégie de l’échec rapide</h1>
+
+<p>Pour la majorité des erreurs, le correctif est évident. Il s’agit souvent d’un oubli lors du développement, et les informations de l’outil de monitoring sont suffisantes pour les corriger rapidement.</p>
+
+<p>Cependant, certaines erreurs sont plus difficile à interpréter. Par exemple, quand une variable ou un attribut d’un objet vaut <code class="language-plaintext highlighter-rouge">nil</code> alors que le code attend une valeur.</p>
+
+<p>Cela peut arriver même quand une validation est présente dans l’application. Et ce pour plusieurs raisons. Par exemple :</p>
+
+<ul>
+  <li>Des données ont été ajoutées ou modifiées sans validation (volontairement ou non)</li>
+  <li>La validation a été ajoutée après l’existence de données non conformes.</li>
+</ul>
+
+<p>On se retrouve alors avec des données invalides qui causent des bugs à divers endroits de l’application, parfois difficiles à diagnostiquer.</p>
+
+<p>Par exemple, si un utilisateur est supprimé dans une application sans contrainte de base de données, ses commandes peuvent devenir orphelines. Si à un autre endroit du code on essaye de trouver l’utilisateur associé à une commande on obtiendra l’erreur classique <code class="language-plaintext highlighter-rouge">undefined method `name' for nil</code>. Pour éviter cela, une contrainte de clé étrangère garantit que la suppression d’un utilisateur est impossible si des commandes lui sont associées. Cela empêche les incohérences et rend l’erreur explicite dès qu’elle se produit.</p>
+
+<p>Dans ce cas, après avoir corrigé les données incorrectes dans la base, je recommande d’ajouter une contrainte dans la base de données pour empêcher l’apparition de telles données.</p>
+
+<p>Par exemple, on peut utiliser :</p>
+
+<ul>
+  <li>une contrainte d’intégrité (<code class="language-plaintext highlighter-rouge">NOT NULL</code>, <code class="language-plaintext highlighter-rouge">FOREIGN KEY</code>, <code class="language-plaintext highlighter-rouge">UNIQUE</code>)</li>
+  <li>Un trigger (une action déclenchée par la base de données sous certaines conditions).</li>
+</ul>
+
+<p>De cette façon lorsque le problème se reproduit, l’outil de monitoring affichera directement le code responsable.</p>
+
+<p>L’ajout de telles contraintes peut cependant soulever des inquiétudes légitimes. Voici comment y faire face.</p>
+
+<h1 id="dans-un-environnement-contraint">Dans un environnement contraint</h1>
+
+<p>Lorsque je propose ce type de solutions, je fais souvent face à des réticences, et ce pour de  bonnes raisons  :</p>
+
+<ul>
+  <li>La contrainte risque d’empêcher un traitement de fonctionner normalement et d’entraîner la perte des données envoyées pour le réaliser.</li>
+  <li>Plutôt que de corriger le problème, on ajoute des erreurs supplémentaires.</li>
+</ul>
+
+<p>Ces réticences sont légitimes, mais l’alternative est pire : accepter de vivre avec des erreurs. À terme, les données incorrectes se multiplieront et rendront l’application instable.</p>
+
+<p>De plus, la situation est temporaire. Certes, un utilisateur devra faire face à une erreur, mais on sera ainsi capable de mettre en place rapidement un correctif définitif. Avec des données validées, on obtient la garantie que l’erreur ne se produira plus jamais dans votre application.</p>
+
+<p>Si le traitement est critique, vous pouvez retirer la contrainte sitôt le problème reproduit pour minimiser l’impact. Il existe des cas où même cela est inacceptable, si vous êtes confronté à un tel cas vous pouvez accepter le traitement et faire remonter une erreur, mais cette solution sera plus complexe à mettre en œuvre quand la source de l’erreur est la base de données. Vous pouvez modifier votre trigger pour ajouter des données dans une table, avec PostgreSQL vous pouvez aussi utiliser une règle (<code class="language-plaintext highlighter-rouge">CREATE RULE</code>) avec <code class="language-plaintext highlighter-rouge">NOTIFY</code>. Vous pourrez ensuite ajouter un traitement pour faire remonter les erreurs dans l’outil de monitoring.</p>
+
+<h1 id="avantages-de-cette-stratégie">Avantages de cette stratégie</h1>
+
+<p>Cette approche illustre bien les avantages de la stratégie “fail fast” : faire échouer le système dès qu’une condition anormale est détectée.</p>
+
+<p>On l’a illustré ici avec des contraintes de bases de données, mais la stratégie peut s’appliquer aussi dans d’autres contextes, en vérifiant les pré-conditions d’une méthode au début de son exécution.</p>
+
+<p>En échouant rapidement, on empêche la propagation de données invalides dans le code, évitant ainsi l’ajout de logique défensive superflue et facilitant la maintenance. L’ajout de code défensif est une mauvaise stratégie : car il est généralement impossible de connaître exhaustivement les endroits nécessitant actuellement une vérification et encore moins d’empêcher les modifications futures d’oublier de faire la vérification.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Moins de bugs signifie moins de temps perdu à les corriger, ce qui libère du temps pour améliorer et faire évoluer l’application. Cette approche crée un cercle vertueux où la maintenance devient plus efficace et les nouvelles fonctionnalités plus simples à implémenter.</p>
+
+<p>Bien que contre-intuitive, la stratégie d’échec rapide est une bonne pratique qui réduit les bugs et simplifie la maintenance de l’application.</p>
+
+<p>Moins d’erreurs signifie moins de temps perdu à les corriger, libérant ainsi des ressources pour améliorer et faire évoluer le produit. En instaurant ce réflexe, on crée un cercle vertueux : la maintenance devient plus efficace, le code plus robuste et les nouvelles fonctionnalités plus simples à implémenter.</p>
+
+  </div>
+
+  
+  
+
+  
+    <p>&laquo; <a rel="previous" href="/ruby/rails/architecture/2025/03/10/am%C3%A9liorer-la-qualit%C3%A9-de-vos-applications-web.html">Améliorer la qualité du code de vos applications Web</a> &laquo;
+  <a class="u-url" href="/bonnes-pratiques/ruby/rails/architecture/2025/03/24/fail-fast-echouer-rapidement-pour-corriger-les-bugs.html" hidden></a>
+</article>
+
+    </main>
+
+    <footer>
+      <p>&copy; ILYBA</p>
+      <nav>
+        
+          Français |
+          
+          <a href="/en/bonnes-pratiques/ruby/rails/architecture/2025/03/24/fail-fast-echouer-rapidement-pour-corriger-les-bugs.html" >English</a> |
+          
+          <a href="/ja/bonnes-pratiques/ruby/rails/architecture/2025/03/24/fail-fast-echouer-rapidement-pour-corriger-les-bugs.html" >日本語</a>
+        
+      </nav>
+    </footer>
+  </body>
+</html>
