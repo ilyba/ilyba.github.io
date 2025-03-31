@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>What criteria to measure and ensure the quality of your code? | ILYBA</title>
+<meta name="generator" content="Jekyll v4.3.4" />
+<meta property="og:title" content="What criteria to measure and ensure the quality of your code?" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" />
+<meta property="og:url" content="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" />
+<meta property="og:site_name" content="ILYBA" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-03-31T07:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="What criteria to measure and ensure the quality of your code?" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-03-31T07:00:00+00:00","datePublished":"2025-03-31T07:00:00+00:00","description":"Introduction","headline":"What criteria to measure and ensure the quality of your code?","mainEntityOfPage":{"@type":"WebPage","@id":"/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html"},"url":"/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="ILYBA" /></head>
+  
+  <body>
+    <header>
+      <a style="text-decoration: none" class="logo" href="/en">
+        <img style="margin-bottom: -0.15em; height: 1em;" src="/assets/images/logo.svg" />
+        ILYBA
+      </a>
+
+      <nav class="menu">
+        
+        
+          <a href="/en/services/">Services</a>
+        
+          <a href="/en/blog/">Blog</a>
+        
+          <a href="/en/pricing/">Pricing</a>
+        
+          <a href="/en/contact/">Contact</a>
+        
+      </nav>
+    </header>
+
+    <main>
+      <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">What criteria to measure and ensure the quality of your code?</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2025-03-31T07:00:00+00:00" itemprop="datePublished">March 31, 2025</time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="introduction">Introduction</h1>
+
+<p>Throughout my career, I have noticed a major difference between beginner developers and experienced developers in how they approach writing code and quality. The former focus on a specific goal, while the latter take a more holistic approach, considering a wider range of factors.</p>
+
+<p>In this article, I will explain how to improve the quality of your development through a holistic approach using measurable criteria.</p>
+
+<h1 id="the-holistic-approach">The Holistic Approach</h1>
+
+<p>At the beginning of one’s career, the primary concern is to produce code that achieves the main expected result. This is logical, but in reality, achieving the expected result is not as important as one might think. In fact, it’s actually secondary…</p>
+
+<p>Indeed, it is quite common for the first version of code not to work properly. While the code will ultimately need to be functional before delivery, this is not the most difficult part to fix.</p>
+
+<p>On the other hand, if the initial draft of code has structural issues, uses unclear variable or method names, and doesn’t follow best practices, it is very likely to cause problems later on.</p>
+
+<p>This is why an experienced developer will spend more effort verifying, confirming, and questioning certain details of the specifications, ensuring that their wording corresponds to the most efficient way of meeting the requirement. Then, they will explore different technical approaches, select the most appropriate one, and think about the architecture of the code, the naming of concepts, the different use cases, the side effects of a solution on other parts of the application, as well as error cases, etc. And this list is far from exhaustive…</p>
+
+<p>It is only once the reflection on these aspects is complete that they will focus on the purely functional aspects of the code.</p>
+
+<p>The advantage of this approach is that it results in code that will be easier to maintain over time. This advantage comes with a trade-off: the effort and development time will be higher. This is a short-term disadvantage that will only be compensated for in the long term because considering all these aspects reduces the risk of bugs. Well-structured code with clear and relevant naming makes it easier to read, using an appropriate level of abstraction facilitates modification and adding new features.</p>
+
+<p>In other words, while it is faster to dive straight into the code, this approach costs more later on with bugs, performance problems, and an application that is difficult to evolve.</p>
+
+<p>But what will determine whether code is easy to maintain or not?</p>
+
+<h1 id="the-specification-phase">The Specification Phase</h1>
+
+<p>Let’s focus again on the specification phase. These documents are sometimes neglected, seen as a time-consuming step in development that adds little value.</p>
+
+<p>However, a well-written specification helps to avoid:</p>
+
+<ul>
+  <li><strong>Non-compliant delivery.</strong> For example, due to unclear phrasing, the developer may interpret it differently from what the document author intended. Another possibility is that the document is so long and complex that the developer misses some details.</li>
+  <li><strong>Conforming delivery that doesn’t meet real needs.</strong> For instance, a poor choice of interface.</li>
+  <li><strong>Technical design or performance problems.</strong> Even for a functional specification, if future needs are not anticipated, architectural choices may be affected and cause issues later on.</li>
+</ul>
+
+<p>To write a good specification, solid experience is of course useful, but it often proves insufficient. It is essential for the document to be reviewed and discussed with the stakeholders as well as the technical team. If these discussions are properly taken into account, it will have a major impact on the quality of the developments.</p>
+
+<p>In my experience, I’ve always noticed the same trend: initially, specifications are neglected, and after some time spent dealing with bugs, contradictions (when a modification breaks another function or use case), efforts are made to write better-quality specifications (hiring a product owner, adding review processes, etc.). And consistently, substantial improvements are seen, even if this doesn’t solve all the problems.</p>
+
+<h2 id="tips-for-writing-a-specification">Tips for Writing a Specification</h2>
+
+<p>Over time, my approach to writing specifications has evolved significantly. There is no one-size-fits-all method. Some will find this method too cumbersome, while others may not find it detailed enough. It all depends on the price you’re willing to pay or the consequences you’re prepared to accept, depending on your perspective. I primarily use two formats: user stories and bug reports. The vast majority of tasks can be written in at least one of these two formats.</p>
+
+<h2 id="user-story">User Story</h2>
+
+<p>First, the title should be clear and specify the following elements:</p>
+
+<ul>
+  <li><strong>The actor:</strong> the primary beneficiary of the development</li>
+  <li><strong>An action:</strong> the main focus of the development.</li>
+  <li><strong>A goal/benefit:</strong> what the completion of the action allows. This could correspond to the benefit the actor gains from the action, for example. Often overlooked, this is essential to confirm the usefulness of a development. If the goal is hard to formulate, it may be because the feature lacks value.</li>
+</ul>
+
+<p>Here is the model I use: As a **<actor>**, I want to **<action>** in order to **<goal>**.</goal></action></actor></p>
+
+<p>Example: As a <strong>customer</strong>, I want to <strong>view the list of my orders</strong> in order to <strong>know my purchase history and reduce pressure on customer support</strong>.</p>
+
+<p>Next, I divide the writing into three sections:</p>
+
+<ul>
+  <li><strong>A context:</strong> A few sentences that clarify the purpose of the specification. To write this, you can describe the current situation and the problem to be solved.
+For example: Customer support receives numerous requests from customers who want to know their order history, but this feature does not exist in our application.</li>
+  <li><strong>A description:</strong> This is the heart of the description where we will describe as precisely as possible the expected result. Depending on the project and the developers’ experience, this section may also contain some implementation details if we want to lock them in, but personally, I prefer to leave as much autonomy as possible to developers on technical details.</li>
+  <li><strong>Acceptance criteria:</strong> This section is essential. Sometimes it is a rewording of the description. It allows the developer to confirm the correct understanding of the specification and provides a list of criteria to avoid rejections from the quality team during delivery. It also gives the quality team a solid base to validate or reject a feature.</li>
+</ul>
+
+<p>For all tasks, in addition to these sections, I assign a priority level.</p>
+
+<h2 id="bug-report">Bug Report</h2>
+
+<p>A good bug report helps avoid misunderstandings that delay problem resolution.</p>
+
+<p>The title should be a succinct and precise description of the problem.</p>
+
+<p>For example: On the main page, pressing the Enter key does not trigger the search.</p>
+
+<p>When writing, it may be tempting, in the heat of frustration, to use the term ‘Regression.’ However, I highly recommend avoiding this unless you can document this fact precisely in the report (with identical tests on two different versions of the application, for example). Often, this term proves inaccurate or needs qualification, while sending a negative message to the development team: “You’ve broken something again.” This unnecessarily degrades the working environment.</p>
+
+<p>My advice: Even in the case of confirmed regression, avoid putting this term in the title and instead add the details in the body of the text. You can, however, assign different priority levels to your tickets.</p>
+
+<p>The body of the report consists of three parts:</p>
+
+<ul>
+  <li><strong>Reproduction steps.</strong> A precise step-by-step list to reproduce the issue.</li>
+  <li><strong>Expected result.</strong></li>
+  <li><strong>Observed result.</strong></li>
+</ul>
+
+<h1 id="the-development-phase">The Development Phase</h1>
+
+<p>During the development phase, here are some tips for improving the quality of your output:</p>
+
+<ul>
+  <li>As mentioned earlier, take a holistic approach. Try to think about all aspects of the functionality and not just the objective. Consider the impacts on other features, future changes, readability, maintainability, etc.</li>
+  <li>Take the time to think about the structure of your code. Ask yourself whether you need to simplify or, on the contrary, add more levels of abstraction.</li>
+  <li>Apply best practices whenever possible, including the KISS (<em>Keep It Simple and Stupid</em>), YAGNI (<em>You Are Not Gonna Need It</em>), SRP (<em>Single Responsibility Principle</em>), DRY (<em>Don’t Repeat Yourself</em>), don’t reinvent the wheel (<a href="https://blog.codinghorror.com/dont-reinvent-the-wheel-unless-you-plan-on-learning-more-about-wheels/">unless you want to learn more about wheels</a>, or unless the wheels are poorly suited), etc.</li>
+  <li>Consider performance and optimisation aspects. Are the SQL queries performant? Are there any algorithmic problems?</li>
+  <li>Also consider documentation. It’s not always necessary, but when it is, it should be written. And when it exists, it must be kept up to date.</li>
+  <li>Use a linter to standardise your codebase and avoid structural issues (e.g., overly complex code, not following best practices, etc.). Personally, I use Rubocop with all default rules and erb-lint with most optional rules enabled.</li>
+  <li>Add automated tests, and for bug fixes, write regression tests.</li>
+</ul>
+
+<h1 id="indicators-to-measure-the-quality-of-developments">Indicators to Measure the Quality of Developments</h1>
+
+<p>You now know my tips for improving your specifications and developments. But what worked for me might not work for you. Fortunately, it’s not necessary to apply all of this blindly. Let’s now look at the criteria to use to measure the evolution of quality in your environment.</p>
+
+<p>Implementing these tips may require some effort. It will be difficult to distinguish between improvements due to changes in your processes and those due to other factors (the increasing competence of your team, changes in other processes, etc.). Tracking a few indicators won’t be enough to precisely identify the most effective measures, but it will help you assess your progress and adjust your decisions accordingly.</p>
+
+<p>Here are some indicators whose evolution you can track to determine the quality of your developments:</p>
+
+<ul>
+  <li>The number of errors in your application</li>
+  <li>The number of tasks delivered per unit of time (never use Scrum points directly for this, the number of tasks is a more reliable criterion with no undesirable side effects).</li>
+  <li>The distribution of Scrum points (the proportion of tasks with a given number of points compared to others). This indicator helps shed light on the previous one (if the number of tasks delivered increases but your team is tending to break down topics more finely, it doesn’t necessarily indicate an increase in productivity).</li>
+  <li>The number of code reviews during the review phase.</li>
+  <li>The number of code reviews during the QA phase.</li>
+  <li>The number of outdated dependencies.</li>
+  <li>The total number of dependencies in the application.</li>
+  <li>The number of bug tickets created per unit of time.</li>
+  <li>The number of urgent tickets created per unit of time.</li>
+  <li>The number of technical tasks with no business value (code refactoring, etc.) per unit of time. This does not include routine maintenance tasks like dependency updates.</li>
+  <li>The proportion of these tickets compared to the overall load, particularly compared to business-required tickets.</li>
+  <li>The number of tickets (and/or Scrum points) in the specification phase.</li>
+  <li>The number of tickets (and/or Scrum points) awaiting development.</li>
+  <li>The number of tickets (and/or Scrum points) in development.</li>
+  <li>The test coverage of the codebase.</li>
+  <li>The ratio of test code to application code.</li>
+</ul>
+
+<p>Personally, I don’t track these indicators in an automated way at the moment, but I have a subjective view of them and consider them when making decisions. I also use them to justify certain choices.</p>
+
+<p>These indicators don’t directly tell you whether your code is of good quality or not, but by tracking their evolution, it’s easy to see if the quality is improving or deteriorating.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Good development quality is not simply about producing functional code. It relies on a holistic approach, taking into account the clarity of specifications, code structure, maintainability, and anticipation of future changes. While this approach requires more initial investment, it helps reduce errors, improves long-term productivity, and facilitates collaboration within teams.</p>
+
+<p>By combining rigorous specification writing, thoughtful development, and monitoring relevant indicators, you will be able to gradually improve the quality of your projects. The goal is not to achieve absolute perfection (which is illusory), but to adopt an iterative and measurable approach that allows for continuous adjustments. Ultimately, good quality code benefits not only developers but also users and the entire business.</p>
+
+  </div>
+
+  
+  
+
+  
+    <p>&laquo; <a rel="previous" href="/en/bonnes-pratiques/ruby/rails/architecture/2025/03/24/fail-fast-echouer-rapidement-pour-corriger-les-bugs.html">Fail Fast: fail quickly to fix bugs in production</a> &laquo;
+  <a class="u-url" href="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" hidden></a>
+</article>
+
+    </main>
+
+    <footer>
+      <p>&copy; ILYBA</p>
+      <nav>
+        
+          
+          <a href="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" >Français</a> |
+          English |
+          
+          <a href="/ja/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" >日本語</a>
+        
+      </nav>
+    </footer>
+  </body>
+</html>

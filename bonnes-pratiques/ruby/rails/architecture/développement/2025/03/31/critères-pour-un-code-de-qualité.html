@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Quels critères pour mesurer et garantir la qualité de votre code ? | ILYBA</title>
+<meta name="generator" content="Jekyll v4.3.4" />
+<meta property="og:title" content="Quels critères pour mesurer et garantir la qualité de votre code ?" />
+<meta property="og:locale" content="fr" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" />
+<meta property="og:url" content="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" />
+<meta property="og:site_name" content="ILYBA" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-03-31T07:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Quels critères pour mesurer et garantir la qualité de votre code ?" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-03-31T07:00:00+00:00","datePublished":"2025-03-31T07:00:00+00:00","description":"Introduction","headline":"Quels critères pour mesurer et garantir la qualité de votre code ?","mainEntityOfPage":{"@type":"WebPage","@id":"/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html"},"url":"/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="ILYBA" /></head>
+  
+  <body>
+    <header>
+      <a style="text-decoration: none" class="logo" href="/">
+        <img style="margin-bottom: -0.15em; height: 1em;" src="/assets/images/logo.svg" />
+        ILYBA
+      </a>
+
+      <nav class="menu">
+        
+        
+          <a href="/services/">Services</a>
+        
+          <a href="/blog/">Blog</a>
+        
+          <a href="/pricing/">Nos tarifs</a>
+        
+          <a href="/contact/">Contact</a>
+        
+      </nav>
+    </header>
+
+    <main>
+      <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Quels critères pour mesurer et garantir la qualité de votre code ?</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2025-03-31T07:00:00+00:00" itemprop="datePublished">31 mars 2025</time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="introduction">Introduction</h1>
+
+<p>Au cours de ma carrière, j’ai constaté une différence majeure entre les développeurs débutants et les développeurs expérimentés dans leur manière d’appréhender l’écriture du code et la qualité. Les premiers se concentrent sur un objectif précis, tandis que les seconds ont une approche plus globale prenant en compte davantage de paramètres différents.</p>
+
+<p>Dans cet article, je vais vous expliquer comment améliorer la qualité de vos développements grâce à une approche globale et en utilisant des critères mesurables.</p>
+
+<h1 id="lapproche-globale">L’approche globale</h1>
+
+<p>En début de carrière, la préoccupation principale est de produire un code qui permet d’obtenir le résultat principal attendu. C’est logique, mais en réalité, obtenir le résultat attendu n’est pas aussi important qu’on pourrait le penser. C’est même plutôt secondaire…</p>
+
+<p>En effet, il est plutôt habituel que la première version d’un code ne fonctionne pas correctement. Même s’il faudra bien rendre le code fonctionnel avant de le livrer, ce n’est pas ce qu’il y a de plus difficile à corriger.</p>
+
+<p>En revanche, si le premier jet d’un code présente des problèmes structurels, utilise des noms de variables ou de méthodes peu explicites et ne respecte pas les bonnes pratiques il est très probable que cela posera des problèmes par la suite.</p>
+
+<p>C’est pour ça qu’un développeur expérimenté consacrera davantage d’efforts à vérifier, confirmer et remettre en question certains détails des spécifications, s’assurer que leur rédaction correspond bien à la manière la plus efficace de répondre au besoin. Puis, il explore différentes approches techniques, choisit la plus adaptée et réfléchit à l’architecture du code, à la nomenclature des concepts, aux différents cas d’utilisation, aux effets de bord d’une solution sur les autres parties de l’application ainsi qu’aux cas d’erreurs, etc. Et cette liste est loin d’être exhaustive…</p>
+
+<p>C’est seulement une fois la réflexion sur ces aspects terminée qu’il se concentrera sur l’aspect purement fonctionnel du code.</p>
+
+<p>L’avantage de cette approche est de produire un code qui sera plus facile à maintenir dans le temps. Cet avantage a une contrepartie : l’effort fourni et le temps de développement seront plus importants. C’est un inconvénient à court terme qui ne sera compensé qu’à long terme car la prise en compte de tous ces aspects permet de réduire le risque de bugs, un code bien structuré avec une nomenclature claire et pertinente facilite la lecture, l’utilisation d’un niveau d’abstraction adéquat facilite la modification et l’ajout de nouvelles fonctionnalités.</p>
+
+<p>Autrement dit, même s’il est plus rapide de foncer tête baissée dans le code, cette approche se paye plus tard avec des bugs, des problèmes de performances et une application difficile à faire évoluer.</p>
+
+<p>Mais qu’est-ce qui déterminera si un code sera facile à maintenir ou non ?</p>
+
+<h1 id="la-phase-de-spécification">La phase de spécification</h1>
+
+<p>Concentrons-nous à nouveau sur la phase de spécification. Ces documents sont parfois négligés, perçus comme une étape chronophage du développement apportant peu de valeur.</p>
+
+<p>Pourtant, une spécification bien rédigée permet d’éviter :</p>
+
+<ul>
+  <li><strong>Une livraison non conforme.</strong> Pour illustrer, on peut imaginer qu’à cause d’une formulation peu claire, le développeur ne l’aura pas interprété comme l’auteur du document. Une autre possibilité est que le document soit tellement long et complexe que le développeur en omette certains détails.</li>
+  <li><strong>Une livraison conforme mais qui ne correspond pas aux besoins réels.</strong> On peut penser à un mauvais choix d’interface.</li>
+  <li><strong>Des problèmes techniques de conception ou de performance.</strong> Même pour une spécification fonctionnelle, si les besoins futurs ne sont pas anticipés par exemple, les choix d’architectures peuvent être affectés et poser problème par la suite.</li>
+</ul>
+
+<p>Pour bien rédiger une spécification, une expérience solide est bien évidemment utile, mais se révèlera souvent insuffisante. Il est essentiel que le document soit relu et discuté avec les donneurs d’ordre ainsi que par l’équipe technique. Si ces discussions sont bien prises en compte, cela aura un impact majeur sur la qualité des développements.</p>
+
+<p>Dans mon expérience, j’ai toujours constaté la même tendance : au départ les spécifications sont négligées et au bout d’un certain temps passé à jongler avec les bugs, les contradictions (quand une modification casse une autre fonction ou un cas d’utilisation), des efforts sont faits pour rédiger des spécifications de meilleure qualité (recrutement d’un product owner, ajout de processus de relecture, etc.). Et systématiquement, on constate des améliorations substantielles même si cela ne suffit pas à résoudre tous les problèmes.</p>
+
+<h2 id="conseils-pour-la-rédaction-dune-spécification">Conseils pour la rédaction d’une spécification</h2>
+
+<p>Pour rédiger une bonne spécification, ma méthode a beaucoup évolué avec le temps. Il n’y a pas de méthode universelle. Certains trouveront cette méthode trop lourde, d’autres pas suffisamment poussée. Tout dépend du prix que vous êtes prêt à mettre ou des conséquences que vous êtes prêts à supporter selon le point de vue. J’utilise principalement deux formats : les user stories et les rapports de bugs. La grande majorité des tâches peut être rédigée dans au moins l’un de ces deux formats.</p>
+
+<h2 id="user-story">User Story</h2>
+
+<p>Tout d’abord, le titre doit être clair et bien préciser les éléments suivants :</p>
+
+<ul>
+  <li><strong>L’acteur :</strong> l’acteur est le principal bénéficiaire du développement</li>
+  <li><strong>Une action :</strong> l’objet principal du développement.</li>
+  <li><strong>Un objectif / bénéfice :</strong> Ce que permet la réalisation de l’action. Cela peut correspondre au bénéfice que l’acteur retire de l’action par exemple. Souvent négligé, il est pourtant essentiel pour confirmer l’utilité d’un développement. Si l’objectif est difficile à formuler, il est possible dans certains cas que ce soit parce que la fonctionnalité ne présente pas d’intérêt.</li>
+</ul>
+
+<p>Voici le modèle que j’utilise : En tant que **<acteur>**, je veux **<action>** afin de **<objectif>**.</objectif></action></acteur></p>
+
+<p>Exemple : En tant que <strong>client</strong>, je veux <strong>consulter la liste de mes commandes</strong> afin de <strong>connaître l’historique de mes achats et désengorger le support client</strong>.</p>
+
+<p>Ensuite, je divise la rédaction en trois sections :</p>
+
+<ul>
+  <li><strong>Un contexte :</strong> Quelques phrases qui précisent la raison d’être de la spécification. Pour la rédiger on peut décrire la situation actuelle et la problématique à résoudre.
+Pour reprendre l’exemple précédent : Le support client reçoit de nombreuses demandes de clients qui souhaitent connaître l’historique de leurs commandes mais cette fonctionnalité n’existe pas dans notre application.</li>
+  <li><strong>Une description :</strong> c’est le cœur de la description où l’on va décrire avec le plus précisément possible le résultat attendu. Selon les projets et l’expérience des développeurs, cette section pourra également contenir certains détails d’implémentation si on souhaite les figer, mais personnellement, je préfère laisser la majorité du temps le plus d’autonomie possible aux développeurs sur les détails techniques.</li>
+  <li><strong>Des critères d’acceptation :</strong> cette section est essentielle. C’est parfois une reformulation de la description. Elle permet au développeur de confirmer la bonne compréhension de la spécification et d’avoir une liste de critères permettant d’éviter des refus de l’équipe qualité au moment de la livraison. Et elle permet à l’équipe qualité d’avoir une base de travail sur laquelle s’appuyer pour valider ou non une fonctionnalité.</li>
+</ul>
+
+<p>Sur toutes les tâches, en plus de ces sections, j’associe un niveau de priorité.</p>
+
+<h2 id="rapport-de-bug">Rapport de bug</h2>
+
+<p>Un bon rapport de bug permet d’éviter les incompréhensions qui retardent la correction des problèmes.</p>
+
+<p>Le titre doit être une description succincte et précise du problème.</p>
+
+<p>Par exemple : Sur la page principale, appuyer sur la touche Entrée ne déclenche pas la recherche.</p>
+
+<p>Lors de la rédaction, il peut être tentant, sous l’effet de la frustration, d’utiliser le terme ‘Régression’. Pourtant, je recommande vivement de l’éviter à moins de documenter précisément cet état de fait dans le rapport (avec un test identique sur deux versions différentes de l’application par exemple). En effet, bien souvent, ce qualificatif se révèle incorrect ou bien à nuancer, tout en envoyant un message négatif à l’équipe de développement : “vous avez encore cassé un truc”. Ce qui dégrade inutilement l’ambiance de travail.</p>
+
+<p>Mon conseil : même en cas de régression avérée, évitez de mettre ce terme dans le titre, et ajoutez plutôt les détails dans le corps du texte. Vous pouvez en revanche attribuer des niveaux de priorité différents sur vos tickets.</p>
+
+<p>Le corps du rapport se compose de trois parties :</p>
+
+<ul>
+  <li><strong>La procédure de reproduction.</strong> Une liste d’étape très précise permettant de reproduire le problème.</li>
+  <li><strong>Le résultat attendu.</strong></li>
+  <li><strong>Le résultat observé.</strong></li>
+</ul>
+
+<h1 id="la-phase-de-développement">La phase de développement</h1>
+
+<p>Lors de la phase de développement, voici quelques conseils pour améliorer la qualité de vos productions :</p>
+
+<ul>
+  <li>Comme vu plus tôt, ayez une approche globale. Essayez de penser à tous les aspects de la fonctionnalité et ne vous focalisez pas uniquement sur l’objectif. Pensez aux impacts sur les autres fonctionnalités, sur les évolutions futures, sur la lisibilité, sur la maintenance, etc.</li>
+  <li>Prenez le temps de réfléchir à la structure de votre code. Posez-vous la question de la nécessité de simplifier ou au contraire ajouter des niveaux d’abstractions supplémentaires.</li>
+  <li>Appliquez autant que possible les bonnes pratiques, notamment les principes KISS (<em>Keep It Simple and Stupid</em> - Gardez votre code simple et stupide), YAGNI (<em>You Are not Gonna Need It</em> - Vous n’en aurez pas besoin), SRP (<em>Single Responsibility Principle</em> - Principe de responsabilité unique), DRY (<em>Do not Repeat Yourself</em> - Ne vous répétez pas), ne pas réinventer la roue (<a href="https://blog.codinghorror.com/dont-reinvent-the-wheel-unless-you-plan-on-learning-more-about-wheels/">sauf si vous voulez en apprendre d’avantage sur les roues</a> ou sauf si les roues sont mal adaptées), etc.</li>
+  <li>Prenez en compte les aspects de performance et d’optimisation. Est-ce que les requêtes SQL sont performantes ? Est-ce qu’il y a des problèmes algorithmiques ?</li>
+  <li>Considérez également la documentation. Elle n’est pas toujours nécessaire, mais quand elle l’est il faut la rédiger. Et quand elle existe, il faut la maintenir à jour.</li>
+  <li>Utilisez un linter pour homogénéiser votre base de code et éviter certains problèmes structurels (code trop complexe, non respect de certaines bonnes pratiques, etc.). Personnellement, j’utilise Rubocop avec toutes les règles par défaut et erb-lint en activant la majorité des règles optionnelles.</li>
+  <li>Ajoutez des tests automatisés et pour les correctifs de bugs, écrivez des tests de non régressions.</li>
+</ul>
+
+<h1 id="indicateurs-pour-mesurer-la-qualité-des-développements">Indicateurs pour mesurer la qualité des développements</h1>
+
+<p>Vous connaissez maintenant mes conseils pour améliorer vos spécifications et vos développements. Mais ce qui a fonctionné pour moi pourrait ne pas fonctionner pour vous. Heureusement, il n’est pas nécessaire d’appliquer tout ça aveuglément. Nous allons maintenant nous pencher sur les critères à utiliser pour mesurer l’évolution de la qualité dans votre environnement.</p>
+
+<p>La mise en place de ces conseils peut impliquer un certain effort. Il sera difficile de faire la part des choses entre la part évolutions dues aux modifications de vos processus et la part dues à d’autres facteurs (la montée en compétence de votre équipe, des évolutions dans d’autres processus, etc.). Le suivi de quelques indicateurs ne suffira pas à identifier précisément les mesures les plus efficaces, mais il vous aidera à évaluer votre progression et à ajuster vos décisions en conséquence.</p>
+
+<p>Voici quelques indicateurs dont vous pouvez suivre l’évolution pour déterminer la qualité de vos développements :</p>
+
+<ul>
+  <li>Le nombre d’erreurs dans votre application</li>
+  <li>Le nombre de tâches livrées par unité de temps (n’utilisez jamais directement les points Scrum pour ça, le nombre de tâche est un critère plus fiable et qui n’a pas d’effet de bord indésirable).</li>
+  <li>La distribution des points Scrum (la proportion des tâches d’un nombre de points donnés par rapport aux autres). Cet indicateur permet d’éclairer le précédent (si le nombre de tâches livrées augmente mais que votre équipe a tendance à découper plus finement les sujets, ça n’indique pas nécessairement une augmentation de la productivité).</li>
+  <li>Le nombre de révisions de code pendant la phase de relecture.</li>
+  <li>Le nombre de révisions de code pendant la phase de QA.</li>
+  <li>Le nombre de dépendances non à jour.</li>
+  <li>Le nombre de dépendances totales dans l’application.</li>
+  <li>Le nombre de tickets de bugs créés par unité de temps.</li>
+  <li>Le nombre de tickets urgents créés par unité de temps.</li>
+  <li>Le nombre de tâches techniques sans valeur métier (refactorisation de code, etc.) par unité de temps. Cela ne prend pas en compte les tâches classiques de maintenance comme la mise à jour des dépendances.</li>
+  <li>La proportion de ces tickets par rapport à la charge globale, notamment par rapport aux tickets demandés par le métier.</li>
+  <li>Le nombre de tickets (ou/et de points Scrum) en phase de spécification</li>
+  <li>Le nombre de tickets (ou/et de points Scrum) en attente de développement</li>
+  <li>Le nombre de tickets (ou/et de points Scrum) en cours de développement</li>
+  <li>La couverture du code par les tests automatisés</li>
+  <li>Le ratio de code de test par rapport au code de l’application</li>
+</ul>
+
+<p>Personnellement, je ne suis pas pour le moment ces indicateurs de façon automatisée, mais j’en ai une vision subjective et j’en tiens compte lors de mes prises de décisions et je les utilise pour justifier certains choix.</p>
+
+<p>Ces indicateurs ne permettent pas directement de dire si votre code est de bonne qualité ou pas, mais en suivant leur évolution, il est facile de savoir si la qualité s’améliore ou se dégrade.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Une bonne qualité de développement ne se résume pas simplement à produire un code fonctionnel. Elle repose sur une approche globale, prenant en compte la clarté des spécifications, la structure du code, la maintenabilité et l’anticipation des évolutions futures. Bien que cette démarche demande un investissement initial plus important, elle permet de réduire les erreurs, d’améliorer la productivité sur le long terme et de faciliter la collaboration au sein des équipes.</p>
+
+<p>En combinant une rédaction rigoureuse des spécifications, une phase de développement réfléchie et un suivi d’indicateurs pertinents, vous serez en mesure d’améliorer progressivement la qualité de vos projets. L’objectif n’est pas d’atteindre une perfection absolue (c’est illusoire), mais d’adopter une démarche itérative et mesurable permettant des ajustements continus. Au final, un code de qualité ne profite pas seulement aux développeurs, mais aussi aux utilisateurs et à l’ensemble de l’entreprise.</p>
+
+  </div>
+
+  
+  
+
+  
+    <p>&laquo; <a rel="previous" href="/bonnes-pratiques/ruby/rails/architecture/2025/03/24/fail-fast-echouer-rapidement-pour-corriger-les-bugs.html">Fail Fast : échouer rapidement pour corriger les bugs en production</a> &laquo;
+  <a class="u-url" href="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" hidden></a>
+</article>
+
+    </main>
+
+    <footer>
+      <p>&copy; ILYBA</p>
+      <nav>
+        
+          Français |
+          
+          <a href="/en/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" >English</a> |
+          
+          <a href="/ja/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" >日本語</a>
+        
+      </nav>
+    </footer>
+  </body>
+</html>
