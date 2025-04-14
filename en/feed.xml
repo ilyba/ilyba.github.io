@@ -1,4 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-04-11T10:08:04+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">What criteria to measure and ensure the quality of your code?</title><link href="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" rel="alternate" type="text/html" title="What criteria to measure and ensure the quality of your code?" /><published>2025-03-31T07:00:00+00:00</published><updated>2025-03-31T07:00:00+00:00</updated><id>/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9</id><content type="html" xml:base="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-04-14T06:13:17+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Take Back Control of Your Application’s Tests</title><link href="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/tests/2025/04/14/reprenez-le-controle-de-vos-tests.html" rel="alternate" type="text/html" title="Take Back Control of Your Application’s Tests" /><published>2025-04-14T06:00:00+00:00</published><updated>2025-04-14T06:00:00+00:00</updated><id>/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/tests/2025/04/14/reprenez-le-controle-de-vos-tests</id><content type="html" xml:base="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/tests/2025/04/14/reprenez-le-controle-de-vos-tests.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+
+<p>Discover how to turn an unstable and poorly tested application into a robust product through effective testing practices.</p>
+
+<p>When you join a young start-up project, you’re often faced with gaps in some best practices. And it’s not always obvious where to start.</p>
+
+<p>In this article, after a quick overview of the context, I’ll introduce you to an effective approach in four simple steps to quickly improve your test suite without compromising productivity: stabilisation, implementing good practices, cleaning up existing tests, and optimisation.</p>
+
+<h1 id="at-the-start-few-tests-and-lots-of-bugs">At the start: few tests and lots of bugs…</h1>
+
+<p>The history of a web application is always complex. The codebase evolves with its developers and goes through different phases that are unique to the history of each project. Depending on whether the project starts with a large team of experienced engineers and a sizeable budget or, conversely, with a small team of recently graduated developers, the challenges are not the same.</p>
+
+<p>The project I’m talking about here started with developers of intermediate experience, an ambitious project, and a tight budget. The strategy used was to favour rapid development while still putting some effort into testing and best practices, albeit limited by constraints.</p>
+
+<p>The application was so insufficiently tested that it affected its stability.</p>
+
+<h1 id="phase-1-act-quickly-to-improve-stability">Phase 1: Act quickly to improve stability</h1>
+
+<p>Large critical parts of the code were poorly covered. To fix this issue, we used Rails system tests. The principle of such a test is to automatically control a browser. In short, the test code tells the browser which page to navigate to and which actions to perform (clicking links, filling in forms) then checks the resulting outcome. Compared to other types of tests, these are slower but in return allow for testing the site’s interactivity.</p>
+
+<p>In our case, one of our tests involved filling in a sequence of multiple forms to test a complete use case. This approach had the advantage of quickly adding tests that covered a large part of the project.</p>
+
+<p>The approach was fairly suited to the situation, but still had some drawbacks:</p>
+
+<p>These tests age poorly: as the application evolves and becomes more complex, the tests also become more complex and more fragile. For example, we added a component for auto-completing addresses, and we were entering many addresses in our forms. This component is complex and its repeated use makes the test long and more likely to fail randomly. Eventually, the test ends up constantly needing adjustments and fixes.</p>
+
+<p>And although this type of test was developed to correct an initially problematic situation, some developers used it as a model for new features.</p>
+
+<p>While this approach was suitable at first to quickly resolve a problematic situation, anticipating the evolution of the code is essential.</p>
+
+<h1 id="phase-2-establish-sustainable-best-practices">Phase 2: Establish sustainable best practices</h1>
+
+<p>For a while, the situation is acceptable — even if the tests are slower than they should be and some parts of the code aren’t properly tested — the application’s stability is fine and team productivity is good.</p>
+
+<p>But after some time, we saw the failure rate due to flaky tests increase, and at the same time, test durations increased significantly, which started to affect productivity.</p>
+
+<p>We therefore decided to be more demanding with our tests and apply the following principles:</p>
+
+<ul>
+  <li>We wanted to increase test coverage without swinging to the other extreme. Developers are encouraged to be vigilant and write more tests. This allows us to be more confident when modifying existing code. At first, this may seem a bit excessive, but as the project becomes more complex, having good functional coverage is essential to avoid regressions.</li>
+  <li>We also asked developers to favour other types of tests over system tests. This improves performance more easily. For example, a test that submits a form and observes the result can be replaced by a controller test. In execution, this is much faster than a system test.</li>
+  <li>The use of <code class="language-plaintext highlighter-rouge">sleep</code> in tests is strictly forbidden, and an action plan was set up to remove sleep from all legacy tests or delete the tests in question.</li>
+  <li>We reserved the use of these tests for components using JavaScript. At the same time, we limited the use of JavaScript in the application as much as possible.</li>
+</ul>
+
+<p>Implementing these few rules quickly helped us gain stability. However, this doesn’t solve the problems with existing tests. And for the future, we ensure that the number and duration of tests don’t increase too quickly over time.</p>
+
+<h1 id="phase-3-cleaning-up-existing-tests">Phase 3: Cleaning up existing tests</h1>
+
+<p>Once best practices are in place, it’s time to deal with the legacy.</p>
+
+<p>Rather than keeping costly and fragile tests, it’s often better to replace them with more focused unit or integration tests.</p>
+
+<p>Thanks to the best practices, the majority of system tests originally added to compensate for gaps are now covered by more targeted and stable tests. The remaining ones often cover very stable features that shouldn’t change. In both cases, we can simply delete the original tests.</p>
+
+<p>We finished our clean-up by identifying the longest tests and redundant tests.</p>
+
+<p>To find long tests, we used the following command:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rails</span> <span class="nb">test</span> <span class="o">-</span><span class="n">v</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">-</span><span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="n">k</span> <span class="mi">2</span> <span class="o">-</span><span class="n">g</span>
+</code></pre></div></div>
+
+<p>This command runs Rails tests in verbose mode, sorts the results by execution time, and displays the longest tests first.</p>
+
+<p>To identify redundant tests, there’s no simple command, but we can detect them as we go along in development. If one change causes multiple tests to fail, there’s a strong suspicion of unnecessary redundancy.</p>
+
+<p>As a result, by applying a few simple principles, we saved nearly 30% of test suite execution time, going from just under 20 minutes to under 15 minutes.</p>
+
+<h1 id="phase-4-a-pragmatic-approach-to-improving-performance">Phase 4: A pragmatic approach to improving performance</h1>
+
+<p>We could have spent more time optimising, but it’s a long-term job that requires a full, detailed audit of all our tests. When tests can be deleted or quickly modified, that’s great. But sometimes, it takes a much more expensive effort.</p>
+
+<p>In this case, it’s better to stick with applying the best practices mentioned earlier, and for the rest, we adopted pragmatic strategies to optimise performance:</p>
+
+<ul>
+  <li>We switched providers for one that was faster, more flexible, and not particularly more expensive.</li>
+  <li>We also took the opportunity to distribute the work across several machines running tasks in parallel.</li>
+</ul>
+
+<p>Result: we went from just under 15 minutes to 6 minutes.</p>
+
+<p>It’s a good result, but if not combined with good practices during test writing, the number of tests will increase, pushing us to increase the number of machines running tests in parallel and driving up costs.</p>
+
+<h1 id="conclusion-a-well-maintained-test-suite">Conclusion: a well-maintained test suite</h1>
+
+<p>This progressive approach allowed us to reach a more than satisfactory state despite starting from a problematic situation. By starting with the most critical urgencies, then establishing sustainable rules before correcting problematic legacy and ending with a targeted clean-up, we maximised the impact of our actions without wasting time on an overly systematic approach.</p>
+
+<p>This pragmatic and iterative method is especially suited to large-scale refactoring projects where it’s beneficial to start with a broad approach to quickly handle the bulk before refining the details. It’s a simple and effective approach that can be applied to many other areas of software development, whenever it’s time to take back control of a slightly neglected codebase.</p>
+
+<p>In the end, the key remains the same: progress step by step, with quick wins at the start and continuous improvement over the long term. This method allows you to gradually take back control of a complex codebase while maintaining the team’s stability and productivity.</p>]]></content><author><name></name></author><category term="Bonnes-Pratiques" /><category term="Ruby" /><category term="Rails" /><category term="Architecture" /><category term="Développement" /><category term="Tests" /><summary type="html"><![CDATA[Introduction]]></summary></entry><entry><title type="html">What criteria to measure and ensure the quality of your code?</title><link href="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" rel="alternate" type="text/html" title="What criteria to measure and ensure the quality of your code?" /><published>2025-03-31T07:00:00+00:00</published><updated>2025-03-31T07:00:00+00:00</updated><id>/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9</id><content type="html" xml:base="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html"><![CDATA[<h1 id="introduction">Introduction</h1>
 
 <p>Throughout my career, I have noticed a major difference between beginner developers and experienced developers in how they approach writing code and quality. The former focus on a specific goal, while the latter take a more holistic approach, considering a wider range of factors.</p>
 

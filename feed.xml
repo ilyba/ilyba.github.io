@@ -1,4 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="fr" /><updated>2025-04-11T10:08:03+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Quels critères pour mesurer et garantir la qualité de votre code ?</title><link href="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" rel="alternate" type="text/html" title="Quels critères pour mesurer et garantir la qualité de votre code ?" /><published>2025-03-31T07:00:00+00:00</published><updated>2025-03-31T07:00:00+00:00</updated><id>/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9</id><content type="html" xml:base="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" hreflang="fr" /><updated>2025-04-14T06:13:17+00:00</updated><id>/feed.xml</id><title type="html">ILYBA</title><subtitle>Développement d&apos;applications Web et mobile</subtitle><entry><title type="html">Reprenez le contrôle des tests de votre application</title><link href="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/tests/2025/04/14/reprenez-le-controle-de-vos-tests.html" rel="alternate" type="text/html" title="Reprenez le contrôle des tests de votre application" /><published>2025-04-14T06:00:00+00:00</published><updated>2025-04-14T06:00:00+00:00</updated><id>/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/tests/2025/04/14/reprenez-le-controle-de-vos-tests</id><content type="html" xml:base="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/tests/2025/04/14/reprenez-le-controle-de-vos-tests.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+
+<p>Découvrez comment transformer une application instable et peu testée en un produit robuste grâce à des pratiques de tests efficaces.</p>
+
+<p>Lorsqu’on débarque sur un jeune projet de start-up, on est souvent confronté à des lacunes sur certaines bonnes pratiques. Et il n’est pas toujours évident de savoir par où commencer.</p>
+
+<p>Dans cet article, après une présentation rapide du contexte, je vais vous présenter une approche efficace en quatre étapes simples pour améliorer rapidement et votre suite de tests sans compromettre la productivité : stabilisation, mise en place de bonnes pratiques, nettoyage des tests existants et optimisation.</p>
+
+<h1 id="au-départ--peu-de-tests-et-beaucoup-de-bugs">Au départ : peu de tests et beaucoup de bugs…</h1>
+
+<p>L’historique d’une application Web est toujours complexe. La base de code évolue avec ses développeurs et passe par différentes phases qui sont propres à l’histoire de chaque projet. Suivant que le projet commence avec une grande équipe d’ingénieurs expérimentés avec un budget conséquent ou qu’il démarre au contraire avec une petite équipe de développeurs fraîchement diplômés, les défis ne sont pas les mêmes.</p>
+
+<p>Le projet dont je parle ici est parti avec des développeurs d’expérience intermédiaire, un projet ambitieux et un budget serré. La stratégie appliquée a donc été de privilégier un développement rapide avec un effort porté sur les tests et les bonnes pratiques, bien que limité par les contraintes.</p>
+
+<p>L’application était tellement insuffisamment testée que cela affectait sa stabilité.</p>
+
+<h1 id="phase-1--agir-vite-pour-améliorer-la-stabilité">Phase 1 : Agir vite pour améliorer la stabilité</h1>
+
+<p>De grandes parties critiques du code étaient insuffisamment couvertes. Pour corriger le problème nous avons utilisé les tests système de Rails. Le principe d’un tel test est de piloter automatiquement un navigateur. En clair, le code du test indique au navigateur la page sur laquelle naviguer et les actions à exécuter (cliquer sur des liens, remplir des formulaires) puis vérifie le résultat obtenu. Par rapport à d’autres types de tests, ces tests sont plus lents mais en contrepartie ils permettent de tester l’interactivité du site.</p>
+
+<p>Dans notre cas, un de nos tests consistait à remplir un enchaînement de plusieurs formulaires afin de tester un cas d’utilisation complet. Cette approche avait l’avantage de pouvoir ajouter rapidement des tests qui couvrent une grande partie du projet.</p>
+
+<p>L’approche était plutôt adaptée à la situation, mais avait tout de même des inconvénients :</p>
+
+<p>Ces tests vieillissent mal : au fur et à mesure que l’application évolue et se complexifie, les tests deviennent également plus complexes et plus fragiles. Par exemple, nous avons ajouté un composant qui permet la saisie automatique des adresses, et nous saisissions beaucoup d’adresses dans nos formulaires. Ce composant est complexe et son utilisation répétée rend le test long et plus susceptible d’échouer aléatoirement. Et au bout d’un moment, le test finit par nécessiter des ajustements et des corrections constamment.</p>
+
+<p>Et bien que ce type de test a été développé pour corriger une situation de départ problématique, certains développeurs s’en sont servis comme exemple pour de nouvelles fonctionnalités.</p>
+
+<p>Bien que cette approche soit adaptée au départ pour résoudre rapidement une situation problématique, anticiper l’évolution du code est essentiel.</p>
+
+<h1 id="phase-2--instaurer-des-bonnes-pratiques-durables">Phase 2 : Instaurer des bonnes pratiques durables</h1>
+
+<p>Pendant un moment, la situation est satisfaisante, même si les tests sont plus lents qu’ils ne le devraient, et que certaines parties du code ne sont pas testées correctement, la stabilité de l’application est acceptable et la productivité de l’équipe est bonne.</p>
+
+<p>Mais au bout d’un certain temps, on voit le taux d’échec en raison de tests floconneux augmenter, et parallèlement à ça, la durée des tests augmente considérablement ce qui commence à poser des problèmes de productivité.</p>
+
+<p>Nous décidons donc d’être plus exigeants sur nos tests et d’appliquer ces principes :</p>
+
+<ul>
+  <li>Nous souhaitons augmenter la couverture de tests sans toutefois tomber dans l’extrême inverse. Les développeurs sont encouragés à être vigilants et à écrire plus de tests. Cela nous permet d’être plus confiants lorsque nous devons modifier du code existant. Au départ, cette mesure peut paraître un peu superflue, mais au fur et à mesure que le projet se complexifie, avoir une bonne couverture fonctionnelle est essentiel pour éviter les régressions.</li>
+  <li>Nous demandons aussi de privilégier les autres types de tests aux tests systèmes. Cela permet d’améliorer facilement les performances. Par exemple, un test consistant à soumettre un formulaire et à observer le résultat peut être remplacé par un test de contrôleur. À l’exécution, c’est bien plus rapide qu’un test système.</li>
+  <li>L’utilisation de <code class="language-plaintext highlighter-rouge">sleep</code> dans les tests est strictement interdite, et un plan d’action est établi pour supprimer sleep dans tous les tests historiques ou bien pour supprimer les tests en question.</li>
+  <li>On réserve l’utilisation de ces tests aux composants qui utilisent le JavaScript. Et dans le même temps, on limite au maximum l’utilisation du JavaScript dans l’application.</li>
+</ul>
+
+<p>La mise en place de ces quelques règles nous a permis rapidement de gagner en stabilité. En revanche, cela ne permet pas de résoudre les problèmes des tests existants. Et pour le futur, nous nous assurons que la quantité et la durée des tests n’augmentent pas trop rapidement avec le temps.</p>
+
+<h1 id="phase-3--nettoyage-des-tests-existants">Phase 3 : Nettoyage des tests existants</h1>
+
+<p>Une fois que les bonnes pratiques sont appliquées, il est temps de s’occuper de l’historique.</p>
+
+<p>Plutôt que de conserver des tests coûteux et fragiles, il est souvent préférable de les remplacer par des tests unitaires ou d’intégration plus ciblés.</p>
+
+<p>Grâce aux bonnes pratiques, la majorité des tests systèmes destinés à pallier les lacunes sont couverts par des tests plus ciblés et plus stables. Les autres couvrent souvent des fonctionnalités très stables qui ne devraient pas être amenées à changer. Dans ces deux cas, on peut donc simplement supprimer les tests originaux.</p>
+
+<p>On termine notre nettoyage en identifiant les tests les plus longs et les tests redondants.</p>
+
+<p>Pour trouver les tests longs, on peut utiliser la commande suivante :</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rails</span> <span class="nb">test</span> <span class="o">-</span><span class="n">v</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">-</span><span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="n">k</span> <span class="mi">2</span> <span class="o">-</span><span class="n">g</span>
+</code></pre></div></div>
+
+<p>Cette commande exécute les tests Rails en mode verbeux, trie les résultats par durée d’exécution et affiche les tests les plus longs en premier.</p>
+
+<p>Pour identifier les tests redondants, il n’y a pas de commande simple, mais on peut les détecter au fur et à mesure du développement. Si une modification fait échouer plusieurs tests, il y a suspicion de redondance inutile.</p>
+
+<p>Résultat, en appliquant quelques principes simples, on a gagné près de 30 % de temps sur l’exécution de la suite de tests en passant d’un peu moins de 20 minutes à moins de 15 minutes.</p>
+
+<h1 id="phase-4--une-approche-pragmatique-pour-gagner-en-performance">Phase 4 : Une approche pragmatique pour gagner en performance</h1>
+
+<p>On aurait pu passer plus de temps à optimiser, mais c’est un travail de longue haleine qui nécessite un audit complet et détaillé de tous nos tests. Quand les tests peuvent être supprimés ou rapidement modifiés c’est bien. Mais parfois, cela demande un effort plus coûteux.</p>
+
+<p>Dans ce cas, mieux vaut se contenter d’appliquer les bonnes pratiques énoncées plus tôt, et pour le reste, nous avons adopté des stratégies pragmatiques pour optimiser les performances :</p>
+
+<ul>
+  <li>On a changé de prestataire pour un autre plus rapide, plus flexible et qui ne coûtait pas spécialement plus cher.</li>
+  <li>On en a profité pour répartir le travail sur plusieurs machines exécutant les tâches en parallèle.</li>
+</ul>
+
+<p>Résultat : on est passé d’un peu moins de 15 minutes à 6 minutes.</p>
+
+<p>C’est un bon résultat, mais s’il n’est pas associé à de bonnes pratiques au moment de l’écriture, le nombre de tests va augmenter, cela nous poussera à augmenter le nombre de machines exécutant les tests en parallèle et fera grimper les coûts.</p>
+
+<h1 id="conclusion--une-suite-de-tests-bien-maintenue">Conclusion : une suite de tests bien maintenue</h1>
+
+<p>Cette approche progressive nous a permis d’atteindre une situation plus que satisfaisante malgré un point de départ problématique. En partant des urgences les plus critiques, puis en établissant des règles durables avant de corriger l’héritage problématique et de finir par un nettoyage ciblé, nous avons maximisé l’impact de nos actions sans gaspiller de temps par rapport à une approche trop systématique.</p>
+
+<p>Cette méthode pragmatique et itérative est particulièrement adaptée aux projets de refactorisation massive où il est bénéfique de commencer par une approche globale pour traiter rapidement le plus gros avant d’affiner les détails. C’est une démarche simple et efficace qui peut s’appliquer à bien d’autres domaines du développement logiciel, dès qu’il s’agit de reprendre le contrôle sur une base de code un peu négligée.</p>
+
+<p>Finalement, la clé reste la même : avancer par étapes, avec des gains rapides au départ et une amélioration continue sur le long terme. Cette méthode permet de reprendre progressivement le contrôle sur une base de code complexe tout en maintenant la stabilité et la productivité de l’équipe.</p>]]></content><author><name></name></author><category term="Bonnes-Pratiques" /><category term="Ruby" /><category term="Rails" /><category term="Architecture" /><category term="Développement" /><category term="Tests" /><summary type="html"><![CDATA[Introduction]]></summary></entry><entry><title type="html">Quels critères pour mesurer et garantir la qualité de votre code ?</title><link href="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html" rel="alternate" type="text/html" title="Quels critères pour mesurer et garantir la qualité de votre code ?" /><published>2025-03-31T07:00:00+00:00</published><updated>2025-03-31T07:00:00+00:00</updated><id>/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9</id><content type="html" xml:base="/bonnes-pratiques/ruby/rails/architecture/d%C3%A9veloppement/2025/03/31/crit%C3%A8res-pour-un-code-de-qualit%C3%A9.html"><![CDATA[<h1 id="introduction">Introduction</h1>
 
 <p>Au cours de ma carrière, j’ai constaté une différence majeure entre les développeurs débutants et les développeurs expérimentés dans leur manière d’appréhender l’écriture du code et la qualité. Les premiers se concentrent sur un objectif précis, tandis que les seconds ont une approche plus globale prenant en compte davantage de paramètres différents.</p>
 
